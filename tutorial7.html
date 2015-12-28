@@ -1,0 +1,646 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>7. Introduction of Rule-based Modeling &mdash; Test test documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Test test documentation" href="index.html"/>
+        <link rel="next" title="8. More about 1. Brief Tour of E-Cell4 Simulations" href="tutorial8.html"/>
+        <link rel="prev" title="6. How to Solve ODEs with Rate Law Functions" href="tutorial6.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Test
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                test
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html#running-e-cell4">Running E-Cell4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html#dockerized-e-cell4-jupyter-notebooks">Dockerized E-Cell4 Jupyter notebooks</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Attractors.html">Attractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DrosophilaCircadianClock.html">Drosophila Circadian Clock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dpc.html">Dual Phosphorylation Cycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HumanErythrocytes.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial2.html">2. How to Build a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial3.html">3. How to Setup the Initial Condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial4.html">4. How to Run a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">7. Introduction of Rule-based Modeling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#species-count">7.1. Species.count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reactionrule-count-and-generate">7.2. ReactionRule.count and generate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#netfreemodel">7.3. NetfreeModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#differences-between-species-reactionrule-and-netfreemodel">7.4. Differences between Species, ReactionRule and NetfreeModel</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial9.html">9. Spatial Gillespie Method</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorldSimBasics.html">World and Simulator with ODE solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Meso.html">Meso</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Spatiocyte.html">Spatiocyte simulations with single-molecule resolution</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Test</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>7. Introduction of Rule-based Modeling</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/tutorial7.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="introduction-of-rule-based-modeling">
+<h1>7. Introduction of Rule-based Modeling<a class="headerlink" href="#introduction-of-rule-based-modeling" title="Permalink to this headline">¶</a></h1>
+<p>E-Cell4 provides the rule-based modeling environment.</p>
+<div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+from ecell4 import *
+</pre></div>
+</div>
+<div class="section" id="species-count">
+<h2>7.1. Species.count<a class="headerlink" href="#species-count" title="Permalink to this headline">¶</a></h2>
+<p>First, <code class="docutils literal"><span class="pre">Species</span></code> provides a function <code class="docutils literal"><span class="pre">count</span></code>. <code class="docutils literal"><span class="pre">Species.count</span></code>
+counts the number of matches between <code class="docutils literal"><span class="pre">Species</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b^1).B(b^1)&quot;</span><span class="p">)</span>
+<span class="n">sp2</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b^1).A(b^1)&quot;</span><span class="p">)</span>
+<span class="n">pttrn1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pttrn1</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">sp1</span><span class="p">))</span>  <span class="c"># =&gt; 1</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pttrn1</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">sp2</span><span class="p">))</span>  <span class="c"># =&gt; 2</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">1</span>
+<span class="mi">2</span>
+</pre></div>
+</div>
+<p>In the above case, <code class="docutils literal"><span class="pre">Species.count</span></code> just returns the number of
+<code class="docutils literal"><span class="pre">UnitSpecies</span></code> named <code class="docutils literal"><span class="pre">A</span></code> in <code class="docutils literal"><span class="pre">Species</span></code> regardless of its sites. To
+specify the occupancy of a bond:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">pttrn1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b)&quot;</span><span class="p">)</span>
+<span class="n">pttrn2</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b^_)&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pttrn1</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">sp1</span><span class="p">))</span>  <span class="c"># =&gt; 0</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pttrn2</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">sp1</span><span class="p">))</span>  <span class="c"># =&gt; 1</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">0</span>
+<span class="mi">1</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal"><span class="pre">A(b)</span></code> suggests that bond <code class="docutils literal"><span class="pre">b</span></code> is empty, and <code class="docutils literal"><span class="pre">A(b^_)</span></code> does
+that bond <code class="docutils literal"><span class="pre">b</span></code> is occupied. Underscore <code class="docutils literal"><span class="pre">_</span></code> means wildcard here.
+Similarly, you can also specify the state of sites.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b=u)&quot;</span><span class="p">)</span>
+<span class="n">pttrn1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b)&quot;</span><span class="p">)</span>
+<span class="n">pttrn2</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b=u)&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pttrn1</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">sp1</span><span class="p">))</span>  <span class="c"># =&gt; 1</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pttrn2</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">sp1</span><span class="p">))</span>  <span class="c"># =&gt; 1</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">1</span>
+<span class="mi">1</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">A(b)</span></code> says nothing about the state, but <code class="docutils literal"><span class="pre">A(b=u)</span></code> specifies both
+state and bond. <code class="docutils literal"><span class="pre">A(b=u)</span></code> means that <code class="docutils literal"><span class="pre">UnitSpecies</span></code> named <code class="docutils literal"><span class="pre">A</span></code> has a
+site named <code class="docutils literal"><span class="pre">b</span></code> which state is <code class="docutils literal"><span class="pre">u</span></code> and the bond is empty. Wildcard
+<code class="docutils literal"><span class="pre">_</span></code> is acceptable even in a state and name.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b=u^1).B(b=p^1)&quot;</span><span class="p">)</span>
+<span class="n">pttrn1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b=_^_)&quot;</span><span class="p">)</span>  <span class="c"># This is equivalent to `A(b^_)` here</span>
+<span class="n">pttrn2</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;_(b^_)&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pttrn1</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">sp1</span><span class="p">))</span>  <span class="c"># =&gt; 1</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pttrn2</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">sp1</span><span class="p">))</span>  <span class="c"># =&gt; 2</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">1</span>
+<span class="mi">2</span>
+</pre></div>
+</div>
+<p>Wildcard <code class="docutils literal"><span class="pre">_</span></code> matches anything, and the pattern matched is not
+consistent between wildcards even in the <code class="docutils literal"><span class="pre">Species</span></code>. On the other hand,
+named wildcards, <code class="docutils literal"><span class="pre">_1</span></code>, <code class="docutils literal"><span class="pre">_2</span></code> and so on, confer the consistency within
+the match.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b^1).B(b^1)&quot;</span><span class="p">)</span>
+<span class="n">pttrn1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;_._&quot;</span><span class="p">)</span>
+<span class="n">pttrn2</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;_1._1&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pttrn1</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">sp1</span><span class="p">))</span>  <span class="c"># =&gt; 2</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pttrn2</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">sp1</span><span class="p">))</span>  <span class="c"># =&gt; 0</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">2</span>
+<span class="mi">0</span>
+</pre></div>
+</div>
+<p>where the first pattern matches in two ways (<code class="docutils literal"><span class="pre">A.B</span></code> and <code class="docutils literal"><span class="pre">B.A</span></code>), but
+the second matches nothing. <code class="docutils literal"><span class="pre">Species.count</span></code> always distinguishes the
+order of <code class="docutils literal"><span class="pre">UnitSpecies</span></code> even in the symmetric case. Thus, <code class="docutils literal"><span class="pre">_1._1</span></code>
+does <strong>not</strong> mean the number of dimers.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b^1).A(b^1)&quot;</span><span class="p">)</span>
+<span class="n">pttrn1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;_1._1&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pttrn1</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">sp1</span><span class="p">))</span>  <span class="c"># =&gt; 2</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="reactionrule-count-and-generate">
+<h2>7.2. ReactionRule.count and generate<a class="headerlink" href="#reactionrule-count-and-generate" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">ReactionRule</span></code> also has a function to count matches agaist the given
+list of reactants.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">create_unimolecular_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(p=u)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(p=p)&quot;</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b^1,p=u).B(b^1)&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">rr1</span><span class="o">.</span><span class="n">count</span><span class="p">([</span><span class="n">sp1</span><span class="p">]))</span>  <span class="c"># =&gt; 1</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">1</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">ReactionRule.generate</span></code> returns a list of <code class="docutils literal"><span class="pre">ReactionRule</span></code>s
+generated based on the matches.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">sp1</span><span class="p">])])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s">u&#39;A(b^1,p=u).B(b^1)&gt;A(b^1,p=p).B(b^1)|1&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">ReactionRule.generate</span></code> matters the order of <code class="docutils literal"><span class="pre">Species</span></code> in the given
+list:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">create_binding_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B(b)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b^1).B(b^1)&quot;</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b)&quot;</span><span class="p">)</span>
+<span class="n">sp2</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B(b)&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">sp1</span><span class="p">,</span> <span class="n">sp2</span><span class="p">])])</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">sp2</span><span class="p">,</span> <span class="n">sp1</span><span class="p">])])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s">u&#39;A(b)+B(b)&gt;A(b^1).B(b^1)|1&#39;</span><span class="p">]</span>
+<span class="p">[]</span>
+</pre></div>
+</div>
+<p>On the current implementation, <code class="docutils literal"><span class="pre">ReactionRule.generate</span></code> does <strong>not</strong>
+always return a list of unique <code class="docutils literal"><span class="pre">ReactionRule</span></code>s.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b,c^1).A(b,c^1)&quot;</span><span class="p">)</span>
+<span class="n">sp2</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B(b,c^1).B(b,c^1)&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">rr1</span><span class="o">.</span><span class="n">count</span><span class="p">([</span><span class="n">sp1</span><span class="p">,</span> <span class="n">sp2</span><span class="p">]))</span>  <span class="c"># =&gt; 4</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">sp1</span><span class="p">,</span> <span class="n">sp2</span><span class="p">])])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">4</span>
+<span class="p">[</span><span class="s">u&#39;A(b,c^1).A(b,c^1)+B(b,c^1).B(b,c^1)&gt;A(b^1,c^2).A(b,c^2).B(b^1,c^3).B(b,c^3)|1&#39;</span><span class="p">,</span> <span class="s">u&#39;A(b,c^1).A(b,c^1)+B(b,c^1).B(b,c^1)&gt;A(b^1,c^2).A(b,c^2).B(b,c^3).B(b^1,c^3)|1&#39;</span><span class="p">,</span> <span class="s">u&#39;A(b,c^1).A(b,c^1)+B(b,c^1).B(b,c^1)&gt;A(b,c^1).A(b^2,c^1).B(b^2,c^3).B(b,c^3)|1&#39;</span><span class="p">,</span> <span class="s">u&#39;A(b,c^1).A(b,c^1)+B(b,c^1).B(b,c^1)&gt;A(b,c^1).A(b^2,c^1).B(b,c^3).B(b^2,c^3)|1&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">ReactionRules</span></code> listed above look different, but all the products
+suggest the same.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">unique_serial</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">products</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">sp1</span><span class="p">,</span> <span class="n">sp2</span><span class="p">])]))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="nb">set</span><span class="p">([</span><span class="s">u&#39;A(b,c^1).A(b^2,c^1).B(b^2,c^3).B(b,c^3)&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>This is because these <code class="docutils literal"><span class="pre">ReactionRule</span></code>s are generated based on the
+diffent matches though they produces the same <code class="docutils literal"><span class="pre">Species</span></code>. Fot details,
+See the section below.</p>
+<p>Wildcard is also available in <code class="docutils literal"><span class="pre">ReactionRule</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">create_unimolecular_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(p=u^_)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(p=p^_)&quot;</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(p=u^1).B(p^1)&quot;</span><span class="p">)])])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s">u&#39;A(p=u^1).B(p^1)&gt;A(p=p^1).B(p^1)|1&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Of course, wildcard is accepted as a name of <code class="docutils literal"><span class="pre">UnitSpecies</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">create_unimolecular_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;_(p=u)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;_(p=p)&quot;</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(p=u)&quot;</span><span class="p">)])])</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B(b^1,p=u).C(b^1,p=u)&quot;</span><span class="p">)])])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s">u&#39;A(p=u)&gt;A(p=p)|1&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s">u&#39;B(b^1,p=u).C(b^1,p=u)&gt;B(b^1,p=p).C(b^1,p=u)|1&#39;</span><span class="p">,</span> <span class="s">u&#39;B(b^1,p=u).C(b^1,p=u)&gt;B(b^1,p=u).C(b^1,p=p)|1&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Named wildcards in a state is useful to specify the correspondence
+between sites.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">create_unbinding_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;AB(a=_1, b=_2)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B(b=_2)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(a=_1)&quot;</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;AB(a=x, b=y)&quot;</span><span class="p">)])])</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;AB(a=y, b=x)&quot;</span><span class="p">)])])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s">u&#39;AB(a=x,b=y)&gt;B(b=y)+A(a=x)|1&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s">u&#39;AB(a=y,b=x)&gt;B(b=x)+A(a=y)|1&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Nameless wildcard <code class="docutils literal"><span class="pre">_</span></code> does not care about equality between matches.
+Products are generated in order.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">create_binding_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;_(b)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;_(b)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;_(b^1)._(b^1)&quot;</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">rr1</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b)&quot;</span><span class="p">)])])</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B(b)&quot;</span><span class="p">)])])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">_</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">+</span><span class="n">_</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">&gt;</span><span class="n">_</span><span class="p">(</span><span class="n">b</span><span class="o">^</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">_</span><span class="p">(</span><span class="n">b</span><span class="o">^</span><span class="mi">1</span><span class="p">)</span><span class="o">|</span><span class="mi">1</span>
+<span class="p">[</span><span class="s">u&#39;A(b)+A(b)&gt;A(b^1).A(b^1)|1&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s">u&#39;A(b)+B(b)&gt;A(b^1).B(b^1)|1&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>For its symmetry, the former case above is sometimes preffered to have a
+half of the original kinetic rate. This is because the number of
+combinations of molecules in the former is  even though
+that in the later is , where both numbers of A and B
+molecules are . This is true for <code class="docutils literal"><span class="pre">gillespie</span></code> and <code class="docutils literal"><span class="pre">ode</span></code>.
+However, in <code class="docutils literal"><span class="pre">egfrd</span></code> and <code class="docutils literal"><span class="pre">spatiocyte</span></code>, a kinetic rate is intrinsic
+one, and not affected by the number of combinations. Thus, in E-Cell4,
+no modification in the rate is done even for the case. See
+<a class="reference external" href="../Tests/Homodimerization%20and%20Annihilation.ipynb">Homodimerization and
+Annihilation</a>
+for the difference between algorithms.</p>
+<p>In constrast to nameless wildcard, named wildcard keeps its consistency,
+and always suggests the same value in the <code class="docutils literal"><span class="pre">ReactionRule</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">create_binding_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;_1(b)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;_1(b)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;_1(b^1)._1(b^1)&quot;</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">rr1</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b)&quot;</span><span class="p">)])])</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B(b)&quot;</span><span class="p">)])])</span>  <span class="c"># =&gt; []</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">_1</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">+</span><span class="n">_1</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">&gt;</span><span class="n">_1</span><span class="p">(</span><span class="n">b</span><span class="o">^</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">_1</span><span class="p">(</span><span class="n">b</span><span class="o">^</span><span class="mi">1</span><span class="p">)</span><span class="o">|</span><span class="mi">1</span>
+<span class="p">[</span><span class="s">u&#39;A(b)+A(b)&gt;A(b^1).A(b^1)|1&#39;</span><span class="p">]</span>
+<span class="p">[]</span>
+</pre></div>
+</div>
+<p>Named wildcard is consistent even between <code class="docutils literal"><span class="pre">UnitSpecies</span></code>&#8216; and
+<code class="docutils literal"><span class="pre">site</span></code>&#8216;s names, technically.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">create_binding_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b=_1)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;_1(b)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b=_1^1)._1(b^1)&quot;</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">rr1</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b=B)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b)&quot;</span><span class="p">)])])</span>  <span class="c"># =&gt; []</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b=B)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B(b)&quot;</span><span class="p">)])])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">A</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="n">_1</span><span class="p">)</span><span class="o">+</span><span class="n">_1</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">&gt;</span><span class="n">A</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="n">_1</span><span class="o">^</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">_1</span><span class="p">(</span><span class="n">b</span><span class="o">^</span><span class="mi">1</span><span class="p">)</span><span class="o">|</span><span class="mi">1</span>
+<span class="p">[]</span>
+<span class="p">[</span><span class="s">u&#39;A(b=B)+B(b)&gt;A(b=B^1).B(b^1)|1&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="netfreemodel">
+<h2>7.3. NetfreeModel<a class="headerlink" href="#netfreemodel" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">NetfreeModel</span></code> is a <code class="docutils literal"><span class="pre">Model</span></code> class for the rule-based modeling. The
+interface of <code class="docutils literal"><span class="pre">NetfreeModel</span></code> is almost same with <code class="docutils literal"><span class="pre">NetworkModel</span></code>, but
+takes into account rules and matches.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">create_binding_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(r)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(l)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(r^1).A(l^1)&quot;</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+
+<span class="n">m1</span> <span class="o">=</span> <span class="n">NetfreeModel</span><span class="p">()</span>
+<span class="n">m1</span><span class="o">.</span><span class="n">add_reaction_rule</span><span class="p">(</span><span class="n">rr1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">m1</span><span class="o">.</span><span class="n">num_reaction_rules</span><span class="p">())</span>
+
+<span class="n">m2</span> <span class="o">=</span> <span class="n">NetworkModel</span><span class="p">()</span>
+<span class="n">m2</span><span class="o">.</span><span class="n">add_reaction_rule</span><span class="p">(</span><span class="n">rr1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">m2</span><span class="o">.</span><span class="n">num_reaction_rules</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">1</span>
+<span class="mi">1</span>
+</pre></div>
+</div>
+<p>Python notation explained in <a class="reference external" href="2.%20How%20to%20Build%20a%20Model.ipynb">2. How to Build a
+Model</a> is available too. To
+get a model as <code class="docutils literal"><span class="pre">NetfreeModel</span></code>, set <code class="docutils literal"><span class="pre">is_netfree</span></code> <code class="docutils literal"><span class="pre">True</span></code> in
+<code class="docutils literal"><span class="pre">get_model</span></code>:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">reaction_rules</span><span class="p">():</span>
+    <span class="n">A</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">+</span> <span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">A</span><span class="p">(</span><span class="n">r</span><span class="o">^</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="o">^</span><span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="mf">1.0</span>
+
+<span class="n">m1</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">(</span><span class="n">is_netfree</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">m1</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>&lt;ecell4.core.NetfreeModel object at 0x7f44bd1c9b10&gt;
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Model.query_reaction_rules</span></code> returns a list of <code class="docutils literal"><span class="pre">ReactionRule</span></code>s
+agaist the given reactants. <code class="docutils literal"><span class="pre">NetworkModel</span></code> just returns
+<code class="docutils literal"><span class="pre">ReactionRule</span></code>s based on the equality of <code class="docutils literal"><span class="pre">Species</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">m2</span><span class="o">.</span><span class="n">query_reaction_rules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(r)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(l)&quot;</span><span class="p">))))</span>  <span class="c"># =&gt; 1</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">m2</span><span class="o">.</span><span class="n">query_reaction_rules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(l,r)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(l,r)&quot;</span><span class="p">))))</span>  <span class="c"># =&gt; 0</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">1</span>
+<span class="mi">0</span>
+</pre></div>
+</div>
+<p>On the other hand, <code class="docutils literal"><span class="pre">NetfreeModel</span></code> genarates the list by applying the
+stored <code class="docutils literal"><span class="pre">ReactionRule</span></code>s in the rule-based way.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">m1</span><span class="o">.</span><span class="n">query_reaction_rules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(r)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(l)&quot;</span><span class="p">))))</span>  <span class="c"># =&gt; 1</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">m1</span><span class="o">.</span><span class="n">query_reaction_rules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(l,r)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(l,r)&quot;</span><span class="p">))))</span>  <span class="c"># =&gt; 1</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">1</span>
+<span class="mi">1</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">NetfreeModel</span></code> does not cache generated objects. Thus,
+<code class="docutils literal"><span class="pre">NetfreeModel.query_reaction_rules</span></code> is slow, but needs less memory.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">m1</span><span class="o">.</span><span class="n">query_reaction_rules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(l,r)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(l,r)&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">m1</span><span class="o">.</span><span class="n">query_reaction_rules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(l,r^1).A(l^1,r)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(l,r)&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">m1</span><span class="o">.</span><span class="n">query_reaction_rules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(l,r^1).A(l^1,r)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(l,r^1).A(l^1,r)&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">)</span><span class="o">+</span><span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">)</span><span class="o">&gt;</span><span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="o">^</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="o">^</span><span class="mi">1</span><span class="p">,</span><span class="n">r</span><span class="p">)</span><span class="o">|</span><span class="mi">2</span>
+<span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="o">^</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="o">^</span><span class="mi">1</span><span class="p">,</span><span class="n">r</span><span class="p">)</span><span class="o">+</span><span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">)</span><span class="o">&gt;</span><span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="o">^</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="o">^</span><span class="mi">1</span><span class="p">,</span><span class="n">r</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="n">r</span><span class="p">)</span><span class="o">|</span><span class="mi">2</span>
+<span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="o">^</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="o">^</span><span class="mi">1</span><span class="p">,</span><span class="n">r</span><span class="p">)</span><span class="o">+</span><span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="o">^</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="o">^</span><span class="mi">1</span><span class="p">,</span><span class="n">r</span><span class="p">)</span><span class="o">&gt;</span><span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="o">^</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="o">^</span><span class="mi">1</span><span class="p">,</span><span class="n">r</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="n">r</span><span class="o">^</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="n">l</span><span class="o">^</span><span class="mi">3</span><span class="p">,</span><span class="n">r</span><span class="p">)</span><span class="o">|</span><span class="mi">2</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">NetfreeModel.expand</span></code> expands <code class="docutils literal"><span class="pre">NetfreeModel</span></code> to <code class="docutils literal"><span class="pre">NetworkModel</span></code> by
+iteratively applying <code class="docutils literal"><span class="pre">ReactionRule</span></code>s agaist the given seeds.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">reaction_rules</span><span class="p">():</span>
+    <span class="n">_</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">==</span> <span class="n">_</span><span class="p">(</span><span class="n">b</span><span class="o">^</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">_</span><span class="p">(</span><span class="n">b</span><span class="o">^</span><span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+<span class="n">m3</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">m3</span><span class="o">.</span><span class="n">num_reaction_rules</span><span class="p">())</span>
+
+<span class="n">m4</span> <span class="o">=</span> <span class="n">m3</span><span class="o">.</span><span class="n">expand</span><span class="p">([</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B(b)&quot;</span><span class="p">)])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">m4</span><span class="o">.</span><span class="n">num_reaction_rules</span><span class="p">())</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">m4</span><span class="o">.</span><span class="n">reaction_rules</span><span class="p">()])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">2</span>
+<span class="mi">6</span>
+<span class="p">[</span><span class="s">u&#39;A(b)+A(b)&gt;A(b^1).A(b^1)|1&#39;</span><span class="p">,</span> <span class="s">u&#39;A(b)+B(b)&gt;A(b^1).B(b^1)|1&#39;</span><span class="p">,</span> <span class="s">u&#39;B(b)+B(b)&gt;B(b^1).B(b^1)|1&#39;</span><span class="p">,</span> <span class="s">u&#39;A(b^1).A(b^1)&gt;A(b)+A(b)|1&#39;</span><span class="p">,</span> <span class="s">u&#39;A(b^1).B(b^1)&gt;A(b)+B(b)|1&#39;</span><span class="p">,</span> <span class="s">u&#39;B(b^1).B(b^1)&gt;B(b)+B(b)|1&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>To avoid the infinite iteration for expansion, you can limit the maximum
+number of iterations and of <code class="docutils literal"><span class="pre">UnitSpecies</span></code> in a <code class="docutils literal"><span class="pre">Species</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">m2</span> <span class="o">=</span> <span class="n">m1</span><span class="o">.</span><span class="n">expand</span><span class="p">([</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(l, r)&quot;</span><span class="p">)],</span> <span class="mi">100</span><span class="p">,</span> <span class="p">{</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">):</span> <span class="mi">4</span><span class="p">})</span>
+<span class="k">print</span><span class="p">(</span><span class="n">m2</span><span class="o">.</span><span class="n">num_reaction_rules</span><span class="p">())</span>  <span class="c"># =&gt; 4</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">m2</span><span class="o">.</span><span class="n">reaction_rules</span><span class="p">()])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">4</span>
+<span class="p">[</span><span class="s">u&#39;A(l,r)+A(l,r)&gt;A(l,r^1).A(l^1,r)|2&#39;</span><span class="p">,</span> <span class="s">u&#39;A(l,r^1).A(l^1,r)+A(l,r^1).A(l^1,r)&gt;A(l,r^1).A(l^1,r^2).A(l^2,r^3).A(l^3,r)|2&#39;</span><span class="p">,</span> <span class="s">u&#39;A(l,r)+A(l,r^1).A(l^1,r)&gt;A(l,r^1).A(l^1,r^2).A(l^2,r)|2&#39;</span><span class="p">,</span> <span class="s">u&#39;A(l,r)+A(l,r^1).A(l^1,r^2).A(l^2,r)&gt;A(l,r^1).A(l^1,r^2).A(l^2,r^3).A(l^3,r)|2&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="differences-between-species-reactionrule-and-netfreemodel">
+<h2>7.4. Differences between Species, ReactionRule and NetfreeModel<a class="headerlink" href="#differences-between-species-reactionrule-and-netfreemodel" title="Permalink to this headline">¶</a></h2>
+<p>The functions explained above is similar, but there are some differences
+in the criteria.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b^1).A(b^1)&quot;</span><span class="p">)</span>
+<span class="n">sp2</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b)&quot;</span><span class="p">)</span>
+<span class="n">rr1</span> <span class="o">=</span> <span class="n">create_unbinding_reaction_rule</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="n">sp2</span><span class="p">,</span> <span class="n">sp2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sp1</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">sp1</span><span class="p">))</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">sp1</span><span class="p">])])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">2</span>
+<span class="p">[</span><span class="s">u&#39;A(b^1).A(b^1)&gt;A(b)+A(b)|1&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Though <code class="docutils literal"><span class="pre">Species.count</span></code> suggests two different ways for matching
+(left-right and right-left), <code class="docutils literal"><span class="pre">ReactionRule.generate</span></code> returns only one
+<code class="docutils literal"><span class="pre">ReactionRule</span></code> because the order doesn&#8217;t affect the product.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b^1).B(b^1)&quot;</span><span class="p">)</span>
+<span class="n">rr1</span> <span class="o">=</span> <span class="n">create_unbinding_reaction_rule</span><span class="p">(</span>
+    <span class="n">sp1</span><span class="p">,</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b)&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B(b)&quot;</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">sp2</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b^1,c^2).A(b^3,c^2).B(b^1).B(b^3)&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sp1</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">sp2</span><span class="p">))</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">sp2</span><span class="p">])])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">2</span>
+<span class="p">[</span><span class="s">u&#39;A(b^1,c^2).A(b^3,c^2).B(b^1).B(b^3)&gt;A(b,c^1).A(b^2,c^1).B(b^2)+B(b)|1&#39;</span><span class="p">,</span> <span class="s">u&#39;A(b^1,c^2).A(b^3,c^2).B(b^1).B(b^3)&gt;A(b^1,c^2).A(b,c^2).B(b^1)+B(b)|1&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>In this case, <code class="docutils literal"><span class="pre">ReactionRule.generate</span></code> works similarly with
+<code class="docutils literal"><span class="pre">Species.count</span></code>. However, <code class="docutils literal"><span class="pre">Netfree.query_reaction_rules</span></code> returns
+only one <code class="docutils literal"><span class="pre">ReationRule</span></code> with higher kinetic rate:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">m1</span> <span class="o">=</span> <span class="n">NetfreeModel</span><span class="p">()</span>
+<span class="n">m1</span><span class="o">.</span><span class="n">add_reaction_rule</span><span class="p">(</span><span class="n">rr1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">m1</span><span class="o">.</span><span class="n">query_reaction_rules</span><span class="p">(</span><span class="n">sp2</span><span class="p">)])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s">u&#39;A(b^1,c^2).A(b^3,c^2).B(b^1).B(b^3)&gt;A(b,c^1).A(b^2,c^1).B(b^2)+B(b)|2&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">NetfreeModel.query_reaction_rules</span></code> checks if each <code class="docutils literal"><span class="pre">ReactionRule</span></code>
+generated is the same with others, and summalizes it if possible.</p>
+<p>As explaned above, <code class="docutils literal"><span class="pre">ReactionRule.generate</span></code> matters the order of
+<code class="docutils literal"><span class="pre">Species</span></code>, but <code class="docutils literal"><span class="pre">Netfree.query_reaction_rules</span></code> does not.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b)&quot;</span><span class="p">)</span>
+<span class="n">sp2</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B(b)&quot;</span><span class="p">)</span>
+<span class="n">rr1</span> <span class="o">=</span> <span class="n">create_binding_reaction_rule</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="n">sp2</span><span class="p">,</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b^1).B(b^1)&quot;</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">m1</span> <span class="o">=</span> <span class="n">NetfreeModel</span><span class="p">()</span>
+<span class="n">m1</span><span class="o">.</span><span class="n">add_reaction_rule</span><span class="p">(</span><span class="n">rr1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">sp1</span><span class="p">,</span> <span class="n">sp2</span><span class="p">])])</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">m1</span><span class="o">.</span><span class="n">query_reaction_rules</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="n">sp2</span><span class="p">)])</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">sp2</span><span class="p">,</span> <span class="n">sp1</span><span class="p">])])</span>  <span class="c"># =&gt; []</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">m1</span><span class="o">.</span><span class="n">query_reaction_rules</span><span class="p">(</span><span class="n">sp2</span><span class="p">,</span> <span class="n">sp1</span><span class="p">)])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s">u&#39;A(b)+B(b)&gt;A(b^1).B(b^1)|1&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s">u&#39;A(b)+B(b)&gt;A(b^1).B(b^1)|1&#39;</span><span class="p">]</span>
+<span class="p">[]</span>
+<span class="p">[</span><span class="s">u&#39;B(b)+A(b)&gt;A(b^1).B(b^1)|1&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Named wildcards must be consistent in the context while nameless
+wildcards are not necessarily consistent.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;_(b)&quot;</span><span class="p">)</span>
+<span class="n">sp2</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;_1(b)&quot;</span><span class="p">)</span>
+<span class="n">sp3</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(b)&quot;</span><span class="p">)</span>
+<span class="n">sp4</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B(b)&quot;</span><span class="p">)</span>
+<span class="n">rr1</span> <span class="o">=</span> <span class="n">create_binding_reaction_rule</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="n">sp1</span><span class="p">,</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;_(b^1)._(b^1)&quot;</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">rr2</span> <span class="o">=</span> <span class="n">create_binding_reaction_rule</span><span class="p">(</span><span class="n">sp2</span><span class="p">,</span> <span class="n">sp2</span><span class="p">,</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;_1(b^1)._1(b^1)&quot;</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sp1</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">sp2</span><span class="p">))</span>  <span class="c"># =&gt; 1</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sp1</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">sp3</span><span class="p">))</span>  <span class="c"># =&gt; 1</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sp2</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">sp2</span><span class="p">))</span>  <span class="c"># =&gt; 1</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sp2</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">sp3</span><span class="p">))</span>  <span class="c"># =&gt; 1</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">sp3</span><span class="p">,</span> <span class="n">sp3</span><span class="p">])])</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr1</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">sp3</span><span class="p">,</span> <span class="n">sp4</span><span class="p">])])</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr2</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">sp3</span><span class="p">,</span> <span class="n">sp3</span><span class="p">])])</span>
+<span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">rr2</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">sp3</span><span class="p">,</span> <span class="n">sp4</span><span class="p">])])</span>  <span class="c"># =&gt; []</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">1</span>
+<span class="mi">1</span>
+<span class="mi">1</span>
+<span class="mi">1</span>
+<span class="p">[</span><span class="s">u&#39;A(b)+A(b)&gt;A(b^1).A(b^1)|1&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s">u&#39;A(b)+B(b)&gt;A(b^1).B(b^1)|1&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s">u&#39;A(b)+A(b)&gt;A(b^1).A(b^1)|1&#39;</span><span class="p">]</span>
+<span class="p">[]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tutorial8.html" class="btn btn-neutral float-right" title="8. More about 1. Brief Tour of E-Cell4 Simulations" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tutorial6.html" class="btn btn-neutral" title="6. How to Solve ODEs with Rate Law Functions" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Test.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'test',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

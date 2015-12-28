@@ -1,0 +1,571 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4. How to Run a Simulation &mdash; Test test documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Test test documentation" href="index.html"/>
+        <link rel="next" title="6. How to Solve ODEs with Rate Law Functions" href="tutorial6.html"/>
+        <link rel="prev" title="3. How to Setup the Initial Condition" href="tutorial3.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Test
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                test
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html#running-e-cell4">Running E-Cell4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html#dockerized-e-cell4-jupyter-notebooks">Dockerized E-Cell4 Jupyter notebooks</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Attractors.html">Attractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DrosophilaCircadianClock.html">Drosophila Circadian Clock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dpc.html">Dual Phosphorylation Cycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HumanErythrocytes.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial2.html">2. How to Build a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial3.html">3. How to Setup the Initial Condition</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">4. How to Run a Simulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-setup-a-simulator">4.1. How to Setup a Simulator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-simulation">4.2. Running Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#capsulizing-algorithm-into-a-factory-class">4.3. Capsulizing Algorithm into a Factory Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial9.html">9. Spatial Gillespie Method</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorldSimBasics.html">World and Simulator with ODE solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Meso.html">Meso</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Spatiocyte.html">Spatiocyte simulations with single-molecule resolution</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Test</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>4. How to Run a Simulation</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/tutorial4.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="how-to-run-a-simulation">
+<h1>4. How to Run a Simulation<a class="headerlink" href="#how-to-run-a-simulation" title="Permalink to this headline">¶</a></h1>
+<p>In sections 2 and 3, we explain the way to build a model and to setup
+the intial state. Now, it is the time to run a simulation. Corresponding
+to <code class="docutils literal"><span class="pre">World</span></code> classes, six <code class="docutils literal"><span class="pre">Simulator</span></code> classes are there:
+<code class="docutils literal"><span class="pre">spatiocyte.SpatiocyteSimulator</span></code>, <code class="docutils literal"><span class="pre">egfrd.EGFRDSimulator</span></code>,
+<code class="docutils literal"><span class="pre">bd.BDSimulator</span></code>, <code class="docutils literal"><span class="pre">meso.MesoscopicSimulator</span></code>,
+<code class="docutils literal"><span class="pre">gillespie.GillespieSimulator</span></code>, and <code class="docutils literal"><span class="pre">ode.ODESimulator</span></code>. Each
+<code class="docutils literal"><span class="pre">Simulator</span></code> class only accepts the corresponding type of <code class="docutils literal"><span class="pre">World</span></code>,
+but all of them allow the same <code class="docutils literal"><span class="pre">Model</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ecell4</span>
+</pre></div>
+</div>
+<div class="section" id="how-to-setup-a-simulator">
+<h2>4.1. How to Setup a Simulator<a class="headerlink" href="#how-to-setup-a-simulator" title="Permalink to this headline">¶</a></h2>
+<p>Except for the initialization (so-called constructor function) with
+arguments specific to the algorithm, all <code class="docutils literal"><span class="pre">Simulator</span></code>s have the same
+APIs.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ecell4.core</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">ecell4.gillespie</span> <span class="kn">import</span> <span class="n">GillespieWorld</span><span class="p">,</span> <span class="n">GillespieSimulator</span>
+<span class="kn">from</span> <span class="nn">ecell4.ode</span> <span class="kn">import</span> <span class="n">ODEWorld</span><span class="p">,</span> <span class="n">ODESimulator</span>
+<span class="kn">from</span> <span class="nn">ecell4.spatiocyte</span> <span class="kn">import</span> <span class="n">SpatiocyteWorld</span><span class="p">,</span> <span class="n">SpatiocyteSimulator</span>
+<span class="kn">from</span> <span class="nn">ecell4.bd</span> <span class="kn">import</span> <span class="n">BDWorld</span><span class="p">,</span> <span class="n">BDSimulator</span>
+<span class="kn">from</span> <span class="nn">ecell4.meso</span> <span class="kn">import</span> <span class="n">MesoscopicWorld</span><span class="p">,</span> <span class="n">MesoscopicSimulator</span>
+<span class="kn">from</span> <span class="nn">ecell4.egfrd</span> <span class="kn">import</span> <span class="n">EGFRDWorld</span><span class="p">,</span> <span class="n">EGFRDSimulator</span>
+</pre></div>
+</div>
+<p>Before constructing a <code class="docutils literal"><span class="pre">Simulator</span></code>, parepare a <code class="docutils literal"><span class="pre">Model</span></code> and a
+<code class="docutils literal"><span class="pre">World</span></code> corresponding to the type of <code class="docutils literal"><span class="pre">Simulator</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ecell4</span> <span class="kn">import</span> <span class="n">species_attributes</span><span class="p">,</span> <span class="n">reaction_rules</span><span class="p">,</span> <span class="n">get_model</span>
+
+<span class="k">with</span> <span class="n">species_attributes</span><span class="p">():</span>
+    <span class="n">A</span> <span class="o">|</span> <span class="n">B</span> <span class="o">|</span> <span class="n">C</span> <span class="o">|</span> <span class="p">{</span><span class="s">&#39;D&#39;</span><span class="p">:</span> <span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;radius&#39;</span><span class="p">:</span> <span class="s">&#39;0.005&#39;</span><span class="p">}</span>
+
+<span class="k">with</span> <span class="n">reaction_rules</span><span class="p">():</span>
+    <span class="n">A</span> <span class="o">+</span> <span class="n">B</span> <span class="o">==</span> <span class="n">C</span> <span class="o">|</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">w1</span> <span class="o">=</span> <span class="n">GillespieWorld</span><span class="p">()</span>
+<span class="n">w2</span> <span class="o">=</span> <span class="n">ODEWorld</span><span class="p">()</span>
+<span class="n">w3</span> <span class="o">=</span> <span class="n">SpatiocyteWorld</span><span class="p">()</span>
+<span class="n">w4</span> <span class="o">=</span> <span class="n">BDWorld</span><span class="p">()</span>
+<span class="n">w5</span> <span class="o">=</span> <span class="n">MesoscopicWorld</span><span class="p">()</span>
+<span class="n">w6</span> <span class="o">=</span> <span class="n">EGFRDWorld</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Simulator</span></code> requires both <code class="docutils literal"><span class="pre">Model</span></code> and <code class="docutils literal"><span class="pre">World</span></code> in this order at the
+construction.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sim1</span> <span class="o">=</span> <span class="n">GillespieSimulator</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">w1</span><span class="p">)</span>
+<span class="n">sim2</span> <span class="o">=</span> <span class="n">ODESimulator</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">w2</span><span class="p">)</span>
+<span class="n">sim3</span> <span class="o">=</span> <span class="n">SpatiocyteSimulator</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">w3</span><span class="p">)</span>
+<span class="n">sim4</span> <span class="o">=</span> <span class="n">BDSimulator</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">w4</span><span class="p">)</span>
+<span class="n">sim5</span> <span class="o">=</span> <span class="n">MesoscopicSimulator</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">w5</span><span class="p">)</span>
+<span class="n">sim6</span> <span class="o">=</span> <span class="n">EGFRDSimulator</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">w6</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once you bind a <code class="docutils literal"><span class="pre">Model</span></code> to a <code class="docutils literal"><span class="pre">World</span></code>, only the <code class="docutils literal"><span class="pre">World</span></code> is needed
+to create a <code class="docutils literal"><span class="pre">Simulator</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">w1</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">w2</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">w3</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">w4</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">w5</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">w6</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sim1</span> <span class="o">=</span> <span class="n">GillespieSimulator</span><span class="p">(</span><span class="n">w1</span><span class="p">)</span>
+<span class="n">sim2</span> <span class="o">=</span> <span class="n">ODESimulator</span><span class="p">(</span><span class="n">w2</span><span class="p">)</span>
+<span class="n">sim3</span> <span class="o">=</span> <span class="n">SpatiocyteSimulator</span><span class="p">(</span><span class="n">w3</span><span class="p">)</span>
+<span class="n">sim4</span> <span class="o">=</span> <span class="n">BDSimulator</span><span class="p">(</span><span class="n">w4</span><span class="p">)</span>
+<span class="n">sim5</span> <span class="o">=</span> <span class="n">MesoscopicSimulator</span><span class="p">(</span><span class="n">w5</span><span class="p">)</span>
+<span class="n">sim6</span> <span class="o">=</span> <span class="n">EGFRDSimulator</span><span class="p">(</span><span class="n">w6</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Of course, the <code class="docutils literal"><span class="pre">Model</span></code> and <code class="docutils literal"><span class="pre">World</span></code> bound to a <code class="docutils literal"><span class="pre">Simulator</span></code> can be
+drawn from <code class="docutils literal"><span class="pre">Simulator</span></code> in the way below:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">sim1</span><span class="o">.</span><span class="n">model</span><span class="p">(),</span> <span class="n">sim1</span><span class="o">.</span><span class="n">world</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim2</span><span class="o">.</span><span class="n">model</span><span class="p">(),</span> <span class="n">sim2</span><span class="o">.</span><span class="n">world</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim3</span><span class="o">.</span><span class="n">model</span><span class="p">(),</span> <span class="n">sim3</span><span class="o">.</span><span class="n">world</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim4</span><span class="o">.</span><span class="n">model</span><span class="p">(),</span> <span class="n">sim4</span><span class="o">.</span><span class="n">world</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim5</span><span class="o">.</span><span class="n">model</span><span class="p">(),</span> <span class="n">sim5</span><span class="o">.</span><span class="n">world</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim6</span><span class="o">.</span><span class="n">model</span><span class="p">(),</span> <span class="n">sim6</span><span class="o">.</span><span class="n">world</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>(&lt;ecell4.core.Model object at 0x7fbfab588bd0&gt;, &lt;ecell4.gillespie.GillespieWorld object at 0x7fbfab588b58&gt;)
+(&lt;ecell4.ode.ODENetworkModel object at 0x7fbfab588bd0&gt;, &lt;ecell4.ode.ODEWorld object at 0x7fbfab588bb8&gt;)
+(&lt;ecell4.core.Model object at 0x7fbfab588bd0&gt;, &lt;ecell4.spatiocyte.SpatiocyteWorld object at 0x7fbfab588b58&gt;)
+(&lt;ecell4.core.Model object at 0x7fbfab588bd0&gt;, &lt;ecell4.bd.BDWorld object at 0x7fbfab588bb8&gt;)
+(&lt;ecell4.core.Model object at 0x7fbfab588bd0&gt;, &lt;ecell4.meso.MesoscopicWorld object at 0x7fbfab588ae0&gt;)
+(&lt;ecell4.core.Model object at 0x7fbfab588bd0&gt;, &lt;ecell4.egfrd.EGFRDWorld object at 0x7fbfab588bb8&gt;)
+</pre></div>
+</div>
+<p>After updating the <code class="docutils literal"><span class="pre">World</span></code> by yourself, you must initialize the
+internal state of a <code class="docutils literal"><span class="pre">Simulator</span></code> before running simulation.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">w1</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">),</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">w2</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">),</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">w3</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">),</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">w4</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">),</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">w5</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">),</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">w6</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">),</span> <span class="mi">60</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sim1</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+<span class="n">sim2</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+<span class="n">sim3</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+<span class="n">sim4</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+<span class="n">sim5</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+<span class="n">sim6</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Algorithms with a fixed step interval also require <code class="docutils literal"><span class="pre">dt</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sim2</span><span class="o">.</span><span class="n">set_dt</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">)</span>  <span class="c"># ODESimulator. This is optional</span>
+<span class="n">sim4</span><span class="o">.</span><span class="n">set_dt</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">)</span>  <span class="c"># BDSimulator</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-simulation">
+<h2>4.2. Running Simulation<a class="headerlink" href="#running-simulation" title="Permalink to this headline">¶</a></h2>
+<p>For running simulation, <code class="docutils literal"><span class="pre">Simulator</span></code> provides two APIs, <code class="docutils literal"><span class="pre">step</span></code> and
+<code class="docutils literal"><span class="pre">run</span></code>.</p>
+<p><code class="docutils literal"><span class="pre">step()</span></code> advances a simulation for the time that the <code class="docutils literal"><span class="pre">Simulator</span></code>
+expects, <code class="docutils literal"><span class="pre">next_time()</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">sim1</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="n">sim1</span><span class="o">.</span><span class="n">next_time</span><span class="p">(),</span> <span class="n">sim1</span><span class="o">.</span><span class="n">dt</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim2</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="n">sim2</span><span class="o">.</span><span class="n">next_time</span><span class="p">(),</span> <span class="n">sim2</span><span class="o">.</span><span class="n">dt</span><span class="p">())</span>  <span class="c"># =&gt; (0.0, 1e-6, 1e-6)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim3</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="n">sim3</span><span class="o">.</span><span class="n">next_time</span><span class="p">(),</span> <span class="n">sim3</span><span class="o">.</span><span class="n">dt</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim4</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="n">sim4</span><span class="o">.</span><span class="n">next_time</span><span class="p">(),</span> <span class="n">sim4</span><span class="o">.</span><span class="n">dt</span><span class="p">())</span>  <span class="c"># =&gt; (0.0, 1e-6, 1e-6)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim5</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="n">sim5</span><span class="o">.</span><span class="n">next_time</span><span class="p">(),</span> <span class="n">sim5</span><span class="o">.</span><span class="n">dt</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim6</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="n">sim6</span><span class="o">.</span><span class="n">next_time</span><span class="p">(),</span> <span class="n">sim6</span><span class="o">.</span><span class="n">dt</span><span class="p">())</span>  <span class="c"># =&gt; (0.0, 0.0, 0.0)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.05434691793855134</span><span class="p">,</span> <span class="mf">0.05434691793855134</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.6666666666666667e-05</span><span class="p">,</span> <span class="mf">1.6666666666666667e-05</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0076458326846357075</span><span class="p">,</span> <span class="mf">0.0076458326846357075</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sim1</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<span class="n">sim2</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<span class="n">sim3</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<span class="n">sim4</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<span class="n">sim5</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<span class="n">sim6</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">sim1</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim2</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>  <span class="c"># =&gt; 1e-6</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim3</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim4</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>  <span class="c"># =&gt; 1e-6</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim5</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim6</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>  <span class="c"># =&gt; 0.0</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mf">0.0543469179386</span>
+<span class="mf">1e-06</span>
+<span class="mf">1.66666666667e-05</span>
+<span class="mf">1e-06</span>
+<span class="mf">0.00764583268464</span>
+<span class="mf">0.0</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">last_reactions()</span></code> returns a list of pairs of <code class="docutils literal"><span class="pre">ReactionRule</span></code> and
+<code class="docutils literal"><span class="pre">ReactionInfo</span></code> which occurs at the last step. Each algorithm have its
+own implementation of <code class="docutils literal"><span class="pre">ReactionInfo</span></code>. See
+<code class="docutils literal"><span class="pre">help(module.ReactionInfo)</span></code> for details.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">sim1</span><span class="o">.</span><span class="n">last_reactions</span><span class="p">())</span>
+<span class="c"># print(sim2.last_reactions())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim3</span><span class="o">.</span><span class="n">last_reactions</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim4</span><span class="o">.</span><span class="n">last_reactions</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim5</span><span class="o">.</span><span class="n">last_reactions</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim6</span><span class="o">.</span><span class="n">last_reactions</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>[(&lt;ecell4.core.ReactionRule object at 0x7fbfab588bd0&gt;, &lt;ecell4.gillespie.ReactionInfo object at 0x7fbfab588ae0&gt;)]
+[]
+[]
+[(&lt;ecell4.core.ReactionRule object at 0x7fbfab588bd0&gt;, &lt;ecell4.meso.ReactionInfo object at 0x7fbfab588ae0&gt;)]
+[]
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">step(upto)</span></code> advances a simulation for <code class="docutils literal"><span class="pre">next_time</span></code> if <code class="docutils literal"><span class="pre">next_time</span></code>
+is less than <code class="docutils literal"><span class="pre">upto</span></code>, or for <code class="docutils literal"><span class="pre">upto</span></code> otherwise. <code class="docutils literal"><span class="pre">step(upto)</span></code> returns
+whether the time does <strong>NOT</strong> reach the limit, <code class="docutils literal"><span class="pre">upto</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">sim1</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">sim1</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim2</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">sim2</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim3</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">sim3</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim4</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">sim4</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim5</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">sim5</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim6</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">sim6</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="mf">0.05436951644570664</span><span class="p">)</span>
+<span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="mf">2e-06</span><span class="p">)</span>
+<span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="mf">3.3333333333333335e-05</span><span class="p">)</span>
+<span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="mf">2e-06</span><span class="p">)</span>
+<span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="mf">0.04818004141123101</span><span class="p">)</span>
+<span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Thus, for running a simulation just until the time, <code class="docutils literal"><span class="pre">upto</span></code>, call
+<code class="docutils literal"><span class="pre">step(upto)</span></code> while it returns <code class="docutils literal"><span class="pre">True</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">while</span> <span class="n">sim1</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mf">1.0</span><span class="p">):</span> <span class="k">pass</span>
+<span class="k">while</span> <span class="n">sim2</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mf">0.001</span><span class="p">):</span> <span class="k">pass</span>
+<span class="k">while</span> <span class="n">sim3</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mf">0.001</span><span class="p">):</span> <span class="k">pass</span>
+<span class="k">while</span> <span class="n">sim4</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mf">0.001</span><span class="p">):</span> <span class="k">pass</span>
+<span class="k">while</span> <span class="n">sim5</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mf">1.0</span><span class="p">):</span> <span class="k">pass</span>
+<span class="k">while</span> <span class="n">sim6</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mf">0.001</span><span class="p">):</span> <span class="k">pass</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">sim1</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>  <span class="c"># =&gt; 1.0</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim2</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>  <span class="c"># =&gt; 0.001</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim3</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>  <span class="c"># =&gt; 0.001</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim4</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>  <span class="c"># =&gt; 0.001</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim5</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>  <span class="c"># =&gt; 1.0</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim6</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>  <span class="c"># =&gt; 0.01</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mf">1.0</span>
+<span class="mf">0.001</span>
+<span class="mf">0.001</span>
+<span class="mf">0.001</span>
+<span class="mf">1.0</span>
+<span class="mf">0.001</span>
+</pre></div>
+</div>
+<p>This is just what <code class="docutils literal"><span class="pre">run</span></code> does. <code class="docutils literal"><span class="pre">run(tau)</span></code> advances a simulation upto
+<code class="docutils literal"><span class="pre">t()+tau</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sim1</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">sim2</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">sim3</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">sim4</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">sim5</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">sim6</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mf">0.001</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">sim1</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>  <span class="c"># =&gt; 2.0</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim2</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>  <span class="c"># =&gt; 0.002</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim3</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>  <span class="c"># =&gt; 0.002</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim4</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>  <span class="c"># =&gt; 0.002</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim5</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>  <span class="c"># =&gt; 2.0</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim6</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>  <span class="c"># =&gt; 0.02</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mf">2.0</span>
+<span class="mf">0.002</span>
+<span class="mf">0.002</span>
+<span class="mf">0.002</span>
+<span class="mf">2.0</span>
+<span class="mf">0.002</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">num_steps</span></code> returns the number of steps during the simulation.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">sim1</span><span class="o">.</span><span class="n">num_steps</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim2</span><span class="o">.</span><span class="n">num_steps</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim3</span><span class="o">.</span><span class="n">num_steps</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim4</span><span class="o">.</span><span class="n">num_steps</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim5</span><span class="o">.</span><span class="n">num_steps</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sim6</span><span class="o">.</span><span class="n">num_steps</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">32</span>
+<span class="mi">2001</span>
+<span class="mi">120</span>
+<span class="mi">2001</span>
+<span class="mi">28</span>
+<span class="mi">591</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="capsulizing-algorithm-into-a-factory-class">
+<h2>4.3. Capsulizing Algorithm into a Factory Class<a class="headerlink" href="#capsulizing-algorithm-into-a-factory-class" title="Permalink to this headline">¶</a></h2>
+<p>Owing to the portability of a <code class="docutils literal"><span class="pre">Model</span></code> and consistent APIs of
+<code class="docutils literal"><span class="pre">World</span></code>s and <code class="docutils literal"><span class="pre">Simulator</span></code>s, it is very easy to write a script
+common in algorithms. However, when switching the algorithm, still we
+have to rewrite the name of classes in the code, one by one.</p>
+<p>To avoid the trouble, E-Cell4 also provides a <code class="docutils literal"><span class="pre">Factory</span></code> class for each
+algorithm. <code class="docutils literal"><span class="pre">Factory</span></code> encapsulates <code class="docutils literal"><span class="pre">World</span></code> and <code class="docutils literal"><span class="pre">Simulator</span></code> with
+their arguments needed for the construction. By using <code class="docutils literal"><span class="pre">Factory</span></code> class,
+your script could be portable and robust agaist changes in the
+algorithm.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ecell4.gillespie</span> <span class="kn">import</span> <span class="n">GillespieFactory</span>
+<span class="kn">from</span> <span class="nn">ecell4.ode</span> <span class="kn">import</span> <span class="n">ODEFactory</span>
+<span class="kn">from</span> <span class="nn">ecell4.spatiocyte</span> <span class="kn">import</span> <span class="n">SpatiocyteFactory</span>
+<span class="kn">from</span> <span class="nn">ecell4.bd</span> <span class="kn">import</span> <span class="n">BDFactory</span>
+<span class="kn">from</span> <span class="nn">ecell4.meso</span> <span class="kn">import</span> <span class="n">MesoscopicFactory</span>
+<span class="kn">from</span> <span class="nn">ecell4.egfrd</span> <span class="kn">import</span> <span class="n">EGFRDFactory</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Factory</span></code> just provides two functions, <code class="docutils literal"><span class="pre">create_world</span></code> and
+<code class="docutils literal"><span class="pre">create_simulator</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">singlerun</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">create_world</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">),</span> <span class="mi">60</span><span class="p">)</span>
+
+    <span class="n">sim</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">create_simulator</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="n">w</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">singlerun</span></code> above is free from the algorithm. Thus, by just switching
+<code class="docutils literal"><span class="pre">Factory</span></code>, you can easily compare the results.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">singlerun</span><span class="p">(</span><span class="n">GillespieFactory</span><span class="p">(),</span> <span class="n">m</span><span class="p">)</span>
+<span class="n">singlerun</span><span class="p">(</span><span class="n">ODEFactory</span><span class="p">(),</span> <span class="n">m</span><span class="p">)</span>
+<span class="n">singlerun</span><span class="p">(</span><span class="n">SpatiocyteFactory</span><span class="p">(),</span> <span class="n">m</span><span class="p">)</span>
+<span class="n">singlerun</span><span class="p">(</span><span class="n">BDFactory</span><span class="p">(</span><span class="n">bd_dt_factor</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">m</span><span class="p">)</span>
+<span class="n">singlerun</span><span class="p">(</span><span class="n">MesoscopicFactory</span><span class="p">(),</span> <span class="n">m</span><span class="p">)</span>
+<span class="n">singlerun</span><span class="p">(</span><span class="n">EGFRDFactory</span><span class="p">(),</span> <span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mi">59</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mi">59</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mi">58</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When you need to provide several parameters to initialize <code class="docutils literal"><span class="pre">World</span></code> or
+<code class="docutils literal"><span class="pre">Simulator</span></code>, <code class="docutils literal"><span class="pre">run_simulation</span></code> also accepts <code class="docutils literal"><span class="pre">Factory</span></code> instead of
+<code class="docutils literal"><span class="pre">solver</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ecell4.util</span> <span class="kn">import</span> <span class="n">run_simulation</span>
+<span class="k">print</span><span class="p">(</span><span class="n">run_simulation</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;C&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">return_type</span><span class="o">=</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">GillespieFactory</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">run_simulation</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;C&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">return_type</span><span class="o">=</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">ODEFactory</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">run_simulation</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;C&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">return_type</span><span class="o">=</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">SpatiocyteFactory</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">run_simulation</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;C&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">return_type</span><span class="o">=</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">BDFactory</span><span class="p">(</span><span class="n">bd_dt_factor</span><span class="o">=</span><span class="mi">1</span><span class="p">))[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">run_simulation</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;C&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">return_type</span><span class="o">=</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">MesoscopicFactory</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">run_simulation</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;C&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">return_type</span><span class="o">=</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">EGFRDFactory</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">60.0</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.17972919304001073</span><span class="p">,</span> <span class="mf">0.17972919304001067</span><span class="p">,</span> <span class="mf">59.82027080696036</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">59.0</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">60.0</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">60.0</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">60.0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tutorial6.html" class="btn btn-neutral float-right" title="6. How to Solve ODEs with Rate Law Functions" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tutorial3.html" class="btn btn-neutral" title="3. How to Setup the Initial Condition" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Test.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'test',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

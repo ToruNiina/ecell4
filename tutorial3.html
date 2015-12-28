@@ -1,0 +1,534 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3. How to Setup the Initial Condition &mdash; Test test documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Test test documentation" href="index.html"/>
+        <link rel="next" title="4. How to Run a Simulation" href="tutorial4.html"/>
+        <link rel="prev" title="2. How to Build a Model" href="tutorial2.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Test
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                test
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html#running-e-cell4">Running E-Cell4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html#dockerized-e-cell4-jupyter-notebooks">Dockerized E-Cell4 Jupyter notebooks</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Attractors.html">Attractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DrosophilaCircadianClock.html">Drosophila Circadian Clock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dpc.html">Dual Phosphorylation Cycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HumanErythrocytes.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial2.html">2. How to Build a Model</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">3. How to Setup the Initial Condition</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#common-apis-of-world">3.1. Common APIs of World</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-get-positions-of-molecules">3.2. How to Get Positions of Molecules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial4.html">4. How to Run a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial9.html">9. Spatial Gillespie Method</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorldSimBasics.html">World and Simulator with ODE solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Meso.html">Meso</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Spatiocyte.html">Spatiocyte simulations with single-molecule resolution</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Test</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>3. How to Setup the Initial Condition</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/tutorial3.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="how-to-setup-the-initial-condition">
+<h1>3. How to Setup the Initial Condition<a class="headerlink" href="#how-to-setup-the-initial-condition" title="Permalink to this headline">¶</a></h1>
+<p>Here, we explain the basics of <code class="docutils literal"><span class="pre">World</span></code> classes. In E-Cell4, six types
+of World classes are offically supported now:
+<code class="docutils literal"><span class="pre">spatiocyte.SpatiocyteWorld</span></code>, <code class="docutils literal"><span class="pre">egfrd.EGFRDWorld</span></code>, <code class="docutils literal"><span class="pre">bd.BDWorld</span></code>,
+<code class="docutils literal"><span class="pre">meso.MesoscopicWorld</span></code>, <code class="docutils literal"><span class="pre">gillespie.GillespieWorld</span></code>, and
+<code class="docutils literal"><span class="pre">ode.ODEWorld</span></code>.</p>
+<p>In the most of softwares, the initial condition is supposed to be a part
+of <code class="docutils literal"><span class="pre">Model</span></code>. But, in E-Cell4, the initial condition must be set up as
+<code class="docutils literal"><span class="pre">World</span></code> separately from <code class="docutils literal"><span class="pre">Model</span></code>. <code class="docutils literal"><span class="pre">World</span></code> stores an information
+about the state at a time point, such as a current time, the number of
+molecules, coordinate of molecules, structures, and random number
+generator. Meanwhile, <code class="docutils literal"><span class="pre">Model</span></code> contains the type of interactions
+between molecules and the common properties of molecules.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ecell4</span>
+</pre></div>
+</div>
+<div class="section" id="common-apis-of-world">
+<h2>3.1. Common APIs of World<a class="headerlink" href="#common-apis-of-world" title="Permalink to this headline">¶</a></h2>
+<p>Even though <code class="docutils literal"><span class="pre">World</span></code> describes the spatial representation specific to
+the corresponding algorithm, it has compatible APIs. In this section,
+the common interfaces of six <code class="docutils literal"><span class="pre">World</span></code> classes are introduced.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ecell4.core</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">ecell4.gillespie</span> <span class="kn">import</span> <span class="n">GillespieWorld</span>
+<span class="kn">from</span> <span class="nn">ecell4.ode</span> <span class="kn">import</span> <span class="n">ODEWorld</span>
+<span class="kn">from</span> <span class="nn">ecell4.spatiocyte</span> <span class="kn">import</span> <span class="n">SpatiocyteWorld</span>
+<span class="kn">from</span> <span class="nn">ecell4.bd</span> <span class="kn">import</span> <span class="n">BDWorld</span>
+<span class="kn">from</span> <span class="nn">ecell4.meso</span> <span class="kn">import</span> <span class="n">MesoscopicWorld</span>
+<span class="kn">from</span> <span class="nn">ecell4.egfrd</span> <span class="kn">import</span> <span class="n">EGFRDWorld</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">World</span></code> classes accept different sets of arguments in the constructor,
+which determine the parameters specific to the algorithm. However, at
+least, all <code class="docutils literal"><span class="pre">World</span></code> classes can be instantiated only with their size,
+named <code class="docutils literal"><span class="pre">edge_lengths</span></code>. The type of <code class="docutils literal"><span class="pre">edge_lengths</span></code> is <code class="docutils literal"><span class="pre">Real3</span></code>, which
+represents a triplet of <code class="docutils literal"><span class="pre">Real</span></code>s. In E-Cell4, all 3-dimensional
+positions are treated as a <code class="docutils literal"><span class="pre">Real3</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">edge_lengths</span> <span class="o">=</span> <span class="n">Real3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">w1</span> <span class="o">=</span> <span class="n">GillespieWorld</span><span class="p">(</span><span class="n">edge_lengths</span><span class="p">)</span>
+<span class="n">w2</span> <span class="o">=</span> <span class="n">ODEWorld</span><span class="p">(</span><span class="n">edge_lengths</span><span class="p">)</span>
+<span class="n">w3</span> <span class="o">=</span> <span class="n">SpatiocyteWorld</span><span class="p">(</span><span class="n">edge_lengths</span><span class="p">)</span>
+<span class="n">w4</span> <span class="o">=</span> <span class="n">BDWorld</span><span class="p">(</span><span class="n">edge_lengths</span><span class="p">)</span>
+<span class="n">w5</span> <span class="o">=</span> <span class="n">MesoscopicWorld</span><span class="p">(</span><span class="n">edge_lengths</span><span class="p">)</span>
+<span class="n">w6</span> <span class="o">=</span> <span class="n">EGFRDWorld</span><span class="p">(</span><span class="n">edge_lengths</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">World</span></code> has getter methods for the size and volume.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">w1</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w1</span><span class="o">.</span><span class="n">volume</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">w2</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w2</span><span class="o">.</span><span class="n">volume</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">w3</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w3</span><span class="o">.</span><span class="n">volume</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">w4</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w4</span><span class="o">.</span><span class="n">volume</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">w5</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w5</span><span class="o">.</span><span class="n">volume</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">w6</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w6</span><span class="o">.</span><span class="n">volume</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">((</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span> <span class="mf">6.0</span><span class="p">)</span>
+<span class="p">((</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span> <span class="mf">6.0</span><span class="p">)</span>
+<span class="p">((</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span> <span class="mf">6.0</span><span class="p">)</span>
+<span class="p">((</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span> <span class="mf">6.0</span><span class="p">)</span>
+<span class="p">((</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span> <span class="mf">6.0</span><span class="p">)</span>
+<span class="p">((</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span> <span class="mf">6.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Next, let&#8217;s add molecules into the World. Here, you must give
+<code class="docutils literal"><span class="pre">Species</span></code> attributed with &#8220;radius&#8221; and &#8220;D&#8221; for <code class="docutils literal"><span class="pre">EGFRDWorld</span></code>,
+<code class="docutils literal"><span class="pre">BDWorld</span></code> or <code class="docutils literal"><span class="pre">SpatiocyteWorld</span></code> to tell the shape of molecules.
+Positions of the molecules are randomly determined in the <code class="docutils literal"><span class="pre">World</span></code> if
+needed.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;0.0025&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">)</span>
+<span class="n">w1</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">w2</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">w3</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">w4</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">w5</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">w6</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once binding a <code class="docutils literal"><span class="pre">NetworkModel</span></code> to the <code class="docutils literal"><span class="pre">World</span></code>, you don&#8217;t need to give
+attributes explicitly. The <code class="docutils literal"><span class="pre">World</span></code> will ask attributes to the bound
+<code class="docutils literal"><span class="pre">NetworkModel</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">m</span> <span class="o">=</span> <span class="n">NetworkModel</span><span class="p">()</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add_species_attribute</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;0.0025&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">))</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add_species_attribute</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">,</span> <span class="s">&quot;0.0025&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">))</span>
+
+<span class="n">w1</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">w2</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">w3</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">w4</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">w5</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">w6</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">w1</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">w2</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">w3</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">w4</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">w5</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">w6</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Similarly, <code class="docutils literal"><span class="pre">remove_molecules</span></code> and <code class="docutils literal"><span class="pre">num_molecules_exact</span></code> are also
+available.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">w1</span><span class="o">.</span><span class="n">remove_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">w2</span><span class="o">.</span><span class="n">remove_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">w3</span><span class="o">.</span><span class="n">remove_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">w4</span><span class="o">.</span><span class="n">remove_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">w5</span><span class="o">.</span><span class="n">remove_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">w6</span><span class="o">.</span><span class="n">remove_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">w1</span><span class="o">.</span><span class="n">num_molecules_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w2</span><span class="o">.</span><span class="n">num_molecules_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w3</span><span class="o">.</span><span class="n">num_molecules_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w4</span><span class="o">.</span><span class="n">num_molecules_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w5</span><span class="o">.</span><span class="n">num_molecules_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w6</span><span class="o">.</span><span class="n">num_molecules_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w1</span><span class="o">.</span><span class="n">num_molecules_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)),</span> <span class="n">w2</span><span class="o">.</span><span class="n">num_molecules_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)),</span> <span class="n">w3</span><span class="o">.</span><span class="n">num_molecules_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)),</span> <span class="n">w4</span><span class="o">.</span><span class="n">num_molecules_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)),</span> <span class="n">w5</span><span class="o">.</span><span class="n">num_molecules_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)),</span> <span class="n">w6</span><span class="o">.</span><span class="n">num_molecules_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">num_molecules</span></code> also count the number of molecules, but returns all
+the number matched with the given <code class="docutils literal"><span class="pre">Species</span></code> in the rule-based way.
+When all <code class="docutils literal"><span class="pre">Species</span></code> in the <code class="docutils literal"><span class="pre">World</span></code> has no site and bond,
+<code class="docutils literal"><span class="pre">num_molecules</span></code> is almost same with <code class="docutils literal"><span class="pre">num_molecules_exact</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">w1</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w2</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w3</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w4</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w5</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w6</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w1</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)),</span> <span class="n">w2</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)),</span> <span class="n">w3</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)),</span> <span class="n">w4</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)),</span> <span class="n">w5</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)),</span> <span class="n">w6</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">World</span></code> also owns a simulation time.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">w1</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="n">w2</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="n">w3</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="n">w4</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="n">w5</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="n">w6</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+<span class="n">w1</span><span class="o">.</span><span class="n">set_t</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">w2</span><span class="o">.</span><span class="n">set_t</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">w3</span><span class="o">.</span><span class="n">set_t</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">w4</span><span class="o">.</span><span class="n">set_t</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">w5</span><span class="o">.</span><span class="n">set_t</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">w6</span><span class="o">.</span><span class="n">set_t</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w1</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="n">w2</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="n">w3</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="n">w4</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="n">w5</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="n">w6</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, you can <code class="docutils literal"><span class="pre">save</span></code> and <code class="docutils literal"><span class="pre">load</span></code> the state of a <code class="docutils literal"><span class="pre">World</span></code>
+into/from a HDF5 file.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">w1</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;data/gillespie.h5&quot;</span><span class="p">)</span>
+<span class="n">w2</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;data/ode.h5&quot;</span><span class="p">)</span>
+<span class="n">w3</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;data/spatiocyte.h5&quot;</span><span class="p">)</span>
+<span class="n">w4</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;data/bd.h5&quot;</span><span class="p">)</span>
+<span class="n">w5</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;data/meso.h5&quot;</span><span class="p">)</span>
+<span class="n">w6</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;data/egfrd.h5&quot;</span><span class="p">)</span>
+<span class="k">del</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">w3</span><span class="p">,</span> <span class="n">w4</span><span class="p">,</span> <span class="n">w5</span><span class="p">,</span> <span class="n">w6</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">w1</span> <span class="o">=</span> <span class="n">GillespieWorld</span><span class="p">()</span>
+<span class="n">w2</span> <span class="o">=</span> <span class="n">ODEWorld</span><span class="p">()</span>
+<span class="n">w3</span> <span class="o">=</span> <span class="n">SpatiocyteWorld</span><span class="p">()</span>
+<span class="n">w4</span> <span class="o">=</span> <span class="n">BDWorld</span><span class="p">()</span>
+<span class="n">w5</span> <span class="o">=</span> <span class="n">MesoscopicWorld</span><span class="p">()</span>
+<span class="n">w6</span> <span class="o">=</span> <span class="n">EGFRDWorld</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w1</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">w1</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w1</span><span class="o">.</span><span class="n">volume</span><span class="p">(),</span> <span class="n">w1</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w1</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w2</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">w2</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w2</span><span class="o">.</span><span class="n">volume</span><span class="p">(),</span> <span class="n">w2</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w2</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w3</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">w3</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w3</span><span class="o">.</span><span class="n">volume</span><span class="p">(),</span> <span class="n">w3</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w3</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w4</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">w4</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w4</span><span class="o">.</span><span class="n">volume</span><span class="p">(),</span> <span class="n">w4</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w4</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w5</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">w5</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w5</span><span class="o">.</span><span class="n">volume</span><span class="p">(),</span> <span class="n">w5</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w5</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w6</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">w6</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w6</span><span class="o">.</span><span class="n">volume</span><span class="p">(),</span> <span class="n">w6</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w6</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">w1</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;data/gillespie.h5&quot;</span><span class="p">)</span>
+<span class="n">w2</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;data/ode.h5&quot;</span><span class="p">)</span>
+<span class="n">w3</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;data/spatiocyte.h5&quot;</span><span class="p">)</span>
+<span class="n">w4</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;data/bd.h5&quot;</span><span class="p">)</span>
+<span class="n">w5</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;data/meso.h5&quot;</span><span class="p">)</span>
+<span class="n">w6</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;data/egfrd.h5&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w1</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">w1</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w1</span><span class="o">.</span><span class="n">volume</span><span class="p">(),</span> <span class="n">w1</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w1</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w2</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">w2</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w2</span><span class="o">.</span><span class="n">volume</span><span class="p">(),</span> <span class="n">w2</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w2</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w3</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">w3</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w3</span><span class="o">.</span><span class="n">volume</span><span class="p">(),</span> <span class="n">w3</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w3</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w4</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">w4</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w4</span><span class="o">.</span><span class="n">volume</span><span class="p">(),</span> <span class="n">w4</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w4</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w5</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">w5</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w5</span><span class="o">.</span><span class="n">volume</span><span class="p">(),</span> <span class="n">w5</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w5</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w6</span><span class="o">.</span><span class="n">t</span><span class="p">(),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">w6</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">()),</span> <span class="n">w6</span><span class="o">.</span><span class="n">volume</span><span class="p">(),</span> <span class="n">w6</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)),</span> <span class="n">w6</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+<span class="k">del</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">w3</span><span class="p">,</span> <span class="n">w4</span><span class="p">,</span> <span class="n">w5</span><span class="p">,</span> <span class="n">w6</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>All the <code class="docutils literal"><span class="pre">World</span></code> classes also accept a HDF5 file name as an unique
+argument of the constructor.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">GillespieWorld</span><span class="p">(</span><span class="s">&quot;data/gillespie.h5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">ODEWorld</span><span class="p">(</span><span class="s">&quot;data/ode.h5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">SpatiocyteWorld</span><span class="p">(</span><span class="s">&quot;data/spatiocyte.h5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">BDWorld</span><span class="p">(</span><span class="s">&quot;data/bd.h5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">MesoscopicWorld</span><span class="p">(</span><span class="s">&quot;data/meso.h5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">EGFRDWorld</span><span class="p">(</span><span class="s">&quot;data/egfrd.h5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mf">1.0</span>
+<span class="mf">1.0</span>
+<span class="mf">1.0</span>
+<span class="mf">1.0</span>
+<span class="mf">1.0</span>
+<span class="mf">1.0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="how-to-get-positions-of-molecules">
+<h2>3.2. How to Get Positions of Molecules<a class="headerlink" href="#how-to-get-positions-of-molecules" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">World</span></code> has the common functions to access coordinates of molecules
+too. However, as the resolution in representation of molecules differs,
+<code class="docutils literal"><span class="pre">World</span></code> can automatically make up for the gap with random numbers. For
+example, <code class="docutils literal"><span class="pre">GillespieWorld</span></code> has almost no information about the
+coordinate of molecules. Thus, it returns a list of positions randomly
+distributed in the <code class="docutils literal"><span class="pre">World</span></code> size.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">w1</span> <span class="o">=</span> <span class="n">GillespieWorld</span><span class="p">()</span>
+<span class="n">w2</span> <span class="o">=</span> <span class="n">ODEWorld</span><span class="p">()</span>
+<span class="n">w3</span> <span class="o">=</span> <span class="n">SpatiocyteWorld</span><span class="p">()</span>
+<span class="n">w4</span> <span class="o">=</span> <span class="n">BDWorld</span><span class="p">()</span>
+<span class="n">w5</span> <span class="o">=</span> <span class="n">MesoscopicWorld</span><span class="p">()</span>
+<span class="n">w6</span> <span class="o">=</span> <span class="n">EGFRDWorld</span><span class="p">()</span>
+
+<span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;0.0025&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">)</span>
+<span class="n">w1</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">w2</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">w3</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">w4</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">w5</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">w6</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">list_particles</span></code> and <code class="docutils literal"><span class="pre">list_particles_exact</span></code> return a list of pairs
+of <code class="docutils literal"><span class="pre">ParticleID</span></code> and <code class="docutils literal"><span class="pre">Particle</span></code> in the <code class="docutils literal"><span class="pre">World</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">w1</span><span class="o">.</span><span class="n">list_particles_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)))</span>
+<span class="c"># print(w2.list_particles_exact(Species(&quot;A&quot;)))  # ODEWorld has no member named list_particles</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w3</span><span class="o">.</span><span class="n">list_particles_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w4</span><span class="o">.</span><span class="n">list_particles_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w5</span><span class="o">.</span><span class="n">list_particles_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w6</span><span class="o">.</span><span class="n">list_particles_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>[(&lt;ecell4.core.ParticleID object at 0x7f63db093930&gt;, &lt;ecell4.core.Particle object at 0x7f63db093a38&gt;), (&lt;ecell4.core.ParticleID object at 0x7f63db0939f0&gt;, &lt;ecell4.core.Particle object at 0x7f63db093ac8&gt;), (&lt;ecell4.core.ParticleID object at 0x7f63db093a68&gt;, &lt;ecell4.core.Particle object at 0x7f63db093af8&gt;)]
+[(&lt;ecell4.core.ParticleID object at 0x7f63db093a38&gt;, &lt;ecell4.core.Particle object at 0x7f63db093a68&gt;), (&lt;ecell4.core.ParticleID object at 0x7f63db0939f0&gt;, &lt;ecell4.core.Particle object at 0x7f63db0939d8&gt;), (&lt;ecell4.core.ParticleID object at 0x7f63db093ac8&gt;, &lt;ecell4.core.Particle object at 0x7f63db093ab0&gt;)]
+[(&lt;ecell4.core.ParticleID object at 0x7f63db093a68&gt;, &lt;ecell4.core.Particle object at 0x7f63db093ac8&gt;), (&lt;ecell4.core.ParticleID object at 0x7f63db0939f0&gt;, &lt;ecell4.core.Particle object at 0x7f63db093930&gt;), (&lt;ecell4.core.ParticleID object at 0x7f63db0939d8&gt;, &lt;ecell4.core.Particle object at 0x7f63db093ae0&gt;)]
+[(&lt;ecell4.core.ParticleID object at 0x7f63db093ac8&gt;, &lt;ecell4.core.Particle object at 0x7f63db0939d8&gt;), (&lt;ecell4.core.ParticleID object at 0x7f63db0939f0&gt;, &lt;ecell4.core.Particle object at 0x7f63db093a38&gt;), (&lt;ecell4.core.ParticleID object at 0x7f63db093930&gt;, &lt;ecell4.core.Particle object at 0x7f63db093af8&gt;)]
+[(&lt;ecell4.core.ParticleID object at 0x7f63db0939d8&gt;, &lt;ecell4.core.Particle object at 0x7f63db093930&gt;), (&lt;ecell4.core.ParticleID object at 0x7f63db0939f0&gt;, &lt;ecell4.core.Particle object at 0x7f63db093a68&gt;), (&lt;ecell4.core.ParticleID object at 0x7f63db093a38&gt;, &lt;ecell4.core.Particle object at 0x7f63db093ab0&gt;)]
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Particle</span></code> consists of <code class="docutils literal"><span class="pre">species</span></code>, <code class="docutils literal"><span class="pre">position</span></code>, <code class="docutils literal"><span class="pre">radius</span></code> and
+<code class="docutils literal"><span class="pre">D</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">([</span><span class="nb">tuple</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">position</span><span class="p">())</span> <span class="k">for</span> <span class="n">pid</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">w6</span><span class="o">.</span><span class="n">list_particles_exact</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">))])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[(</span><span class="mf">0.729419355513528</span><span class="p">,</span> <span class="mf">0.9559871961828321</span><span class="p">,</span> <span class="mf">0.7664110218174756</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.4843062642030418</span><span class="p">,</span> <span class="mf">0.15541509888134897</span><span class="p">,</span> <span class="mf">0.2066904455423355</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.6487654014490545</span><span class="p">,</span> <span class="mf">0.5129862017929554</span><span class="p">,</span> <span class="mf">0.2914334700908512</span><span class="p">)]</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">pos</span> <span class="o">=</span> <span class="n">Real3</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="p">(</span><span class="n">pid1</span><span class="p">,</span> <span class="n">p1</span><span class="p">),</span> <span class="n">suc1</span> <span class="o">=</span> <span class="n">w1</span><span class="o">.</span><span class="n">new_particle</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+<span class="p">(</span><span class="n">pid2</span><span class="p">,</span> <span class="n">p2</span><span class="p">),</span> <span class="n">suc2</span> <span class="o">=</span> <span class="n">w2</span><span class="o">.</span><span class="n">new_particle</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+<span class="p">(</span><span class="n">pid3</span><span class="p">,</span> <span class="n">p3</span><span class="p">),</span> <span class="n">suc3</span> <span class="o">=</span> <span class="n">w3</span><span class="o">.</span><span class="n">new_particle</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+<span class="p">(</span><span class="n">pid4</span><span class="p">,</span> <span class="n">p4</span><span class="p">),</span> <span class="n">suc4</span> <span class="o">=</span> <span class="n">w4</span><span class="o">.</span><span class="n">new_particle</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+<span class="p">(</span><span class="n">pid5</span><span class="p">,</span> <span class="n">p5</span><span class="p">),</span> <span class="n">suc5</span> <span class="o">=</span> <span class="n">w5</span><span class="o">.</span><span class="n">new_particle</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+<span class="p">(</span><span class="n">pid6</span><span class="p">,</span> <span class="n">p6</span><span class="p">),</span> <span class="n">suc6</span> <span class="o">=</span> <span class="n">w6</span><span class="o">.</span><span class="n">new_particle</span><span class="p">(</span><span class="n">sp1</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># print(w1.get_particle(pid1))</span>
+<span class="c"># print(w2.get_particle(pid2))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w3</span><span class="o">.</span><span class="n">get_particle</span><span class="p">(</span><span class="n">pid3</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w4</span><span class="o">.</span><span class="n">get_particle</span><span class="p">(</span><span class="n">pid4</span><span class="p">))</span>
+<span class="c"># print(w5.get_particle(pid5))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w6</span><span class="o">.</span><span class="n">get_particle</span><span class="p">(</span><span class="n">pid6</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>(&lt;ecell4.core.ParticleID object at 0x7f63db093bd0&gt;, &lt;ecell4.core.Particle object at 0x7f63db093be8&gt;)
+(&lt;ecell4.core.ParticleID object at 0x7f63db093bd0&gt;, &lt;ecell4.core.Particle object at 0x7f63db093b70&gt;)
+(&lt;ecell4.core.ParticleID object at 0x7f63db093bd0&gt;, &lt;ecell4.core.Particle object at 0x7f63db0939d8&gt;)
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">pid1</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">suc1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pid2</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">suc2</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pid3</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">suc3</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pid4</span><span class="p">,</span> <span class="n">p4</span><span class="p">,</span> <span class="n">suc4</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pid5</span><span class="p">,</span> <span class="n">p5</span><span class="p">,</span> <span class="n">suc5</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pid6</span><span class="p">,</span> <span class="n">p6</span><span class="p">,</span> <span class="n">suc6</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>(&lt;ecell4.core.ParticleID object at 0x7f63db093ab0&gt;, &lt;ecell4.core.Particle object at 0x7f63db093af8&gt;, True)
+(&lt;ecell4.core.ParticleID object at 0x7f63db093930&gt;, &lt;ecell4.core.Particle object at 0x7f63db093ac8&gt;, True)
+(&lt;ecell4.core.ParticleID object at 0x7f63db093a68&gt;, &lt;ecell4.core.Particle object at 0x7f63db093b28&gt;, True)
+(&lt;ecell4.core.ParticleID object at 0x7f63db0939f0&gt;, &lt;ecell4.core.Particle object at 0x7f63db093b58&gt;, True)
+(&lt;ecell4.core.ParticleID object at 0x7f63db093ae0&gt;, &lt;ecell4.core.Particle object at 0x7f63db093b88&gt;, True)
+(&lt;ecell4.core.ParticleID object at 0x7f63db093b40&gt;, &lt;ecell4.core.Particle object at 0x7f63db093bb8&gt;, True)
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tutorial4.html" class="btn btn-neutral float-right" title="4. How to Run a Simulation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tutorial2.html" class="btn btn-neutral" title="2. How to Build a Model" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Test.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'test',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

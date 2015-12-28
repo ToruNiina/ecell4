@@ -1,0 +1,260 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>A Simple Model of the Glycolysis of Human Erythrocytes &mdash; Test test documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Test test documentation" href="index.html"/>
+        <link rel="next" title="1. Brief Tour of E-Cell4 Simulations" href="tutorial1.html"/>
+        <link rel="prev" title="Dual Phosphorylation Cycle" href="dpc.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Test
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                test
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html#running-e-cell4">Running E-Cell4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html#dockerized-e-cell4-jupyter-notebooks">Dockerized E-Cell4 Jupyter notebooks</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Attractors.html">Attractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DrosophilaCircadianClock.html">Drosophila Circadian Clock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dpc.html">Dual Phosphorylation Cycle</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial2.html">2. How to Build a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial3.html">3. How to Setup the Initial Condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial4.html">4. How to Run a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial9.html">9. Spatial Gillespie Method</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorldSimBasics.html">World and Simulator with ODE solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Meso.html">Meso</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Spatiocyte.html">Spatiocyte simulations with single-molecule resolution</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Test</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>A Simple Model of the Glycolysis of Human Erythrocytes</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/HumanErythrocytes.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="a-simple-model-of-the-glycolysis-of-human-erythrocytes">
+<h1>A Simple Model of the Glycolysis of Human Erythrocytes<a class="headerlink" href="#a-simple-model-of-the-glycolysis-of-human-erythrocytes" title="Permalink to this headline">¶</a></h1>
+<p>This is a model for the glycolysis of human erythrocytes which takes
+into account ATP-synthesis and -consumption. This model is based on the
+model introduced in the following publication.</p>
+<ul class="simple">
+<li>Rapoport, T.A. and Heinrich, R. (1975) &#8220;Mathematical analysis of
+multienzyme systems. I. Modelling of the glycolysis of human
+erythrocytes.&#8221;, Biosystems., 7, 1, 120-129.</li>
+<li>Heinrich, R. and Rapoport, T.A. (1975) &#8220;Mathematical analysis of
+multienzyme systems. II. Steady state and transient control.&#8221;,
+Biosystems., 7, 1, 130-136.</li>
+</ul>
+<div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+from ecell4 import *
+util.decorator.ENABLE_RATELAW = True
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">reaction_rules</span><span class="p">():</span>
+    <span class="mi">2</span> <span class="o">*</span> <span class="n">ATP</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">A13P2G</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ADP</span> <span class="o">|</span> <span class="p">(</span><span class="mf">3.2</span> <span class="o">*</span> <span class="n">ATP</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="p">(</span><span class="n">ATP</span> <span class="o">/</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">**</span> <span class="mf">4.0</span><span class="p">))</span>
+    <span class="n">A13P2G</span> <span class="o">&gt;</span> <span class="n">A23P2G</span> <span class="o">|</span> <span class="mi">1500</span>
+    <span class="n">A23P2G</span> <span class="o">&gt;</span> <span class="n">PEP</span> <span class="o">|</span> <span class="mf">0.15</span>
+    <span class="n">A13P2G</span> <span class="o">+</span> <span class="n">ADP</span> <span class="o">&gt;</span> <span class="n">PEP</span> <span class="o">+</span> <span class="n">ATP</span> <span class="o">|</span> <span class="mf">1.57e+4</span>
+    <span class="n">PEP</span> <span class="o">+</span> <span class="n">ADP</span> <span class="o">&gt;</span> <span class="n">ATP</span> <span class="o">|</span> <span class="mi">559</span>
+    <span class="n">AMP</span> <span class="o">+</span> <span class="n">ATP</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ADP</span> <span class="o">|</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">AMP</span> <span class="o">*</span> <span class="n">ATP</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">ADP</span> <span class="o">*</span> <span class="n">ADP</span><span class="p">))</span>
+    <span class="n">ATP</span> <span class="o">&gt;</span> <span class="n">ADP</span> <span class="o">|</span> <span class="mf">1.46</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">y0</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;A13P2G&quot;</span><span class="p">:</span> <span class="mf">0.0005082</span><span class="p">,</span> <span class="s">&quot;A23P2G&quot;</span><span class="p">:</span> <span class="mf">5.0834</span><span class="p">,</span> <span class="s">&quot;PEP&quot;</span><span class="p">:</span> <span class="mf">0.020502</span><span class="p">,</span>
+      <span class="s">&quot;AMP&quot;</span><span class="p">:</span> <span class="mf">0.080139</span><span class="p">,</span> <span class="s">&quot;ADP&quot;</span><span class="p">:</span> <span class="mf">0.2190</span><span class="p">,</span> <span class="s">&quot;ATP&quot;</span><span class="p">:</span> <span class="mf">1.196867</span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="n">y0</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s">&#39;matplotlib&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="_images/HumanErythrocytes_4_0.png" src="_images/HumanErythrocytes_4_0.png" />
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tutorial1.html" class="btn btn-neutral float-right" title="1. Brief Tour of E-Cell4 Simulations" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dpc.html" class="btn btn-neutral" title="Dual Phosphorylation Cycle" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Test.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'test',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
