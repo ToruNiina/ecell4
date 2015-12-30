@@ -65,12 +65,6 @@ New Tutorials:
    tutorial6
    tutorial7
    tutorial8
-   tutorial9
-
-API:
-
-.. autofunction:: ecell4.core
-
 
 Old Tutorials:
 
