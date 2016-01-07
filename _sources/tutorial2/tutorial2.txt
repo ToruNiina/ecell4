@@ -167,8 +167,8 @@ serial.
 
 The information (``UnitSpecies`` and its ``site``) is used for
 rule-based modeling. The way of rule-based modeling in E-Cell4 will be
-explained in `X. Introduction of Rule-based
-Modeling <X.%20Introduction%20of%20Rule-based%20Modeling.ipynb>`__.
+explained in `7. Introduction of Rule-based
+Modeling <7.%20Introduction%20of%20Rule-based%20Modeling.ipynb>`__.
 
 2.2. ReactionRule
 -----------------
@@ -218,9 +218,9 @@ You can also provide components to the constructor:
 
 In general, ``ReactionRule`` suggests a mass action reaction with rate
 ``k``. ``ode`` solver also supports rate laws thought it's under
-development yet. ``ode.ODERatelaw`` is explained in `X. How to Solve
+development yet. ``ode.ODERatelaw`` is explained in `6. How to Solve
 ODEs with Rate Law
-Functions <X.%20How%20to%20Solve%20ODEs%20with%20Rate%20Law%20Functions.ipynb>`__.
+Functions <6.%20How%20to%20Solve%20ODEs%20with%20Rate%20Law%20Functions.ipynb>`__.
 
 2.3. NetworkModel
 -----------------
@@ -302,7 +302,7 @@ Simulations <1.%20Brief%20Tour%20of%20E-Cell4%20Simulations.ipynb>`__:
 
 
 
-.. image:: tutorial2_38_0.png
+.. image:: output_38_0.png
 
 
 2.4. Python Utilities to Build a Model
@@ -412,7 +412,7 @@ as others. The model above describes :math:`[A]'=2-[A]`:
 
 
 
-.. image:: tutorial2_48_0.png
+.. image:: output_48_0.png
 
 
 A chain of serial reactions can be described in one line. To split a
@@ -450,7 +450,7 @@ The method uses global variables in ``ecell4.util.decorator`` (e.g.
 
 .. parsed-literal::
 
-    [<ecell4.core.ReactionRule object at 0x7f14059046f0>, <ecell4.core.ReactionRule object at 0x7f14059044e0>]
+    [<ecell4.core.ReactionRule object at 0x10d77bab0>, <ecell4.core.ReactionRule object at 0x111edf588>]
     []
 
 
@@ -476,8 +476,8 @@ usefull.
 
 .. parsed-literal::
 
-    [<ecell4.core.Species object at 0x7f14059044e0>, <ecell4.core.Species object at 0x7f1405904630>, <ecell4.core.Species object at 0x7f14059046f0>]
-    [<ecell4.core.ReactionRule object at 0x7f14059044f8>, <ecell4.core.ReactionRule object at 0x7f1405904738>]
+    [<ecell4.core.Species object at 0x10d77b7f8>, <ecell4.core.Species object at 0x10d77be88>, <ecell4.core.Species object at 0x10d77bab0>]
+    [<ecell4.core.ReactionRule object at 0x111edff00>, <ecell4.core.ReactionRule object at 0x111edfe40>]
 
 
 Do **not** add parenthesis after decorators in contrast to the case of
@@ -501,3 +501,4 @@ once by using ``add_reaction_rules`` and ``add_species_attributes``.
 
 This method is modular and reusable relative to the way using ``with``
 statement.
+

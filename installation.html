@@ -31,7 +31,7 @@
 
   
     <link rel="top" title="E-Cell 4.0.0 documentation" href="index.html"/>
-        <link rel="next" title="Attractors" href="Attractors.html"/>
+        <link rel="next" title="1. Brief Tour of E-Cell4 Simulations" href="tutorial1/tutorial1.html"/>
         <link rel="prev" title="Welcome to E-Cell System version 4 documentation!" href="index.html"/> 
 
   
@@ -83,49 +83,54 @@
             
                 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#windows-installation">Windows installation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#jupyter-for-windows">Jupyter for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker-users">Docker users</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#windows-or-mac">Windows or Mac</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux">Linux</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#mac-os-x-installation">Mac OS X installation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#jupyter-for-mac">Jupyter for Mac</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#windows">Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mac-or-linux">Mac or Linux</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#note-about-jupyter-and-matplotlib-for-mac">Note about Jupyter and matplotlib for Mac</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#ubuntu-linux-installation">Ubuntu Linux installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#centos-linux-installation">CentOS Linux installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-e-cell4-with-jupyter">Using E-Cell4 with jupyter</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#windows-or-linux">Windows or Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mac">Mac</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#running-e-cell4">Running E-Cell4</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#how-to-run-python-for-e-cell4-windows">How to run Python for E-Cell4 (Windows)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#how-to-run-python-for-e-cell4-mac">How to run Python for E-Cell4 (Mac)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#how-to-run-python-for-e-cell4-ubuntu">How to run Python for E-Cell4 (Ubuntu)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#simple-examples">Simple examples</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#a-reversible-binding-reaction">A reversible binding reaction</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#dockerized-e-cell4-jupyter-notebooks">Dockerized E-Cell4 Jupyter notebooks</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#for-windows-and-mac">For Windows and Mac</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#for-linux">For Linux</a></li>
 </ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial1/tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial2/tutorial2.html">2. How to Build a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial3/tutorial3.html">3. How to Setup the Initial Condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial4/tutorial4.html">4. How to Run a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial6/tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial7/tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial8/tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/core.html">E-Cell4 core API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/gillespie.html">E-Cell4 gillespie API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/ode.html">E-Cell4 ode API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/meso.html">E-Cell4 meso API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/spatiocyte.html">E-Cell4 spatiocyte API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/bd.html">E-Cell4 bd API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/egfrd.html">E-Cell4 egfrd API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/util.html">E-Cell4 util API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/util.viz.html">E-Cell4 util.viz API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/util.decorator.html">E-Cell4 util.decorator API</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Attractors.html">Attractors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="DrosophilaCircadianClock.html">Drosophila Circadian Clock</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dpc.html">Dual Phosphorylation Cycle</a></li>
 <li class="toctree-l1"><a class="reference internal" href="HumanErythrocytes.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial2.html">2. How to Build a Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial3.html">3. How to Setup the Initial Condition</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial4.html">4. How to Run a Simulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
@@ -176,131 +181,97 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <ul class="simple">
-<li><a class="reference external" href="#installation">Installation</a><ul>
-<li><a class="reference external" href="#windows-installation">Windows</a></li>
-<li><a class="reference external" href="#mac-os-x-installation">Mac OS X</a></li>
-<li><a class="reference external" href="#ubuntu-linux-installation">Ubuntu</a></li>
-<li><a class="reference external" href="#centos-linux-installation">CentOS</a></li>
-</ul>
-</li>
-<li><a class="reference external" href="#running-e-cell4">Running E-Cell4</a></li>
-<li><a class="reference external" href="#dockerized-e-cell4-jupyter-notebooks">Dockerized E-Cell4 Jupyter notebooks</a><ul>
-<li><a class="reference external" href="#for-windows-and-mac">For Windows and Mac</a></li>
-<li><a class="reference external" href="#for-linux">For Linux</a></li>
-</ul>
-</li>
-</ul>
-<div class="section" id="installation">
+  <div class="section" id="installation">
 <span id="installation"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="windows-installation">
-<span id="windows-installation"></span><h2>Windows installation<a class="headerlink" href="#windows-installation" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="requirements">
-<span id="requirements"></span><h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
-<p>Please use 32bit Python, even if you use 64bit Windows.
-We don&#8217;t support 64bit Python</p>
 <ul class="simple">
-<li>Python 2.7.10(<strong>32bit</strong>) https://www.python.org/ftp/python/2.7.10/python-2.7.10.msi</li>
-<li>HDF5-1.8.16 Pre-built Binary(<strong>32-bit</strong>) https://www.hdfgroup.org/ftp/HDF5/current/bin/windows/extra/hdf5-1.8.16-win32-vs2012-shared.zip</li>
+<li><a class="reference external" href="#docker-users">Docker users</a><ul>
+<li><a class="reference external" href="#windows-or-mac">Windows or Mac</a></li>
+<li><a class="reference external" href="#linux">Linux</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#windows">Windows</a></li>
+<li><a class="reference external" href="#mac-or-linux">Mac or Linux</a></li>
+<li><a class="reference external" href="#using-e-cell4-with-jupyter">Using E-Cell4 with jupyter</a></li>
+<li><a class="reference external" href="#simple-examples">Simple examples</a></li>
+</ul>
+<div class="section" id="docker-users">
+<span id="docker-users"></span><h2>Docker users<a class="headerlink" href="#docker-users" title="Permalink to this headline">¶</a></h2>
+<p>If you have docker environment, you can try E-Cell4 easily.
+You can pull E-Cell4 container with <code class="docutils literal"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">ecell/ecell4</span></code>.</p>
+<div class="section" id="windows-or-mac">
+<span id="windows-or-mac"></span><h3>Windows or Mac<a class="headerlink" href="#windows-or-mac" title="Permalink to this headline">¶</a></h3>
+<ol class="simple">
+<li>Install <a class="reference external" href="https://www.docker.com/toolbox">Docker Toolbox</a>.</li>
+<li>Run <strong>Docker Quickstart Terminal</strong>.</li>
+<li>Run <code class="docutils literal"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">-d</span> <span class="pre">-p</span> <span class="pre">443:8888</span> <span class="pre">ecell/ecell4</span></code> in the terminal.</li>
+<li>Open <strong>192.168.99.100:443</strong> with your favorite web browser.</li>
+<li>You should see Jupyter Notebook up and running (and E-Cell4 tutorials) in your web browser.</li>
+</ol>
+</div>
+<div class="section" id="linux">
+<span id="linux"></span><h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
+<ol>
+<li><p class="first">Install docker.</p>
+</li>
+<li><p class="first">Run the following command.</p>
+<pre class="code highlight shell literal-block">
+<span class="nv">$ </span>sudo docker pull ecell/ecell4
+<span class="nv">$ </span>sudo docker run -d -p 443:8888 ecell/ecell4
+</pre>
+</li>
+<li><p class="first">Open <strong>localhost:443</strong> with your favorite web browser.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="windows">
+<span id="windows"></span><h2>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h2>
+<p>Please use 32bit Python, even if you use 64bit Windows.
+We have NOT supported 64bit Python yet.</p>
+<ul class="simple">
+<li><a class="reference external" href="https://www.python.org/ftp/python/2.7.11/python-2.7.11.msi">Python 2.7.11(<strong>32bit</strong>)</a></li>
+<li><a class="reference external" href="http://www.hdfgroup.org/ftp/HDF5/current/bin/windows/extra/hdf5-1.8.16-win32-vs2012-shared.zip">HDF5-1.8.16 Pre-built Binary(<strong>32-bit</strong>)</a></li>
+<li><a class="reference external" href="http://aka.ms/vcpython27">Visual C++ Compiler for Python 2.7</a></li>
 </ul>
 <p>Please add <code class="docutils literal"><span class="pre">C:\Python27</span></code>, <code class="docutils literal"><span class="pre">C:\Python27\Scripts</span></code> and <code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files</span> <span class="pre">(x86)\HDF_Group\HDF5\1.8.16\bin</span></code> to your <strong>PATH</strong> enviromental variable.</p>
-<p>And run following command with command prompt.</p>
-<div class="highlight-python"><div class="highlight"><pre>pip install https://github.com/ecell/ecell4/releases/download/4.0.0-beta2/ecell4-4.0.0b2-cp27-none-win32.whl
-</pre></div>
-</div>
-</div>
-<div class="section" id="jupyter-for-windows">
-<span id="jupyter-for-windows"></span><h3>Jupyter for Windows<a class="headerlink" href="#jupyter-for-windows" title="Permalink to this headline">¶</a></h3>
-<p>We recommend you run E-Cell4 models from Jupyter notebook.
-Below is Jupyter notebook(and matplotlib) installation for Windows.</p>
-<ul>
-<li><p class="first">Install <a class="reference external" href="http://www.microsoft.com/en-us/download/details.aspx?id=44266">Visual C++ Compiler for Python 2.7</a></p>
-</li>
-<li><p class="first">Install Jupyter notebook and matplotlib</p>
-<div class="highlight-python"><div class="highlight"><pre>pip install -U jupyter
-pip install matplotlib
-</pre></div>
-</div>
-</li>
-</ul>
-<p>matplotlib depends on numpy. It takes some time to build numpy, please be patient.</p>
-</div>
-</div>
-<div class="section" id="mac-os-x-installation">
-<span id="mac-os-x-installation"></span><h2>Mac OS X installation<a class="headerlink" href="#mac-os-x-installation" title="Permalink to this headline">¶</a></h2>
+<p>And run the following commands with command prompt.
+matplotlib depends on numpy. It takes some time to build numpy, please be patient.
+Although jupyter is optional, we strongly recommend that you run E-Cell4 with jupyter.</p>
 <pre class="code highlight shell literal-block">
-ruby -e <span class="s2">&quot;</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span class="k">)</span><span class="s2">&quot;</span>
-brew tap ecell/ecell4
-brew install ecell4 --HEAD
+pip install https://ci.appveyor.com/api/buildjobs/aju5rykh88bb88ns/artifacts/python/dist/ecell4-4.0.0b2-cp27-none-win32.whl
+pip install matplotlib
+pip install jupyter
 </pre>
-<div class="section" id="jupyter-for-mac">
-<span id="jupyter-for-mac"></span><h3>Jupyter for Mac<a class="headerlink" href="#jupyter-for-mac" title="Permalink to this headline">¶</a></h3>
-<p>We recommend you run E-Cell4 models from Jupyter notebook.
-Below is Jupyter notebook(and matplotlib) installation for Mac.</p>
+</div>
+<div class="section" id="mac-or-linux">
+<span id="mac-or-linux"></span><h2>Mac or Linux<a class="headerlink" href="#mac-or-linux" title="Permalink to this headline">¶</a></h2>
+<p>Please use <a class="reference external" href="https://github.com/ecell/homebrew-ecell4">homebrew-ecell4</a></p>
+<p>https://github.com/ecell/homebrew-ecell4</p>
+<div class="section" id="note-about-jupyter-and-matplotlib-for-mac">
+<span id="note-about-jupyter-and-matplotlib-for-mac"></span><h3>Note about Jupyter and matplotlib for Mac<a class="headerlink" href="#note-about-jupyter-and-matplotlib-for-mac" title="Permalink to this headline">¶</a></h3>
 <pre class="code highlight shell literal-block">
 sudo python get-pip.py
-sudo pip install -U matplotlib
-sudo pip install -U jupyter
+<span class="c"># Mac default matplotlib is too old, so you need to add these options to the pip command.
+# These commands can be used not only for Mac but also for Linux.
+</span>pip install -U matplotlib --user
+sudo pip install jupyter
 </pre>
 </div>
 </div>
-<div class="section" id="ubuntu-linux-installation">
-<span id="ubuntu-linux-installation"></span><h2>Ubuntu Linux installation<a class="headerlink" href="#ubuntu-linux-installation" title="Permalink to this headline">¶</a></h2>
-<pre class="code highlight shell literal-block">
-<span class="nv">$ </span>sudo apt-get install build-essential curl git m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev python-dev python-setuptools
-<span class="nv">$ </span>ruby -e <span class="s2">&quot;</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install<span class="k">)</span><span class="s2">&quot;</span>
-<span class="nv">$ </span><span class="nb">echo</span> <span class="s1">'export PATH=&quot;$HOME/.linuxbrew/bin:$PATH&quot;'</span> &gt;&gt; ~/.bash_profile
-<span class="nv">$ </span><span class="nb">source</span> ~/.bash_profile
-<span class="nv">$ </span>brew tap ecell/ecell4
-<span class="nv">$ </span>brew install ecell4 --HEAD
-</pre>
-</div>
-<div class="section" id="centos-linux-installation">
-<span id="centos-linux-installation"></span><h2>CentOS Linux installation<a class="headerlink" href="#centos-linux-installation" title="Permalink to this headline">¶</a></h2>
-<pre class="code highlight shell literal-block">
-<span class="nv">$ </span>sudo yum groupinstall <span class="s1">'Development Tools'</span>
-<span class="nv">$ </span>sudo yum install curl git m4 ruby texinfo bzip2-devel curl-devel expat-devel ncurses-devel zlib-devel python-devel python-setuptools
-<span class="nv">$ </span>ruby -e <span class="s2">&quot;</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install<span class="k">)</span><span class="s2">&quot;</span>
-<span class="nv">$ </span><span class="nb">echo</span> <span class="s1">'export PATH=&quot;$HOME/.linuxbrew/bin:$PATH&quot;'</span> &gt;&gt; ~/.bash_profile
-<span class="nv">$ </span><span class="nb">source</span> ~/.bash_profile
-<span class="nv">$ </span>ln -s <span class="sb">`</span>which gcc<span class="sb">`</span> <span class="sb">`</span>brew --prefix<span class="sb">`</span>/bin/gcc-4.8
-<span class="nv">$ </span>ln -s <span class="sb">`</span>which g++<span class="sb">`</span> <span class="sb">`</span>brew --prefix<span class="sb">`</span>/bin/g++-4.8
-<span class="nv">$ </span>brew tap ecell/ecell4
-<span class="nv">$ </span>brew install ecell4 --HEAD
-</pre>
-</div>
-</div>
-<div class="section" id="running-e-cell4">
-<span id="running-e-cell4"></span><h1>Running E-Cell4<a class="headerlink" href="#running-e-cell4" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="how-to-run-python-for-e-cell4-windows">
-<span id="how-to-run-python-for-e-cell4-windows"></span><h2>How to run Python for E-Cell4 (Windows)<a class="headerlink" href="#how-to-run-python-for-e-cell4-windows" title="Permalink to this headline">¶</a></h2>
-<ol class="simple">
-<li>run command prompt</li>
-<li>run Python</li>
-</ol>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">python</span>
+<div class="section" id="using-e-cell4-with-jupyter">
+<span id="using-e-cell4-with-jupyter"></span><h2>Using E-Cell4 with jupyter<a class="headerlink" href="#using-e-cell4-with-jupyter" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="windows-or-linux">
+<span id="windows-or-linux"></span><h3>Windows or Linux<a class="headerlink" href="#windows-or-linux" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">jupyter</span><span class="o">-</span><span class="n">notebook</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="how-to-run-python-for-e-cell4-mac">
-<span id="how-to-run-python-for-e-cell4-mac"></span><h2>How to run Python for E-Cell4 (Mac)<a class="headerlink" href="#how-to-run-python-for-e-cell4-mac" title="Permalink to this headline">¶</a></h2>
-<ol class="simple">
-<li>run terminal</li>
-<li>run Python with PYTHONPATH</li>
-</ol>
-<div class="highlight-python"><div class="highlight"><pre>PYTHONPATH=/usr/local/Cellar/ecell4/HEAD/libexec/lib/python2.7/site-packages python
+<div class="section" id="mac">
+<span id="mac"></span><h3>Mac<a class="headerlink" href="#mac" title="Permalink to this headline">¶</a></h3>
+<p>You need to add PYTHONPATH to import latest matplotlib (instead of default matplotlib)</p>
+<div class="highlight-python"><div class="highlight"><pre>PYTHONPATH=~/Library/Python/2.7/lib/python/site-packages/ jupyter-notebook
 </pre></div>
 </div>
-</div>
-<div class="section" id="how-to-run-python-for-e-cell4-ubuntu">
-<span id="how-to-run-python-for-e-cell4-ubuntu"></span><h2>How to run Python for E-Cell4 (Ubuntu)<a class="headerlink" href="#how-to-run-python-for-e-cell4-ubuntu" title="Permalink to this headline">¶</a></h2>
-<p>If you set PREFIX to $HOME/ecell4, run Python with</p>
-<div class="highlight-python"><div class="highlight"><pre>LD_LIBRARY_PATH=$HOME/ecell4/lib:$LD_LIBRARY_PATH PYTHONPATH=$HOME/ecell4/lib/python2.7/site-packages python
-</pre></div>
-</div>
-<p>in case with Python3</p>
-<div class="highlight-python"><div class="highlight"><pre>LD_LIBRARY_PATH=$HOME/ecell4/lib:$LD_LIBRARY_PATH PYTHONPATH=$HOME/ecell4/lib/python3.4/site-packages python3
-</pre></div>
 </div>
 </div>
 <div class="section" id="simple-examples">
@@ -333,32 +304,6 @@ A.B.C
 </div>
 </div>
 </div>
-<div class="section" id="dockerized-e-cell4-jupyter-notebooks">
-<span id="dockerized-e-cell4-jupyter-notebooks"></span><h1>Dockerized E-Cell4 Jupyter notebooks<a class="headerlink" href="#dockerized-e-cell4-jupyter-notebooks" title="Permalink to this headline">¶</a></h1>
-<p>If you use docker, you can easily try E-Cell4.
-You can pull E-Cell4 container with <code class="docutils literal"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">ecell/ecell4</span></code></p>
-<div class="section" id="for-windows-and-mac">
-<span id="for-windows-and-mac"></span><h2>For Windows and Mac<a class="headerlink" href="#for-windows-and-mac" title="Permalink to this headline">¶</a></h2>
-<ol class="simple">
-<li>Install <a class="reference external" href="https://www.docker.com/toolbox">Docker Toolbox</a></li>
-<li>Run Kitematic</li>
-<li>Search with <strong>ecell4</strong>, and create ecell4 container</li>
-</ol>
-<p><img alt="png" src="https://raw.githubusercontent.com/ecell/ecell4/master/docs/kitematic1.png" /></p>
-<ol class="simple">
-<li>Open the <strong>ACCESS URL</strong> in <strong>IP &amp; PORTS</strong> with your web browser</li>
-</ol>
-<p><img alt="png" src="https://raw.githubusercontent.com/ecell/ecell4/master/docs/kitematic2.png" /></p>
-</div>
-<div class="section" id="for-linux">
-<span id="for-linux"></span><h2>For Linux<a class="headerlink" href="#for-linux" title="Permalink to this headline">¶</a></h2>
-<pre class="code highlight shell literal-block">
-<span class="nv">$ </span>sudo docker pull ecell/ecell4
-<span class="nv">$ </span>sudo docker run -d -p 443:8888 ecell/ecell4
-</pre>
-<p>You&#8217;ll now be able to E-Cell4 notebooks at https://THE_IP_RUNNING_DOCKER:443</p>
-</div>
-</div>
 
 
            </div>
@@ -367,7 +312,7 @@ You can pull E-Cell4 container with <code class="docutils literal"><span class="
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Attractors.html" class="btn btn-neutral float-right" title="Attractors" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tutorial1/tutorial1.html" class="btn btn-neutral float-right" title="1. Brief Tour of E-Cell4 Simulations" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="Welcome to E-Cell System version 4 documentation!" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>

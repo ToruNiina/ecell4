@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; E-Cell 4.0.0 documentation</title>
+  <title>E-Cell4 util.decorator API &mdash; E-Cell 4.0.0 documentation</title>
   
 
   
@@ -30,7 +30,9 @@
   
 
   
-    <link rel="top" title="E-Cell 4.0.0 documentation" href="../index.html"/> 
+    <link rel="top" title="E-Cell 4.0.0 documentation" href="../index.html"/>
+        <link rel="next" title="Attractors" href="../Attractors.html"/>
+        <link rel="prev" title="E-Cell4 util.viz API" href="util.viz.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -81,23 +83,33 @@
             
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html#running-e-cell4">Running E-Cell4</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html#dockerized-e-cell4-jupyter-notebooks">Dockerized E-Cell4 Jupyter notebooks</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial1/tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial2/tutorial2.html">2. How to Build a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial3/tutorial3.html">3. How to Setup the Initial Condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial4/tutorial4.html">4. How to Run a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial6/tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial7/tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial8/tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="core.html">E-Cell4 core API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gillespie.html">E-Cell4 gillespie API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode.html">E-Cell4 ode API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meso.html">E-Cell4 meso API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spatiocyte.html">E-Cell4 spatiocyte API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bd.html">E-Cell4 bd API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="egfrd.html">E-Cell4 egfrd API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">E-Cell4 util API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.viz.html">E-Cell4 util.viz API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">E-Cell4 util.decorator API</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Attractors.html">Attractors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DrosophilaCircadianClock.html">Drosophila Circadian Clock</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dpc.html">Dual Phosphorylation Cycle</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../HumanErythrocytes.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial2.html">2. How to Build a Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial3.html">3. How to Setup the Initial Condition</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial4.html">4. How to Run a Simulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Introduction.html">Introduction</a></li>
@@ -134,7 +146,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>&lt;no title&gt;</li>
+    <li>E-Cell4 util.decorator API</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -148,49 +160,51 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <p><span class="target" id="module-ecell4.util.decorator"></span><dl class="function"></p>
+  <div class="section" id="module-ecell4.util.decorator">
+<span id="e-cell4-util-decorator-api"></span><h1>E-Cell4 util.decorator API<a class="headerlink" href="#module-ecell4.util.decorator" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
 <dt id="ecell4.util.decorator.get_model">
 <code class="descclassname">ecell4.util.decorator.</code><code class="descname">get_model</code><span class="sig-paren">(</span><em>is_netfree=False</em>, <em>without_reset=False</em>, <em>seeds=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.decorator.get_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a model with parameters in the global scope, <code class="docutils literal"><span class="pre">SPECIES_ATTRIBUTES</span></code>
 and <code class="docutils literal"><span class="pre">REACTIONRULES</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>is_netfree</strong> : bool, optional</p>
-<blockquote>
-<div><p>Return <code class="docutils literal"><span class="pre">NetfreeModel</span></code> if True, and <code class="docutils literal"><span class="pre">NetworkModel</span></code> if else.
-Default is False.</p>
-</div></blockquote>
-<p><strong>without_reset</strong> : bool, optional</p>
-<blockquote>
-<div><p>Do not reset the global variables after the generation if True.
-Default is False.</p>
-</div></blockquote>
-<p><strong>seeds</strong> : list, optional</p>
-<blockquote>
-<div><p>A list of seed <code class="docutils literal"><span class="pre">Species</span></code> for expanding the model.
+<dl class="docutils">
+<dt>is_netfree <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd>Return <code class="docutils literal"><span class="pre">NetfreeModel</span></code> if True, and <code class="docutils literal"><span class="pre">NetworkModel</span></code> if else.
+Default is False.</dd>
+<dt>without_reset <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd>Do not reset the global variables after the generation if True.
+Default is False.</dd>
+<dt>seeds <span class="classifier-delimiter">:</span> <span class="classifier">list, optional</span></dt>
+<dd>A list of seed <code class="docutils literal"><span class="pre">Species</span></code> for expanding the model.
 If this is not None, generate a <code class="docutils literal"><span class="pre">NetfreeModel</span></code> once, and return a
 <code class="docutils literal"><span class="pre">NetworkModel</span></code>, which is an expanded form of that with the given seeds.
-Default is None.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>model</strong> : NetworkModel, NetfreeModel, or ODENetworkModel</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl><dl class="function">
+Default is None.</dd>
+</dl>
+<p>model : NetworkModel, NetfreeModel, or ODENetworkModel</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="ecell4.util.decorator.reset_model">
 <code class="descclassname">ecell4.util.decorator.</code><code class="descname">reset_model</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.decorator.reset_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset all values, <code class="docutils literal"><span class="pre">SPECIES_ATTRIBUTES</span></code> and <code class="docutils literal"><span class="pre">REACTIONRULES</span></code>,
 in the global scope.</p>
 </dd></dl>
 
+</div>
+
+
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../Attractors.html" class="btn btn-neutral float-right" title="Attractors" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="util.viz.html" class="btn btn-neutral" title="E-Cell4 util.viz API" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

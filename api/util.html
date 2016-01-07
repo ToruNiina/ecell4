@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; E-Cell 4.0.0 documentation</title>
+  <title>E-Cell4 util API &mdash; E-Cell 4.0.0 documentation</title>
   
 
   
@@ -30,7 +30,9 @@
   
 
   
-    <link rel="top" title="E-Cell 4.0.0 documentation" href="../index.html"/> 
+    <link rel="top" title="E-Cell 4.0.0 documentation" href="../index.html"/>
+        <link rel="next" title="E-Cell4 util.viz API" href="util.viz.html"/>
+        <link rel="prev" title="E-Cell4 egfrd API" href="egfrd.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -81,23 +83,33 @@
             
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html#running-e-cell4">Running E-Cell4</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html#dockerized-e-cell4-jupyter-notebooks">Dockerized E-Cell4 Jupyter notebooks</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial1/tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial2/tutorial2.html">2. How to Build a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial3/tutorial3.html">3. How to Setup the Initial Condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial4/tutorial4.html">4. How to Run a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial6/tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial7/tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial8/tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="core.html">E-Cell4 core API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gillespie.html">E-Cell4 gillespie API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode.html">E-Cell4 ode API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meso.html">E-Cell4 meso API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spatiocyte.html">E-Cell4 spatiocyte API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bd.html">E-Cell4 bd API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="egfrd.html">E-Cell4 egfrd API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">E-Cell4 util API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.viz.html">E-Cell4 util.viz API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.decorator.html">E-Cell4 util.decorator API</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Attractors.html">Attractors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DrosophilaCircadianClock.html">Drosophila Circadian Clock</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dpc.html">Dual Phosphorylation Cycle</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../HumanErythrocytes.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial2.html">2. How to Build a Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial3.html">3. How to Setup the Initial Condition</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial4.html">4. How to Run a Simulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Introduction.html">Introduction</a></li>
@@ -134,7 +146,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>&lt;no title&gt;</li>
+    <li>E-Cell4 util API</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -148,131 +160,139 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <p><span class="target" id="module-ecell4.util"></span><dl class="function"></p>
+  <div class="section" id="module-ecell4.util">
+<span id="e-cell4-util-api"></span><h1>E-Cell4 util API<a class="headerlink" href="#module-ecell4.util" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
 <dt id="ecell4.util.run_simulation">
-<code class="descclassname">ecell4.util.</code><code class="descname">run_simulation</code><span class="sig-paren">(</span><em>t</em>, <em>y0={}</em>, <em>volume=1.0</em>, <em>model=None</em>, <em>solver='ode'</em>, <em>factory=None</em>, <em>is_netfree=False</em>, <em>species_list=None</em>, <em>without_reset=False</em>, <em>return_type='matplotlib'</em>, <em>plot_args={}</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.run_simulation" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ecell4.util.</code><code class="descname">run_simulation</code><span class="sig-paren">(</span><em>t</em>, <em>y0={}</em>, <em>volume=1.0</em>, <em>model=None</em>, <em>solver='ode'</em>, <em>factory=None</em>, <em>is_netfree=False</em>, <em>species_list=None</em>, <em>without_reset=False</em>, <em>return_type='matplotlib'</em>, <em>opt_args=()</em>, <em>opt_kwargs={}</em>, <em>structures={}</em>, <em>observers=()</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.run_simulation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run a simulation with the given model and plot the result on IPython
 notebook with matplotlib.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>t</strong> : array</p>
+<dl class="docutils">
+<dt>t <span class="classifier-delimiter">:</span> <span class="classifier">array or Real</span></dt>
+<dd>A sequence of time points for which to solve for &#8216;m&#8217;.</dd>
+<dt>y0 <span class="classifier-delimiter">:</span> <span class="classifier">dict</span></dt>
+<dd>Initial condition.</dd>
+<dt>volume <span class="classifier-delimiter">:</span> <span class="classifier">Real or Real3, optional</span></dt>
+<dd>A size of the simulation volume.</dd>
+</dl>
+<p>model : Model, optional
+solver : str, optional</p>
 <blockquote>
-<div><p>A sequence of time points for which to solve for &#8216;m&#8217;.</p>
-</div></blockquote>
-<p><strong>y0</strong> : dict</p>
+<div>Solver type. Choose one from &#8216;ode&#8217;, &#8216;gillespie&#8217;, &#8216;spatiocyte&#8217;, &#8216;meso&#8217;,
+&#8216;bd&#8217; and &#8216;egfrd&#8217;. Default is &#8216;ode&#8217;.</div></blockquote>
+<dl class="docutils">
+<dt>species_list <span class="classifier-delimiter">:</span> <span class="classifier">list of str, optional</span></dt>
+<dd>A list of names of Species observed. If None, log all.
+Default is None.</dd>
+<dt>return_type <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
+<dd>Choose a type of return value from &#8216;array&#8217;, &#8216;observer&#8217;,
+&#8216;matplotlib&#8217;, &#8216;nyaplot&#8217;, &#8216;world&#8217;, &#8216;dataframe&#8217; or None.
+If None, return and plot nothing. Default is &#8216;matplotlib&#8217;.
+&#8216;dataframe&#8217; requires numpy and pandas libraries.</dd>
+<dt>opt_args: list, tuple or dict, optional</dt>
+<dd>Arguments for plotting. If return_type suggests no plotting, just ignored.</dd>
+<dt>opt_kwargs: dict, optional</dt>
+<dd>Arguments for plotting. If return_type suggests no plotting or
+opt_args is a list or tuple, just ignored.
+i.e.) viz.plot_number_observer(obs, <a href="#id1"><span class="problematic" id="id2">*</span></a>opt_args, <a href="#id3"><span class="problematic" id="id4">**</span></a>opt_kwargs)</dd>
+</dl>
+<p>factory: Factory, optional
+is_netfree: bool, optional</p>
 <blockquote>
-<div><p>Initial condition.</p>
-</div></blockquote>
-<p><strong>volume</strong> : Real, optional</p>
-<p><strong>model</strong> : Model, optional</p>
-<p><strong>solver</strong> : str, optional</p>
-<blockquote>
-<div><p>Solver type. Choose one from &#8216;ode&#8217;, &#8216;gillespie&#8217;, &#8216;lattice&#8217;, &#8216;meso&#8217;,
-&#8216;bd&#8217; and &#8216;egfrd&#8217;. Default is &#8216;ode&#8217;.</p>
-</div></blockquote>
-<p><strong>species_list</strong> : list of str, optional</p>
-<blockquote>
-<div><p>A list of names of Species observed. If None, log all.
-Default is None.</p>
-</div></blockquote>
-<p><strong>return_type</strong> : str, optional</p>
-<blockquote>
-<div><p>Choose a type of return value from &#8216;array&#8217;, &#8216;observer&#8217;,
-&#8216;matplotlib&#8217;, &#8216;nyaplot&#8217; or None.
-If None, return and plot nothing. Default is &#8216;matplotlib&#8217;.</p>
-</div></blockquote>
-<p><strong>plot_args</strong> : dict, optional</p>
-<blockquote>
-<div><p>Arguments for plotting. If plot_type is None, just ignored.</p>
-</div></blockquote>
-<p><strong>factory</strong> : Factory, optional</p>
-<p><strong>is_netfree</strong> : bool, optional</p>
-<blockquote>
-<div><p>Whether the model is netfree or not. When a model is given as an
-argument, just ignored. Default is False.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>value</strong> : list, TimingNumberObserver, or None</p>
-<blockquote class="last">
-<div><p>Return a value suggested by <code class="docutils literal"><span class="pre">return_type</span></code>.
+<div>Whether the model is netfree or not. When a model is given as an
+argument, just ignored. Default is False.</div></blockquote>
+<dl class="docutils">
+<dt>structures <span class="classifier-delimiter">:</span> <span class="classifier">dict, optional</span></dt>
+<dd>A dictionary which gives pairs of a name and shape of structures.
+Not fully supported yet.</dd>
+<dt>observers <span class="classifier-delimiter">:</span> <span class="classifier">Observer or list, optional</span></dt>
+<dd>A list of extra observer references.</dd>
+</dl>
+<dl class="docutils">
+<dt>value <span class="classifier-delimiter">:</span> <span class="classifier">list, TimingNumberObserver, World or None</span></dt>
+<dd>Return a value suggested by <code class="docutils literal"><span class="pre">return_type</span></code>.
 When <code class="docutils literal"><span class="pre">return_type</span></code> is &#8216;array&#8217;, return a time course data.
 When <code class="docutils literal"><span class="pre">return_type</span></code> is &#8216;observer&#8217;, return an observer.
-Return nothing if else.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl><dl class="function">
+When <code class="docutils literal"><span class="pre">return_type</span></code> is &#8216;world&#8217;, return the last state of <code class="docutils literal"><span class="pre">World</span></code>.
+Return nothing if else.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ecell4.util.ensemble_simulations">
+<code class="descclassname">ecell4.util.</code><code class="descname">ensemble_simulations</code><span class="sig-paren">(</span><em>N=1</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.ensemble_simulations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run simulations with the given model and take the ensemble.</p>
+<dl class="docutils">
+<dt>N <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd>A number of samples.</dd>
+</dl>
+<p>args : list
+kwargs : dict</p>
+<blockquote>
+<div>Arguments for <code class="docutils literal"><span class="pre">run_simulation</span></code>.
+See the help of <code class="docutils literal"><span class="pre">run_simulation</span></code> for details.</div></blockquote>
+<dl class="docutils">
+<dt>value <span class="classifier-delimiter">:</span> <span class="classifier">list, DummyObserver, or None</span></dt>
+<dd>Return a value suggested by <code class="docutils literal"><span class="pre">return_type</span></code>.
+When <code class="docutils literal"><span class="pre">return_type</span></code> is &#8216;array&#8217;, return a time course data.
+When <code class="docutils literal"><span class="pre">return_type</span></code> is &#8216;observer&#8217;, return an observer.
+Return nothing if else.</dd>
+</dl>
+<p>run_simulation</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="ecell4.util.load_world">
 <code class="descclassname">ecell4.util.</code><code class="descname">load_world</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.load_world" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a world from the given HDF5 filename.
 The return type is determined by <code class="docutils literal"><span class="pre">ecell4.core.load_version_information</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>filename</strong> : str</p>
-<blockquote>
-<div><p>A HDF5 filename.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>w</strong> : World</p>
-<blockquote class="last">
-<div><p>Return one from <code class="docutils literal"><span class="pre">BDWorld</span></code>, <code class="docutils literal"><span class="pre">EGFRDWorld</span></code>, <code class="docutils literal"><span class="pre">MesoscopicWorld</span></code>,
-<code class="docutils literal"><span class="pre">ODEWorld</span></code>, <code class="docutils literal"><span class="pre">GillespieWorld</span></code> and <code class="docutils literal"><span class="pre">LatticeWorld</span></code>.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl><dl class="function">
+<dl class="docutils">
+<dt>filename <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>A HDF5 filename.</dd>
+</dl>
+<dl class="docutils">
+<dt>w <span class="classifier-delimiter">:</span> <span class="classifier">World</span></dt>
+<dd>Return one from <code class="docutils literal"><span class="pre">BDWorld</span></code>, <code class="docutils literal"><span class="pre">EGFRDWorld</span></code>, <code class="docutils literal"><span class="pre">MesoscopicWorld</span></code>,
+<code class="docutils literal"><span class="pre">ODEWorld</span></code>, <code class="docutils literal"><span class="pre">GillespieWorld</span></code> and <code class="docutils literal"><span class="pre">SpatiocyteWorld</span></code>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="ecell4.util.get_model">
 <code class="descclassname">ecell4.util.</code><code class="descname">get_model</code><span class="sig-paren">(</span><em>is_netfree=False</em>, <em>without_reset=False</em>, <em>seeds=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.get_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a model with parameters in the global scope, <code class="docutils literal"><span class="pre">SPECIES_ATTRIBUTES</span></code>
 and <code class="docutils literal"><span class="pre">REACTIONRULES</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>is_netfree</strong> : bool, optional</p>
-<blockquote>
-<div><p>Return <code class="docutils literal"><span class="pre">NetfreeModel</span></code> if True, and <code class="docutils literal"><span class="pre">NetworkModel</span></code> if else.
-Default is False.</p>
-</div></blockquote>
-<p><strong>without_reset</strong> : bool, optional</p>
-<blockquote>
-<div><p>Do not reset the global variables after the generation if True.
-Default is False.</p>
-</div></blockquote>
-<p><strong>seeds</strong> : list, optional</p>
-<blockquote>
-<div><p>A list of seed <code class="docutils literal"><span class="pre">Species</span></code> for expanding the model.
+<dl class="docutils">
+<dt>is_netfree <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd>Return <code class="docutils literal"><span class="pre">NetfreeModel</span></code> if True, and <code class="docutils literal"><span class="pre">NetworkModel</span></code> if else.
+Default is False.</dd>
+<dt>without_reset <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd>Do not reset the global variables after the generation if True.
+Default is False.</dd>
+<dt>seeds <span class="classifier-delimiter">:</span> <span class="classifier">list, optional</span></dt>
+<dd>A list of seed <code class="docutils literal"><span class="pre">Species</span></code> for expanding the model.
 If this is not None, generate a <code class="docutils literal"><span class="pre">NetfreeModel</span></code> once, and return a
 <code class="docutils literal"><span class="pre">NetworkModel</span></code>, which is an expanded form of that with the given seeds.
-Default is None.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>model</strong> : NetworkModel, NetfreeModel, or ODENetworkModel</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl><dl class="function">
-<dt id="ecell4.util.reset_model">
-<code class="descclassname">ecell4.util.</code><code class="descname">reset_model</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.reset_model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reset all values, <code class="docutils literal"><span class="pre">SPECIES_ATTRIBUTES</span></code> and <code class="docutils literal"><span class="pre">REACTIONRULES</span></code>,
-in the global scope.</p>
+Default is None.</dd>
+</dl>
+<p>model : NetworkModel, NetfreeModel, or ODENetworkModel</p>
 </dd></dl>
+
+</div>
+
 
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="util.viz.html" class="btn btn-neutral float-right" title="E-Cell4 util.viz API" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="egfrd.html" class="btn btn-neutral" title="E-Cell4 egfrd API" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

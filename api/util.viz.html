@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; E-Cell 4.0.0 documentation</title>
+  <title>E-Cell4 util.viz API &mdash; E-Cell 4.0.0 documentation</title>
   
 
   
@@ -30,7 +30,9 @@
   
 
   
-    <link rel="top" title="E-Cell 4.0.0 documentation" href="../index.html"/> 
+    <link rel="top" title="E-Cell 4.0.0 documentation" href="../index.html"/>
+        <link rel="next" title="E-Cell4 util.decorator API" href="util.decorator.html"/>
+        <link rel="prev" title="E-Cell4 util API" href="util.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -81,23 +83,33 @@
             
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html#running-e-cell4">Running E-Cell4</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html#dockerized-e-cell4-jupyter-notebooks">Dockerized E-Cell4 Jupyter notebooks</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial1/tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial2/tutorial2.html">2. How to Build a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial3/tutorial3.html">3. How to Setup the Initial Condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial4/tutorial4.html">4. How to Run a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial6/tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial7/tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial8/tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="core.html">E-Cell4 core API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gillespie.html">E-Cell4 gillespie API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode.html">E-Cell4 ode API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meso.html">E-Cell4 meso API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spatiocyte.html">E-Cell4 spatiocyte API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bd.html">E-Cell4 bd API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="egfrd.html">E-Cell4 egfrd API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">E-Cell4 util API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">E-Cell4 util.viz API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.decorator.html">E-Cell4 util.decorator API</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Attractors.html">Attractors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DrosophilaCircadianClock.html">Drosophila Circadian Clock</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dpc.html">Dual Phosphorylation Cycle</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../HumanErythrocytes.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial2.html">2. How to Build a Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial3.html">3. How to Setup the Initial Condition</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial4.html">4. How to Run a Simulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Introduction.html">Introduction</a></li>
@@ -134,7 +146,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>&lt;no title&gt;</li>
+    <li>E-Cell4 util.viz API</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -148,314 +160,401 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <p><span class="target" id="module-ecell4.util.viz"></span><p>ecell4.util.viz: Visualizer of particles based on D3.js, THREE.js
-and Elegans.</p></p>
-<dl class="class">
-<dt id="ecell4.util.viz.ColorScale">
-<em class="property">class </em><code class="descclassname">ecell4.util.viz.</code><code class="descname">ColorScale</code><span class="sig-paren">(</span><em>config={}</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.ColorScale" title="Permalink to this definition">¶</a></dt>
-<dd><p>Color scale for species.</p>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#ecell4.util.viz.ColorScale.get_color" title="ecell4.util.viz.ColorScale.get_color"><code class="xref py py-obj docutils literal"><span class="pre">get_color</span></code></a>(name)</td>
-<td>Get color unique to the recieved name</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#ecell4.util.viz.ColorScale.get_config" title="ecell4.util.viz.ColorScale.get_config"><code class="xref py py-obj docutils literal"><span class="pre">get_config</span></code></a>()</td>
-<td>Get an instance of dic as the config of colors.</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="ecell4.util.viz.ColorScale.get_color">
-<code class="descname">get_color</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.ColorScale.get_color" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get color unique to the recieved name</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : string</p>
-<blockquote class="last">
-<div><p>This method returns one color unique to this parameter.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl><dl class="method">
-<dt id="ecell4.util.viz.ColorScale.get_config">
-<code class="descname">get_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.ColorScale.get_config" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get an instance of dic as the config of colors.</p>
-</dd></dl></dd></dl><dl class="function">
+  <div class="section" id="module-ecell4.util.viz">
+<span id="e-cell4-util-viz-api"></span><h1>E-Cell4 util.viz API<a class="headerlink" href="#module-ecell4.util.viz" title="Permalink to this headline">¶</a></h1>
+<p>ecell4.util.viz: Visualizer of particles based on D3.js, THREE.js
+and Elegans.</p>
+<dl class="function">
 <dt id="ecell4.util.viz.generate_html">
 <code class="descclassname">ecell4.util.viz.</code><code class="descname">generate_html</code><span class="sig-paren">(</span><em>keywords</em>, <em>tmpl_path</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.generate_html" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate static html file from JSON model and its own id.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>model</strong> : dict</p>
-<blockquote>
-<div><p>JSON model from which ecell4.viz generates a plot.</p>
-</div></blockquote>
-<p><strong>model_id</strong> : string</p>
-<blockquote>
-<div><p>Unique id for the plot.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">html :</p>
-<blockquote class="last">
-<div><p>A HTML object</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl><dl class="function">
+<dl class="docutils">
+<dt>model <span class="classifier-delimiter">:</span> <span class="classifier">dict</span></dt>
+<dd>JSON model from which ecell4.viz generates a plot.</dd>
+<dt>model_id <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd>Unique id for the plot.</dd>
+</dl>
+<dl class="docutils">
+<dt>html :</dt>
+<dd>A HTML object</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="ecell4.util.viz.plot_dense_array">
-<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_dense_array</code><span class="sig-paren">(</span><em>arr, length=256, ranges=None, colors=['#a6cee3', '#fb9a99'], save_image=False, grid=False</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_dense_array" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_dense_array</code><span class="sig-paren">(</span><em>arr, length=256, ranges=None, colors=['#a6cee3', '#fb9a99'], grid=False, camera_position=(-22, 23, 32), camera_rotation=(-0.6, 0.5, 0.6)</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_dense_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Volume renderer</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>arr</strong> : list of numpy.array</p>
+<dl class="docutils">
+<dt>arr <span class="classifier-delimiter">:</span> <span class="classifier">list of numpy.array</span></dt>
+<dd>i.e. [array([[1,2,3], [2,3,4]]), array([[1,2,3]])]</dd>
+<dt>ranges <span class="classifier-delimiter">:</span> <span class="classifier">list of tuple</span></dt>
+<dd>ranges for x, y, and z axis
+i.e. [(-100, 100), (-100, 100), (-100, 100)]</dd>
+<dt>colors <span class="classifier-delimiter">:</span> <span class="classifier">list of string</span></dt>
+<dd>colors for species</dd>
+<dt>length <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd>length of the texture
+256 or 64</dd>
+</dl>
+<p>camera_position : tuple, default (-22, 23, 32)
+camera_rotaiton : tuple, default (-0.6, 0.5, 0.6)</p>
 <blockquote>
-<div><p>i.e. [array([[1,2,3], [2,3,4]]), array([[1,2,3]])]</p>
-</div></blockquote>
-<p><strong>ranges</strong> : list of tuple</p>
-<blockquote>
-<div><p>ranges for x, y, and z axis
-i.e. [(-100, 100), (-100, 100), (-100, 100)]</p>
-</div></blockquote>
-<p><strong>colors</strong> : list of string</p>
-<blockquote>
-<div><p>colors for species</p>
-</div></blockquote>
-<p><strong>length</strong> : int</p>
-<blockquote class="last">
-<div><p>length of the texture
-256 or 64</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl><dl class="function">
+<div>Initial position and rotation of camera.</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="ecell4.util.viz.plot_movie">
-<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_movie</code><span class="sig-paren">(</span><em>worlds</em>, <em>radius=None</em>, <em>width=500</em>, <em>height=500</em>, <em>config={}</em>, <em>grid=False</em>, <em>species_list=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_movie" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_movie</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_movie" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a movie from received instances of World and show them.
+See also plot_movie_with_elegans and plot_movie_with_matplotlib.</p>
+<dl class="docutils">
+<dt>worlds <span class="classifier-delimiter">:</span> <span class="classifier">list of World</span></dt>
+<dd>Worlds to render.</dd>
+<dt>interactive <span class="classifier-delimiter">:</span> <span class="classifier">bool, default True</span></dt>
+<dd>Choose a visualizer. If False, show the plot with matplotlib.
+If True (only available on IPython Notebook), show it with elegans.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ecell4.util.viz.plot_movie_of_trajectory">
+<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_movie_of_trajectory</code><span class="sig-paren">(</span><em>obs</em>, <em>figsize=6</em>, <em>grid=True</em>, <em>wireframe=False</em>, <em>max_count=None</em>, <em>angle=None</em>, <em>noaxis=False</em>, <em>interval=0.16</em>, <em>repeat_delay=3000</em>, <em>stride=1</em>, <em>rotate=None</em>, <em>legend=True</em>, <em>output=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_movie_of_trajectory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a move from the received list of instances of World,
+and show it on IPython notebook. This function may require ffmpeg.</p>
+<dl class="docutils">
+<dt>worlds <span class="classifier-delimiter">:</span> <span class="classifier">list or FixedIntervalHDF5Observer</span></dt>
+<dd>A list of Worlds to render.</dd>
+<dt>marker_size <span class="classifier-delimiter">:</span> <span class="classifier">float, default 3</span></dt>
+<dd>Marker size for all species. Size is passed to scatter function
+as argument, s=(2 ** marker_size).</dd>
+<dt>figsize <span class="classifier-delimiter">:</span> <span class="classifier">float, default 6</span></dt>
+<dd>Size of the plotting area. Given in inch.</dd>
+<dt>max_count <span class="classifier-delimiter">:</span> <span class="classifier">Integer, default None</span></dt>
+<dd>The maximum number of particles to show for each species.
+None means no limitation.</dd>
+<dt>angle <span class="classifier-delimiter">:</span> <span class="classifier">tuple, default None</span></dt>
+<dd>A tuple of view angle which is given as (azim, elev, dist).
+If None, use default assumed to be (-60, 30, 10).</dd>
+<dt>interval <span class="classifier-delimiter">:</span> <span class="classifier">Integer, default 0.16</span></dt>
+<dd>Parameters for matplotlib.animation.ArtistAnimation.</dd>
+<dt>stride <span class="classifier-delimiter">:</span> <span class="classifier">Integer, default 1</span></dt>
+<dd>Stride per frame.</dd>
+<dt>rotate <span class="classifier-delimiter">:</span> <span class="classifier">tuple, default None</span></dt>
+<dd>A pair of rotation angles, elev and azim, for animation.
+None means no rotation, same as (0, 0).</dd>
+</dl>
+<p>legend : bool, default True
+output : str, default None</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ecell4.util.viz.plot_movie_of_trajectory_with_matplotlib">
+<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_movie_of_trajectory_with_matplotlib</code><span class="sig-paren">(</span><em>obs</em>, <em>figsize=6</em>, <em>grid=True</em>, <em>wireframe=False</em>, <em>max_count=None</em>, <em>angle=None</em>, <em>noaxis=False</em>, <em>interval=0.16</em>, <em>repeat_delay=3000</em>, <em>stride=1</em>, <em>rotate=None</em>, <em>legend=True</em>, <em>output=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_movie_of_trajectory_with_matplotlib" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a move from the received list of instances of World,
+and show it on IPython notebook. This function may require ffmpeg.</p>
+<dl class="docutils">
+<dt>worlds <span class="classifier-delimiter">:</span> <span class="classifier">list or FixedIntervalHDF5Observer</span></dt>
+<dd>A list of Worlds to render.</dd>
+<dt>marker_size <span class="classifier-delimiter">:</span> <span class="classifier">float, default 3</span></dt>
+<dd>Marker size for all species. Size is passed to scatter function
+as argument, s=(2 ** marker_size).</dd>
+<dt>figsize <span class="classifier-delimiter">:</span> <span class="classifier">float, default 6</span></dt>
+<dd>Size of the plotting area. Given in inch.</dd>
+<dt>max_count <span class="classifier-delimiter">:</span> <span class="classifier">Integer, default None</span></dt>
+<dd>The maximum number of particles to show for each species.
+None means no limitation.</dd>
+<dt>angle <span class="classifier-delimiter">:</span> <span class="classifier">tuple, default None</span></dt>
+<dd>A tuple of view angle which is given as (azim, elev, dist).
+If None, use default assumed to be (-60, 30, 10).</dd>
+<dt>interval <span class="classifier-delimiter">:</span> <span class="classifier">Integer, default 0.16</span></dt>
+<dd>Parameters for matplotlib.animation.ArtistAnimation.</dd>
+<dt>stride <span class="classifier-delimiter">:</span> <span class="classifier">Integer, default 1</span></dt>
+<dd>Stride per frame.</dd>
+<dt>rotate <span class="classifier-delimiter">:</span> <span class="classifier">tuple, default None</span></dt>
+<dd>A pair of rotation angles, elev and azim, for animation.
+None means no rotation, same as (0, 0).</dd>
+</dl>
+<p>legend : bool, default True
+output : str, default None</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ecell4.util.viz.plot_movie_with_elegans">
+<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_movie_with_elegans</code><span class="sig-paren">(</span><em>worlds</em>, <em>radius=None</em>, <em>width=500</em>, <em>height=500</em>, <em>config={}</em>, <em>grid=False</em>, <em>species_list=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_movie_with_elegans" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a movie from received instances of World and show them
 on IPython notebook.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>worlds</strong> : list of World</p>
-<blockquote>
-<div><p>Worlds to render.</p>
-</div></blockquote>
-<p><strong>radius</strong> : float, default None</p>
-<blockquote>
-<div><p>If this value is set, all particles in the world will be rendered
-as if their radius are the same.</p>
-</div></blockquote>
-<p><strong>width</strong> : float, default 500</p>
-<blockquote>
-<div><p>Width of the plotting area.</p>
-</div></blockquote>
-<p><strong>height</strong> : float, default 500</p>
-<blockquote>
-<div><p>Height of the plotting area.</p>
-</div></blockquote>
-<p><strong>config</strong> : dict, default {}</p>
-<blockquote>
-<div><p>Dict for configure default colors. Its values are colors unique
-to each speices.
-Colors included in config dict will never be used for other speices.</p>
-</div></blockquote>
-<p><strong>species_list</strong> : array of string, default None</p>
-<blockquote>
-<div><p>If set, plot_movie will not search the list of species</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>cfg</strong> : dict</p>
-<blockquote class="last">
-<div><p>The config data used in this plot.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl><dl class="function">
+<dl class="docutils">
+<dt>worlds <span class="classifier-delimiter">:</span> <span class="classifier">list of World</span></dt>
+<dd>Worlds to render.</dd>
+<dt>radius <span class="classifier-delimiter">:</span> <span class="classifier">float, default None</span></dt>
+<dd>If this value is set, all particles in the world will be rendered
+as if their radius are the same.</dd>
+<dt>width <span class="classifier-delimiter">:</span> <span class="classifier">float, default 500</span></dt>
+<dd>Width of the plotting area.</dd>
+<dt>height <span class="classifier-delimiter">:</span> <span class="classifier">float, default 500</span></dt>
+<dd>Height of the plotting area.</dd>
+<dt>config <span class="classifier-delimiter">:</span> <span class="classifier">dict, default {}</span></dt>
+<dd>Dict for configure default colors. Its values are colors unique
+to each speices. The dictionary will be updated during this plot.
+Colors included in config dict will never be used for other speices.</dd>
+<dt>species_list <span class="classifier-delimiter">:</span> <span class="classifier">array of string, default None</span></dt>
+<dd>If set, plot_movie will not search the list of species</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ecell4.util.viz.plot_movie_with_matplotlib">
+<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_movie_with_matplotlib</code><span class="sig-paren">(</span><em>worlds</em>, <em>marker_size=3</em>, <em>figsize=6</em>, <em>grid=True</em>, <em>wireframe=False</em>, <em>species_list=None</em>, <em>max_count=None</em>, <em>angle=None</em>, <em>noaxis=False</em>, <em>interval=0.16</em>, <em>repeat_delay=3000</em>, <em>stride=1</em>, <em>rotate=None</em>, <em>legend=True</em>, <em>output=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_movie_with_matplotlib" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a move from the received list of instances of World,
+and show it on IPython notebook. This function may require ffmpeg.</p>
+<dl class="docutils">
+<dt>worlds <span class="classifier-delimiter">:</span> <span class="classifier">list or FixedIntervalHDF5Observer</span></dt>
+<dd>A list of Worlds to render.</dd>
+<dt>marker_size <span class="classifier-delimiter">:</span> <span class="classifier">float, default 3</span></dt>
+<dd>Marker size for all species. Size is passed to scatter function
+as argument, s=(2 ** marker_size).</dd>
+<dt>figsize <span class="classifier-delimiter">:</span> <span class="classifier">float, default 6</span></dt>
+<dd>Size of the plotting area. Given in inch.</dd>
+<dt>species_list <span class="classifier-delimiter">:</span> <span class="classifier">array of string, default None</span></dt>
+<dd>If set, plot_world will not search the list of species.</dd>
+<dt>max_count <span class="classifier-delimiter">:</span> <span class="classifier">Integer, default None</span></dt>
+<dd>The maximum number of particles to show for each species.
+None means no limitation.</dd>
+<dt>angle <span class="classifier-delimiter">:</span> <span class="classifier">tuple, default None</span></dt>
+<dd>A tuple of view angle which is given as (azim, elev, dist).
+If None, use default assumed to be (-60, 30, 10).</dd>
+<dt>interval <span class="classifier-delimiter">:</span> <span class="classifier">Integer, default 0.16</span></dt>
+<dd>Parameters for matplotlib.animation.ArtistAnimation.</dd>
+<dt>stride <span class="classifier-delimiter">:</span> <span class="classifier">Integer, default 1</span></dt>
+<dd>Stride per frame.</dd>
+<dt>rotate <span class="classifier-delimiter">:</span> <span class="classifier">tuple, default None</span></dt>
+<dd>A pair of rotation angles, elev and azim, for animation.
+None means no rotation, same as (0, 0).</dd>
+</dl>
+<p>legend : bool, default True
+output : str, default None</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="ecell4.util.viz.plot_number_observer">
 <code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_number_observer</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_number_observer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a plot from NumberObservers and show it.
+See plot_number_observer_with_matplotlib and _with_nya for details.</p>
+<p>obs : NumberObserver (e.g. FixedIntervalNumberObserver)
+interactive : bool, default False</p>
+<blockquote>
+<div>Choose a visualizer. If False, show the plot with matplotlib.
+If True (only available on IPython Notebook), show it with nyaplot.</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_number_observer</span><span class="p">(</span><span class="n">obs1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_number_observer</span><span class="p">(</span><span class="n">obs1</span><span class="p">,</span> <span class="n">interactive</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ecell4.util.viz.plot_number_observer_with_matplotlib">
+<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_number_observer_with_matplotlib</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_number_observer_with_matplotlib" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a plot from NumberObservers and show it on IPython notebook
 with matplotlib.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obs</strong> : NumberObserver (e.g. FixedIntervalNumberObserver)</p>
-<p><strong>fmt</strong> : str, optional</p>
-<p><strong>opt</strong> : dict, optional</p>
-<blockquote class="last">
-<div><p>matplotlib plot options.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Examples</p>
+<p>obs : NumberObserver (e.g. FixedIntervalNumberObserver)
+fmt : str, optional
+opt : dict, optional</p>
+<blockquote>
+<div>matplotlib plot options.</div></blockquote>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_number_observer</span><span class="p">(</span><span class="n">obs1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_number_observer</span><span class="p">(</span><span class="n">obs1</span><span class="p">,</span> <span class="s">&#39;o&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_number_observer</span><span class="p">(</span><span class="n">obs1</span><span class="p">,</span> <span class="n">obs2</span><span class="p">,</span> <span class="n">obs3</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;linewidth&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_number_observer</span><span class="p">(</span><span class="n">obs1</span><span class="p">,</span> <span class="s">&#39;k-&#39;</span><span class="p">,</span> <span class="n">obs2</span><span class="p">,</span> <span class="s">&#39;k--&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</dd></dl><dl class="function">
+</dd></dl>
+
+<dl class="function">
 <dt id="ecell4.util.viz.plot_number_observer_with_nya">
-<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_number_observer_with_nya</code><span class="sig-paren">(</span><em>obs</em>, <em>config={}</em>, <em>width=600</em>, <em>height=400</em>, <em>x=None</em>, <em>y=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_number_observer_with_nya" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_number_observer_with_nya</code><span class="sig-paren">(</span><em>obs</em>, <em>config={}</em>, <em>width=600</em>, <em>height=400</em>, <em>x=None</em>, <em>y=None</em>, <em>to_png=False</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_number_observer_with_nya" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a plot from NumberObservers and show it on IPython notebook
 with nyaplot.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obs</strong> : NumberObserver (e.g. FixedIntervalNumberObserver)</p>
-<p><strong>config</strong> : dict, optional</p>
+<p>obs : NumberObserver (e.g. FixedIntervalNumberObserver)
+config : dict, optional</p>
 <blockquote>
-<div><p>A config data for coloring.</p>
-</div></blockquote>
-<p><strong>width</strong> : int, optional</p>
-<p><strong>height</strong> : int, optional</p>
-<p><strong>x</strong> : str, optional</p>
+<div>A config data for coloring. The dictionary will be updated during this plot.</div></blockquote>
+<p>width : int, optional
+height : int, optional
+x : str, optional</p>
 <blockquote>
-<div><p>A serial for x-axis. If None, x-axis corresponds time.</p>
-</div></blockquote>
-<p><strong>y</strong> : str or list of str</p>
-<blockquote>
-<div><p>Serials for y axis.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>cfg</strong> : dict</p>
-<blockquote class="last">
-<div><p>The config data used in this plot.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl><dl class="function">
+<div>A serial for x-axis. If None, x-axis corresponds time.</div></blockquote>
+<dl class="docutils">
+<dt>y <span class="classifier-delimiter">:</span> <span class="classifier">str or list of str</span></dt>
+<dd>Serials for y axis.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="ecell4.util.viz.plot_trajectory">
-<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_trajectory</code><span class="sig-paren">(</span><em>obs</em>, <em>width=500</em>, <em>height=500</em>, <em>config={}</em>, <em>grid=True</em>, <em>wireframe=False</em>, <em>max_count=10</em>, <em>save_image=False</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_trajectory" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_trajectory</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_trajectory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a plot from received instance of TrajectoryObserver and show it
+See also plot_trajectory_with_elegans and plot_trajectory_with_matplotlib.</p>
+<dl class="docutils">
+<dt>obs <span class="classifier-delimiter">:</span> <span class="classifier">TrajectoryObserver</span></dt>
+<dd>TrajectoryObserver to render.</dd>
+<dt>interactive <span class="classifier-delimiter">:</span> <span class="classifier">bool, default True</span></dt>
+<dd>Choose a visualizer. If False, show the plot with matplotlib.
+If True (only available on IPython Notebook), show it with elegans.</dd>
+</dl>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_trajectory</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_trajectory</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="n">interactive</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ecell4.util.viz.plot_trajectory_with_elegans">
+<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_trajectory_with_elegans</code><span class="sig-paren">(</span><em>obs</em>, <em>width=350</em>, <em>height=350</em>, <em>config={}</em>, <em>grid=True</em>, <em>wireframe=False</em>, <em>max_count=10</em>, <em>camera_position=(-22</em>, <em>23</em>, <em>32)</em>, <em>camera_rotation=(-0.6</em>, <em>0.5</em>, <em>0.6)</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_trajectory_with_elegans" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a plot from received instance of TrajectoryObserver and show it
 on IPython notebook.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obs</strong> : TrajectoryObserver</p>
+<dl class="docutils">
+<dt>obs <span class="classifier-delimiter">:</span> <span class="classifier">TrajectoryObserver</span></dt>
+<dd>TrajectoryObserver to render.</dd>
+<dt>width <span class="classifier-delimiter">:</span> <span class="classifier">float, default 350</span></dt>
+<dd>Width of the plotting area.</dd>
+<dt>height <span class="classifier-delimiter">:</span> <span class="classifier">float, default 350</span></dt>
+<dd>Height of the plotting area.</dd>
+<dt>config <span class="classifier-delimiter">:</span> <span class="classifier">dict, default {}</span></dt>
+<dd>Dict for configure default colors. Its values are colors unique
+to each particle. The dictionary will be updated during this plot.
+Colors included in config dict will never be used for other particles.</dd>
+</dl>
+<p>camera_position : tuple, default (-30, 31, 42)
+camera_rotaiton : tuple, default (-0.6, 0.5, 0.6)</p>
 <blockquote>
-<div><p>TrajectoryObserver to render.</p>
-</div></blockquote>
-<p><strong>width</strong> : float, default 500</p>
-<blockquote>
-<div><p>Width of the plotting area.</p>
-</div></blockquote>
-<p><strong>height</strong> : float, default 500</p>
-<blockquote>
-<div><p>Height of the plotting area.</p>
-</div></blockquote>
-<p><strong>config</strong> : dict, default {}</p>
-<blockquote>
-<div><p>Dict for configure default colors. Its values are colors unique
-to each particle.
-Colors included in config dict will never be used for other particles.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>cfg</strong> : dict</p>
-<blockquote class="last">
-<div><p>The config data used in this plot.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl><dl class="function">
+<div>Initial position and rotation of camera.</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="ecell4.util.viz.plot_trajectory_with_matplotlib">
+<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_trajectory_with_matplotlib</code><span class="sig-paren">(</span><em>obs</em>, <em>max_count=10</em>, <em>figsize=6</em>, <em>legend=True</em>, <em>angle=None</em>, <em>wireframe=False</em>, <em>grid=True</em>, <em>noaxis=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_trajectory_with_matplotlib" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a plot from received instance of TrajectoryObserver and show it
+on IPython notebook.</p>
+<dl class="docutils">
+<dt>obs <span class="classifier-delimiter">:</span> <span class="classifier">TrajectoryObserver</span></dt>
+<dd>TrajectoryObserver to render.</dd>
+<dt>max_count <span class="classifier-delimiter">:</span> <span class="classifier">Integer, default 10</span></dt>
+<dd>The maximum number of particles to show. If None, show all.</dd>
+<dt>figsize <span class="classifier-delimiter">:</span> <span class="classifier">float, default 6</span></dt>
+<dd>Size of the plotting area. Given in inch.</dd>
+<dt>angle <span class="classifier-delimiter">:</span> <span class="classifier">tuple, default None</span></dt>
+<dd>A tuple of view angle which is given as (azim, elev, dist).
+If None, use default assumed to be (-60, 30, 10).</dd>
+</dl>
+<p>legend : bool, default True</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="ecell4.util.viz.plot_world">
-<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_world</code><span class="sig-paren">(</span><em>world</em>, <em>radius=None</em>, <em>width=500</em>, <em>height=500</em>, <em>config={}</em>, <em>grid=True</em>, <em>save_image=False</em>, <em>wireframe=False</em>, <em>species_list=None</em>, <em>debug=None</em>, <em>max_count=1000</em>, <em>predicator=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_world" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_world</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_world" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a plot from received instance of World and show it.
+See also plot_world_with_elegans and plot_world_with_matplotlib.</p>
+<dl class="docutils">
+<dt>world <span class="classifier-delimiter">:</span> <span class="classifier">World or str</span></dt>
+<dd>World or a HDF5 filename to render.</dd>
+<dt>interactive <span class="classifier-delimiter">:</span> <span class="classifier">bool, default True</span></dt>
+<dd>Choose a visualizer. If False, show the plot with matplotlib.
+If True (only available on IPython Notebook), show it with elegans.</dd>
+</dl>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_world</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_world</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">interactive</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ecell4.util.viz.plot_world_with_elegans">
+<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_world_with_elegans</code><span class="sig-paren">(</span><em>world</em>, <em>radius=None</em>, <em>width=350</em>, <em>height=350</em>, <em>config={}</em>, <em>grid=True</em>, <em>wireframe=False</em>, <em>species_list=None</em>, <em>debug=None</em>, <em>max_count=1000</em>, <em>camera_position=(-22</em>, <em>23</em>, <em>32)</em>, <em>camera_rotation=(-0.6</em>, <em>0.5</em>, <em>0.6)</em>, <em>return_id=False</em>, <em>predicator=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_world_with_elegans" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a plot from received instance of World and show it on IPython notebook.
 This method returns the instance of dict that indicates color setting
 for each speices. You can use the dict as the parameter of plot_world,
 in order to use the same colors in another plot.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>world</strong> : World</p>
-<blockquote>
-<div><p>World to render.</p>
-</div></blockquote>
-<p><strong>radius</strong> : float, default None</p>
-<blockquote>
-<div><p>If this value is set, all particles in the world will be rendered
-as if their radius are the same.</p>
-</div></blockquote>
-<p><strong>width</strong> : float, default 500</p>
-<blockquote>
-<div><p>Width of the plotting area.</p>
-</div></blockquote>
-<p><strong>height</strong> : float, default 500</p>
-<blockquote>
-<div><p>Height of the plotting area.</p>
-</div></blockquote>
-<p><strong>config</strong> : dict, default {}</p>
-<blockquote>
-<div><p>Dict for configure default colors. Its values are colors unique
-to each speices.
-Colors included in config dict will never be used for other speices.</p>
-</div></blockquote>
-<p><strong>species_list</strong> : array of string, default None</p>
-<blockquote>
-<div><p>If set, plot_world will not search the list of species.</p>
-</div></blockquote>
-<p><strong>debug</strong> : array of dict, default []</p>
-<blockquote>
-<div><p><strong>* EXPERIMENTAL IMPRIMENTATION *</strong>
+<dl class="docutils">
+<dt>world <span class="classifier-delimiter">:</span> <span class="classifier">World or str</span></dt>
+<dd>World or a HDF5 filename to render.</dd>
+<dt>radius <span class="classifier-delimiter">:</span> <span class="classifier">float, default None</span></dt>
+<dd>If this value is set, all particles in the world will be rendered
+as if their radius are the same.</dd>
+<dt>width <span class="classifier-delimiter">:</span> <span class="classifier">float, default 350</span></dt>
+<dd>Width of the plotting area.</dd>
+<dt>height <span class="classifier-delimiter">:</span> <span class="classifier">float, default 350</span></dt>
+<dd>Height of the plotting area.</dd>
+<dt>config <span class="classifier-delimiter">:</span> <span class="classifier">dict, default {}</span></dt>
+<dd>Dict for configure default colors. Its values are colors unique
+to each speices. The dictionary will be updated during this plot.
+Colors included in config dict will never be used for other speices.</dd>
+<dt>species_list <span class="classifier-delimiter">:</span> <span class="classifier">array of string, default None</span></dt>
+<dd>If set, plot_world will not search the list of species.</dd>
+<dt>max_count <span class="classifier-delimiter">:</span> <span class="classifier">Integer, default 1000</span></dt>
+<dd>The maximum number of particles to show for each species.</dd>
+<dt>debug <span class="classifier-delimiter">:</span> <span class="classifier">array of dict, default []</span></dt>
+<dd><p class="first"><strong>* EXPERIMENTAL IMPRIMENTATION *</strong>
 Example:
 &gt;&gt; [{&#8216;type&#8217;: &#8216;box&#8217;, &#8216;x&#8217;: 10, &#8216;y&#8217;: 10, &#8216;z&#8217;: 10, &#8216;options&#8217;: {&#8216;width&#8217;: 1, &#8216;height&#8217;: 1}}]
 type: &#8216;box&#8217;, &#8216;plane&#8217;, &#8216;sphere&#8217;, and &#8216;cylinder&#8217;
 x, y, z: float
 options:</p>
-<blockquote>
-<div><p>box: width, height, depth
+<blockquote class="last">
+<div>box: width, height, depth
 plane: width, height
 sphere: radius
-cylinder: radius, height</p>
-</div></blockquote>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>cfg</strong> : dict</p>
-<blockquote class="last">
-<div><p>The config data used in this plot.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+cylinder: radius, height</div></blockquote>
+</dd>
+</dl>
+<p>camera_position : tuple, default (-22, 23, 32)
+camera_rotaiton : tuple, default (-0.6, 0.5, 0.6)</p>
+<blockquote>
+<div>Initial position and rotation of camera.</div></blockquote>
+<dl class="docutils">
+<dt>return_id <span class="classifier-delimiter">:</span> <span class="classifier">bool, default False</span></dt>
+<dd>If True, return a model id, which is required for <cite>to_png</cite> function.</dd>
+</dl>
 </dd></dl>
+
+<dl class="function">
+<dt id="ecell4.util.viz.plot_world_with_matplotlib">
+<code class="descclassname">ecell4.util.viz.</code><code class="descname">plot_world_with_matplotlib</code><span class="sig-paren">(</span><em>world</em>, <em>marker_size=3</em>, <em>figsize=6</em>, <em>grid=True</em>, <em>wireframe=False</em>, <em>species_list=None</em>, <em>max_count=1000</em>, <em>angle=None</em>, <em>legend=True</em>, <em>noaxis=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.util.viz.plot_world_with_matplotlib" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a plot from received instance of World and show it on IPython notebook.</p>
+<dl class="docutils">
+<dt>world <span class="classifier-delimiter">:</span> <span class="classifier">World or str</span></dt>
+<dd>World to render. A HDF5 filename is also acceptable.</dd>
+<dt>marker_size <span class="classifier-delimiter">:</span> <span class="classifier">float, default 3</span></dt>
+<dd>Marker size for all species. Size is passed to scatter function
+as argument, s=(2 ** marker_size).</dd>
+<dt>figsize <span class="classifier-delimiter">:</span> <span class="classifier">float, default 6</span></dt>
+<dd>Size of the plotting area. Given in inch.</dd>
+<dt>species_list <span class="classifier-delimiter">:</span> <span class="classifier">array of string, default None</span></dt>
+<dd>If set, plot_world will not search the list of species.</dd>
+<dt>max_count <span class="classifier-delimiter">:</span> <span class="classifier">Integer, default 1000</span></dt>
+<dd>The maximum number of particles to show for each species.
+None means no limitation.</dd>
+<dt>angle <span class="classifier-delimiter">:</span> <span class="classifier">tuple, default None</span></dt>
+<dd>A tuple of view angle which is given as (azim, elev, dist).
+If None, use default assumed to be (-60, 30, 10).</dd>
+</dl>
+<p>legend : bool, default True</p>
+</dd></dl>
+
+</div>
+
 
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="util.decorator.html" class="btn btn-neutral float-right" title="E-Cell4 util.decorator API" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="util.html" class="btn btn-neutral" title="E-Cell4 util API" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
