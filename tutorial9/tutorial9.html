@@ -1,0 +1,512 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>9. Spatial Gillespie Method &mdash; E-Cell 4.0.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="E-Cell 4.0.0 documentation" href="../index.html"/>
+        <link rel="next" title="10. Spatiocyte Simulations at Single-Molecule Resolution" href="../tutorial10/tutorial10.html"/>
+        <link rel="prev" title="8. More about 1. Brief Tour of E-Cell4 Simulations" href="../tutorial8/tutorial8.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> E-Cell
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html#installation-and-usage">Installation and usage</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorial1/tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial2/tutorial2.html">2. How to Build a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial3/tutorial3.html">3. How to Setup the Initial Condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial4/tutorial4.html">4. How to Run a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial5/tutorial5.html">5. How to Log and Visualize Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial6/tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial7/tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial8/tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">9. Spatial Gillespie Method</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#spaces-in-e-cell4">9.1. Spaces in E-Cell4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">9.2. Spatial Gillespie Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#defining-molecular-diffusion-coefficient">9.3. Defining Molecular Diffusion Coefficient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#molecular-localization">9.4. Molecular localization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#molecular-initial-location-and-the-reaction">9.5. Molecular initial location and the reaction</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial10/tutorial10.html">10. Spatiocyte Simulations at Single-Molecule Resolution</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/core.html">E-Cell4 core API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/gillespie.html">E-Cell4 gillespie API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/ode.html">E-Cell4 ode API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/meso.html">E-Cell4 meso API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/spatiocyte.html">E-Cell4 spatiocyte API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/bd.html">E-Cell4 bd API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/egfrd.html">E-Cell4 egfrd API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util.html">E-Cell4 util API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util.viz.html">E-Cell4 util.viz API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util.decorator.html">E-Cell4 util.decorator API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Attractors/Attractors.html">Attractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Drosophila/Drosophila.html">Drosophila Circadian Clock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DualPhospho/DualPhospho.html">Dual Phosphorylation Cycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glycolysis/Glycolysis.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HodgkinHuxley/HodgkinHuxley.html">Hodgkin-Huxley Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HodgkinHuxley/HodgkinHuxley.html#fitzhughnagumo-model">FitzHugh–Nagumo Model</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">E-Cell</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>9. Spatial Gillespie Method</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/tutorial9/tutorial9.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="spatial-gillespie-method">
+<h1>9. Spatial Gillespie Method<a class="headerlink" href="#spatial-gillespie-method" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="spaces-in-e-cell4">
+<h2>9.1. Spaces in E-Cell4<a class="headerlink" href="#spaces-in-e-cell4" title="Permalink to this headline">¶</a></h2>
+<p>What the space in E-Cell4 looks like?</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ecell4</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">w1</span> <span class="o">=</span> <span class="n">ode</span><span class="o">.</span><span class="n">ODEWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">w2</span> <span class="o">=</span> <span class="n">gillespie</span><span class="o">.</span><span class="n">GillespieWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We created a cube size, <code class="docutils literal"><span class="pre">1</span></code>, on a side for <code class="docutils literal"><span class="pre">ODEWorld</span></code> and
+<code class="docutils literal"><span class="pre">GillespieWorld</span></code>. In this case the volume only matters, that is</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">w3</span> <span class="o">=</span> <span class="n">ode</span><span class="o">.</span><span class="n">ODEWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># is almost equivalent to &#39;w1&#39;</span>
+<span class="n">w4</span> <span class="o">=</span> <span class="n">gillespie</span><span class="o">.</span><span class="n">GillespieWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">))</span>  <span class="c1"># is almost equivalent to &#39;w2&#39;</span>
+</pre></div>
+</div>
+<p>This returns the same results. Because the volume is same as <code class="docutils literal"><span class="pre">1</span></code>.</p>
+<p>This seems reasonable in homogeneous system, but the cell is NOT
+homogeneous. So we need to consider a space for molecular localization.</p>
+<p>You can use several types of space and simulation methods in E-Cell4. We
+show an example with spatial Gillespie method here.</p>
+</div>
+<div class="section" id="id1">
+<h2>9.2. Spatial Gillespie Method<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>In E-Cell4, the Spatial Gillespie method is included in <code class="docutils literal"><span class="pre">meso</span></code> module.
+Let&#8217;s start with <code class="docutils literal"><span class="pre">run_simulation</span></code> like <code class="docutils literal"><span class="pre">ode</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+import numpy
+from ecell4 import *
+
+with reaction_rules():
+    A + B == C | (0.01, 0.3)
+
+y = run_simulation(numpy.linspace(0, 10, 100), {&#39;C&#39;: 60}, solver=&#39;meso&#39;)
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>/Users/knishida/Library/Python/2.7/lib/python/site-packages/matplotlib/font_manager.py:273: UserWarning: Matplotlib is building the font cache using fc-list. This may take a moment.
+  warnings.warn(&#39;Matplotlib is building the font cache using fc-list. This may take a moment.&#39;)
+</pre></div>
+</div>
+<img alt="../_images/output_6_11.png" src="../_images/output_6_11.png" />
+<p>At the steady state, the number of <code class="docutils literal"><span class="pre">C</span></code> is given as follows:</p>
+<div class="math">
+<p><img src="../_images/math/e1afcdee8835bdaaa7b28fb49fa6efbfe19055dc.png" alt="\frac{d\mathrm{C}}{dt}=0.01{\cdot}\frac{\mathrm{A}}{V}{\cdot}\frac{\mathrm{B}}{V}-0.3{\cdot}\frac{\mathrm{C}}{V}=0\\
+0.01\left(60-\mathrm{C}\right)^2=0.3\mathrm{C}\times V\\
+\mathrm{C}=30."/></p>
+</div><p>You will obtain almost the same result with <code class="docutils literal"><span class="pre">ode</span></code> or <code class="docutils literal"><span class="pre">gillespie</span></code>
+(may take longer time than <code class="docutils literal"><span class="pre">ode</span></code> or <code class="docutils literal"><span class="pre">gillespie</span></code>). This is not
+surprising because <code class="docutils literal"><span class="pre">meso</span></code> module is almost same with Gillespie unless
+you give additional spatial parameter.</p>
+<p>Next we will decompose <code class="docutils literal"><span class="pre">run_simulation</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ecell4</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">with</span> <span class="n">reaction_rules</span><span class="p">():</span>
+    <span class="n">A</span> <span class="o">+</span> <span class="n">B</span> <span class="o">==</span> <span class="n">C</span> <span class="o">|</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># XXX: Point2</span>
+<span class="n">w</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>  <span class="c1"># XXX: Point1</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">),</span> <span class="mi">60</span><span class="p">)</span>
+
+<span class="n">sim</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicSimulator</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>  <span class="c1"># XXX: Point1</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">FixedIntervalNumberObserver</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">obs</span><span class="p">)</span>
+
+<span class="n">viz</span><span class="o">.</span><span class="n">plot_number_observer</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/output_9_01.png" src="../_images/output_9_01.png" />
+<p>This is nothing out of the ordinary one except for <code class="docutils literal"><span class="pre">MesoscopicWorld</span></code>
+and <code class="docutils literal"><span class="pre">MesoscopicSimulator</span></code>, but you can see some new elements.</p>
+<p>First in <code class="docutils literal"><span class="pre">w.bind_to(m)</span></code> we asscociated a <code class="docutils literal"><span class="pre">Model</span></code> to the <code class="docutils literal"><span class="pre">World</span></code>.
+In the basic exercises before, we did NOT do this. In spatial methods,
+<code class="docutils literal"><span class="pre">Species</span></code> attributes are necessary. Do not forget to call this. After
+that, only the <code class="docutils literal"><span class="pre">World</span></code> is required to create a
+<code class="docutils literal"><span class="pre">MesoscopicSimulator</span></code>.</p>
+<p>Next, the important difference is the second argument for
+MesoscopicWorld, i.e. <code class="docutils literal"><span class="pre">Integer3(1,</span> <span class="pre">1,</span> <span class="pre">1)</span></code>. <code class="docutils literal"><span class="pre">ODEWorld</span></code> and
+<code class="docutils literal"><span class="pre">GillespieWorld</span></code> do NOT have this second argument. Before we explain
+this, let&#8217;s change this argument and run the simulation again.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ecell4</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">with</span> <span class="n">reaction_rules</span><span class="p">():</span>
+    <span class="n">A</span> <span class="o">+</span> <span class="n">B</span> <span class="o">==</span> <span class="n">C</span> <span class="o">|</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># XXX: Point2</span>
+<span class="n">w</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>  <span class="c1"># XXX: Point1</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">),</span> <span class="mi">60</span><span class="p">)</span>
+
+<span class="n">sim</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicSimulator</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>  <span class="c1"># XXX: Point1</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">FixedIntervalNumberObserver</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">obs</span><span class="p">)</span>
+
+<span class="n">viz</span><span class="o">.</span><span class="n">plot_number_observer</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/output_11_01.png" src="../_images/output_11_01.png" />
+<div class="line-block">
+<div class="line">You must have the different plot. If you increase value in the
+<code class="docutils literal"><span class="pre">Integer3</span></code>, you will have more different one.</div>
+<div class="line">Actually this second argument means the number of spatical partitions.
+<code class="docutils literal"><span class="pre">meso</span></code> is almost same with <code class="docutils literal"><span class="pre">gillespie</span></code>, but <code class="docutils literal"><span class="pre">meso</span></code> divides the
+space into cuboids (we call these cuboids subvolumes) and each
+subvolume has different molecular concentration by contrast
+<code class="docutils literal"><span class="pre">gillespie</span></code> has only one uniform closed space. So in the preceding
+example, we divided <code class="docutils literal"><span class="pre">1</span></code> cube with sides <code class="docutils literal"><span class="pre">1</span></code> into <code class="docutils literal"><span class="pre">64</span></code> (4x4x4)
+cubes with sides <code class="docutils literal"><span class="pre">0.25</span></code>. We threw 60 <code class="docutils literal"><span class="pre">C</span></code> molecules into the
+<code class="docutils literal"><span class="pre">World</span></code>. Thus, each <code class="docutils literal"><span class="pre">subvolume</span></code> has 1 species at most.</div>
+</div>
+</div>
+<div class="section" id="defining-molecular-diffusion-coefficient">
+<h2>9.3. Defining Molecular Diffusion Coefficient<a class="headerlink" href="#defining-molecular-diffusion-coefficient" title="Permalink to this headline">¶</a></h2>
+<p>Where the difference is coming from? This is because we do NOT consider
+molecular diffusion coefficient, although we got a space with <code class="docutils literal"><span class="pre">meso</span></code>.
+To setup diffusion coefficient, use <code class="docutils literal"><span class="pre">Species</span></code> attribute <code class="docutils literal"><span class="pre">'D'</span></code> in the
+way described before (<a class="reference external" href="2.%20How%20to%20Build%20a%20Model.ipynb">2. How to Build a
+Model</a>). As shown in <a class="reference external" href="1.%20Brief%20Tour%20of%20E-Cell4%20Simulations.ipynb">1.
+Brief Tour of E-Cell4
+Simulations</a>,
+we use E-Cell4 special notation here.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">species_attributes</span><span class="p">():</span>
+    <span class="n">A</span> <span class="o">|</span> <span class="p">{</span><span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">}</span>
+    <span class="n">B</span> <span class="o">|</span> <span class="p">{</span><span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">}</span>
+    <span class="n">C</span> <span class="o">|</span> <span class="p">{</span><span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">}</span>
+
+    <span class="c1"># A | B | C | {&#39;D&#39;: &#39;1&#39;}  # means the same as above</span>
+
+<span class="n">get_model</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>&lt;ecell4.core.NetworkModel at 0x10cddd2d0&gt;
+</pre></div>
+</div>
+<p>You can setup diffusion coefficient with <code class="docutils literal"><span class="pre">with</span> <span class="pre">species_attributes():</span></code>
+statement. Here we set all the diffusion coefficient as <code class="docutils literal"><span class="pre">1</span></code>. Let&#8217;s
+simulate this model again. Now you must have the almost same result with
+<code class="docutils literal"><span class="pre">gillespie</span></code> even with large <code class="docutils literal"><span class="pre">Integer3</span></code> value (the simulation will
+takes much longer than <code class="docutils literal"><span class="pre">gillespie</span></code>).</p>
+<p>How did the molecular diffusion work for the problem? Think about free
+diffusion (the diffusion coefficient of a Species is <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/>) in 3D
+space. The unit of diffusion coefficient is the square of length divided
+by time like <img class="math" src="../_images/math/21cec1fbce0c36e754d109ba725a6b284a71782f.png" alt="\mathrm{\mu m}^2/s"/> or <img class="math" src="../_images/math/2e4485fa5e7ffdcb1b1ddbef07a3a5e085175e19.png" alt="\mathrm{nm}^2/\mu s"/>.</p>
+<p>It is known that the average of the square of point distance from time
+<img class="math" src="../_images/math/74c081db590f3d35421c1f6b9afd4cdda36ee210.png" alt="0"/> to <img class="math" src="../_images/math/ef9270877405055756d345facd044e4ab297f858.png" alt="t"/> is equal to <img class="math" src="../_images/math/a630d4d6bc73c519c11d0f4976baf1d247baf822.png" alt="6Dt"/>. Conversely the average
+of the time scale in a space with length scale <img class="math" src="../_images/math/d99efde75c84ef402a92cd4497530d2366fb112f.png" alt="l"/> is about
+<img class="math" src="../_images/math/6a56490e9c5696bfe02e72d36778a240834101e5.png" alt="l^2/6D"/>.</p>
+<p>In the above case, the size of each subvolume is 0.25 and the diffusion
+coefficient is 1. Thus the time scale is about 0.01 sec. If the
+molecules of the <code class="docutils literal"><span class="pre">Species</span></code> <code class="docutils literal"><span class="pre">A</span></code> and <code class="docutils literal"><span class="pre">B</span></code> are in the same subvolume,
+it takes about 1.5 sec to react, so in most cases the diffusion is
+faster than the reaction and the molecules move to other subvolume even
+dissociated in the same subvolume. The smaller <img class="math" src="../_images/math/d99efde75c84ef402a92cd4497530d2366fb112f.png" alt="l"/>, the smaller
+subvolume&#8217;s volume <img class="math" src="../_images/math/71a91360a41359eec43b92968185ead831e3a0f3.png" alt="l^3"/>, so the reaction rate after dissociation
+is faster, and the time of the diffusion and the transition between the
+subvolume gets smaller too.</p>
+</div>
+<div class="section" id="molecular-localization">
+<h2>9.4. Molecular localization<a class="headerlink" href="#molecular-localization" title="Permalink to this headline">¶</a></h2>
+<p>We have used <code class="docutils literal"><span class="pre">add_molecules</span></code> function to add molecules to <code class="docutils literal"><span class="pre">World</span></code> in
+the same manner as <code class="docutils literal"><span class="pre">ode</span></code> or <code class="docutils literal"><span class="pre">gillespie</span></code>. Meanwhile in
+<code class="docutils literal"><span class="pre">MesoscopicWorld</span></code>, you can put in molecules according to the spatial
+presentation.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ecell4</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">),</span> <span class="mi">120</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">),</span> <span class="mi">120</span><span class="p">,</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>In <code class="docutils literal"><span class="pre">MesoscopicWorld</span></code>, you can set the subvolume and the molecule
+locations by giving the third argument <code class="docutils literal"><span class="pre">Integer3</span></code> to
+<code class="docutils literal"><span class="pre">add_molecules</span></code>. In the above example, the molecule type <code class="docutils literal"><span class="pre">A</span></code> spreads
+all over the space, but the molecule type <code class="docutils literal"><span class="pre">B</span></code> only locates in a
+subvolume at the center of the volume. To check this, use
+<code class="docutils literal"><span class="pre">num_molecules</span></code> function with a coordinate.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">)))</span>  <span class="c1"># must print 120</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">),</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>  <span class="c1"># must print 0</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">),</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>  <span class="c1"># must print 120</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">120</span>
+<span class="mi">0</span>
+<span class="mi">120</span>
+</pre></div>
+</div>
+<p>Furthermore, if you have IPython Notebook environment, you can visualize
+the molecular localization with <code class="docutils literal"><span class="pre">ecell4.viz</span></code> module.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c1"># viz.plot_world(w, radius=0.01)</span>
+<span class="n">viz</span><span class="o">.</span><span class="n">plot_world</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">interactive</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/output_22_02.png" src="../_images/output_22_02.png" />
+<p><code class="docutils literal"><span class="pre">viz.plot_world</span></code> function visualize the location of the molecules in
+IPython Notebook cell by giving the <code class="docutils literal"><span class="pre">World</span></code>. You can set the molecule
+size with <code class="docutils literal"><span class="pre">radius</span></code>. Now you can set the molecular localization to the
+<code class="docutils literal"><span class="pre">World</span></code>, next let&#8217;s simulate this. In the above example, we set the
+diffusion coefficient 1 and the World side 1, so 10 seconds is enough to
+stir this. After the simulation, check the result with calling
+<code class="docutils literal"><span class="pre">viz.plot_world</span></code> again.</p>
+</div>
+<div class="section" id="molecular-initial-location-and-the-reaction">
+<h2>9.5. Molecular initial location and the reaction<a class="headerlink" href="#molecular-initial-location-and-the-reaction" title="Permalink to this headline">¶</a></h2>
+<p>This is an extreme example to check how the molecular localization
+affects the reaction.</p>
+<div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+from ecell4 import *
+
+with species_attributes():
+    A | B | C | {&#39;D&#39;: &#39;1&#39;}
+
+with reaction_rules():
+    A + B &gt; C | 0.01
+
+m = get_model()
+w = meso.MesoscopicWorld(Real3(10, 1, 1), Integer3(10, 1, 1))
+w.bind_to(m)
+</pre></div>
+</div>
+<p>This model consists only of a simple binding reaction. The <code class="docutils literal"><span class="pre">World</span></code> is
+a long x axis cuboid, and molecules are located off-center.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">),</span> <span class="mi">1200</span><span class="p">,</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">),</span> <span class="mi">1200</span><span class="p">,</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="c1"># viz.plot_world(w, radius=0.025)</span>
+<span class="n">viz</span><span class="o">.</span><span class="n">plot_world</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">interactive</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/output_27_0.png" src="../_images/output_27_0.png" />
+<p>On a different note, there is a reason not to set <code class="docutils literal"><span class="pre">Integer3(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>
+or <code class="docutils literal"><span class="pre">Integer3(9,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>. In E-Cell4, basically we adopt periodic
+boundary condition for everything. So the forementioned two subvolumes
+are actually adjoining.</p>
+<p>After realizing the location expected, simulate it with
+<code class="docutils literal"><span class="pre">MesoscopicSimulator</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sim</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicSimulator</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+<span class="n">obs1</span> <span class="o">=</span> <span class="n">NumberObserver</span><span class="p">((</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>  <span class="c1"># XXX: saves the numbers after every steps</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">obs1</span><span class="p">)</span>
+<span class="n">viz</span><span class="o">.</span><span class="n">plot_number_observer</span><span class="p">(</span><span class="n">obs1</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/output_29_01.png" src="../_images/output_29_01.png" />
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c1"># viz.plot_world(w, radius=0.025)</span>
+<span class="n">viz</span><span class="o">.</span><span class="n">plot_world</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">interactive</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/output_30_01.png" src="../_images/output_30_01.png" />
+<p>To check the effect of initial coordinates, we recommend that you locate
+the molecules homogeneously with <code class="docutils literal"><span class="pre">meso</span></code> or simulate with
+<code class="docutils literal"><span class="pre">gillespie</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">w</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">w</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">),</span> <span class="mi">1200</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">),</span> <span class="mi">1200</span><span class="p">)</span>
+
+<span class="n">sim</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicSimulator</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+<span class="n">obs2</span> <span class="o">=</span> <span class="n">NumberObserver</span><span class="p">((</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>  <span class="c1"># XXX: saves the numbers after every steps</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">obs2</span><span class="p">)</span>
+<span class="n">viz</span><span class="o">.</span><span class="n">plot_number_observer</span><span class="p">(</span><span class="n">obs1</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">obs2</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/output_32_01.png" src="../_images/output_32_01.png" />
+<p>The solid line is biased case, and the dash line is non-biased. The
+biased reaction is obviously slow. And you may notice that the shape of
+time-series is also different between the solid and dash lines. This is
+because it takes some time for the molecule <code class="docutils literal"><span class="pre">A</span></code> and <code class="docutils literal"><span class="pre">B</span></code> to collide
+due to the initial separation. Actually it takes
+<img class="math" src="../_images/math/566a0db004c437f8ea8adbc739d8f18cb95bfbd5.png" alt="4^2/2(D_\mathrm{A}+D_\mathrm{B})=4"/> seconds to move the initial
+distance between <code class="docutils literal"><span class="pre">A</span></code> and <code class="docutils literal"><span class="pre">B</span></code> (about 4).</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../tutorial10/tutorial10.html" class="btn btn-neutral float-right" title="10. Spatiocyte Simulations at Single-Molecule Resolution" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../tutorial8/tutorial8.html" class="btn btn-neutral" title="8. More about 1. Brief Tour of E-Cell4 Simulations" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, E-Cell project.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'4.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

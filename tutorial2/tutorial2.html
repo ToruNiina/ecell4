@@ -83,6 +83,7 @@
             
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html#installation-and-usage">Installation and usage</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../tutorial1/tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
@@ -95,9 +96,12 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial3/tutorial3.html">3. How to Setup the Initial Condition</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial4/tutorial4.html">4. How to Run a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial5/tutorial5.html">5. How to Log and Visualize Simulations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial6/tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial7/tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial8/tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial9/tutorial9.html">9. Spatial Gillespie Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial10/tutorial10.html">10. Spatiocyte Simulations at Single-Molecule Resolution</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../api/core.html">E-Cell4 core API</a></li>
@@ -112,16 +116,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/util.decorator.html">E-Cell4 util.decorator API</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../Attractors.html">Attractors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../DrosophilaCircadianClock.html">Drosophila Circadian Clock</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dpc.html">Dual Phosphorylation Cycle</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HumanErythrocytes.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../WorldSimBasics.html">World and Simulator with ODE solver</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Meso.html">Meso</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Spatiocyte.html">Spatiocyte simulations with single-molecule resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Attractors/Attractors.html">Attractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Drosophila/Drosophila.html">Drosophila Circadian Clock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DualPhospho/DualPhospho.html">Dual Phosphorylation Cycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glycolysis/Glycolysis.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HodgkinHuxley/HodgkinHuxley.html">Hodgkin-Huxley Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HodgkinHuxley/HodgkinHuxley.html#fitzhughnagumo-model">FitzHugh–Nagumo Model</a></li>
 </ul>
 
             
@@ -183,7 +183,7 @@ from ecell4 import *
 <div class="section" id="species">
 <h2>2.1. Species<a class="headerlink" href="#species" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal"><span class="pre">Species</span></code> can be generated with its name:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">sp1</span><span class="o">.</span><span class="n">serial</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -192,14 +192,14 @@ from ecell4 import *
 </div>
 <p>A name of <code class="docutils literal"><span class="pre">Species</span></code> (called <code class="docutils literal"><span class="pre">serial</span></code>) has a number of naming rules.
 It requires attention to use special symbols (e.g. parenthesis <code class="docutils literal"><span class="pre">()</span></code>,
-dot <code class="docutils literal"><span class="pre">.</span></code>, underbar <code class="docutils literal"><span class="pre">_</span></code>, numbers and brank.</p>
+dot <code class="docutils literal"><span class="pre">.</span></code>, underbar <code class="docutils literal"><span class="pre">_</span></code>), numbers and brank.</p>
 <p><code class="docutils literal"><span class="pre">Species</span></code> has a set of APIs for handling its attributes:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s">&quot;radius&quot;</span><span class="p">,</span> <span class="s">&quot;0.005&quot;</span><span class="p">)</span>
-<span class="n">sp1</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">)</span>
-<span class="n">sp1</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s">&quot;location&quot;</span><span class="p">,</span> <span class="s">&quot;cytoplasm&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">sp1</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">&quot;radius&quot;</span><span class="p">))</span>
-<span class="n">sp1</span><span class="o">.</span><span class="n">remove_attribute</span><span class="p">(</span><span class="s">&quot;radius&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">sp1</span><span class="o">.</span><span class="n">has_attribute</span><span class="p">(</span><span class="s">&quot;radius&quot;</span><span class="p">))</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s2">&quot;radius&quot;</span><span class="p">,</span> <span class="s2">&quot;0.005&quot;</span><span class="p">)</span>
+<span class="n">sp1</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>
+<span class="n">sp1</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="s2">&quot;cytoplasm&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sp1</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s2">&quot;radius&quot;</span><span class="p">))</span>
+<span class="n">sp1</span><span class="o">.</span><span class="n">remove_attribute</span><span class="p">(</span><span class="s2">&quot;radius&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sp1</span><span class="o">.</span><span class="n">has_attribute</span><span class="p">(</span><span class="s2">&quot;radius&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="mf">0.005</span>
@@ -210,12 +210,12 @@ dot <code class="docutils literal"><span class="pre">.</span></code>, underbar <
 value. Both of them have to be string. There is a shortcut to set the
 attributes above at once because <code class="docutils literal"><span class="pre">radius</span></code>, <code class="docutils literal"><span class="pre">D</span></code> (a diffusion
 coefficient) and <code class="docutils literal"><span class="pre">location</span></code> are frequently used.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;0.005&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">,</span> <span class="s">&quot;cytoplasm&quot;</span><span class="p">)</span>  <span class="c"># serial, radius, D, location</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;0.005&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;cytoplasm&quot;</span><span class="p">)</span>  <span class="c1"># serial, radius, D, location</span>
 </pre></div>
 </div>
 <p>The equality between <code class="docutils literal"><span class="pre">Species</span></code> is just evaluated based on their
 serial:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">))</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
@@ -223,25 +223,25 @@ serial:</p>
 </div>
 <p>A Species consists of one or more UnitSpecies:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">()</span>
-<span class="n">usp1</span> <span class="o">=</span> <span class="n">UnitSpecies</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">)</span>
+<span class="n">usp1</span> <span class="o">=</span> <span class="n">UnitSpecies</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">usp1</span><span class="o">.</span><span class="n">serial</span><span class="p">())</span>
 <span class="n">sp1</span><span class="o">.</span><span class="n">add_unit</span><span class="p">(</span><span class="n">usp1</span><span class="p">)</span>
-<span class="n">sp1</span><span class="o">.</span><span class="n">add_unit</span><span class="p">(</span><span class="n">UnitSpecies</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">))</span>
-<span class="n">sp1</span><span class="o">.</span><span class="n">add_unit</span><span class="p">(</span><span class="n">UnitSpecies</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">))</span>
+<span class="n">sp1</span><span class="o">.</span><span class="n">add_unit</span><span class="p">(</span><span class="n">UnitSpecies</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">))</span>
+<span class="n">sp1</span><span class="o">.</span><span class="n">add_unit</span><span class="p">(</span><span class="n">UnitSpecies</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">))</span>
 <span class="k">print</span><span class="p">(</span><span class="n">sp1</span><span class="o">.</span><span class="n">serial</span><span class="p">(),</span> <span class="n">sp1</span><span class="o">.</span><span class="n">num_units</span><span class="p">())</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">C</span>
-<span class="p">(</span><span class="s">u&#39;C.A.B&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="p">(</span><span class="s1">u&#39;C.A.B&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>A Species can be reproduced from a serial. In a serial, all serials of
 UnitSpecies are joined with the separator, dot <code class="docutils literal"><span class="pre">.</span></code>. The comparison
 between Species <strong>matters</strong> the oder of UnitSpecies in each Species.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;C.A.B&quot;</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;C.A.B&quot;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">sp1</span><span class="o">.</span><span class="n">serial</span><span class="p">())</span>
-<span class="k">print</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A.B.C&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;C.A.B&quot;</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A.B.C&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A.B.C&quot;</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A.B.C&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;C.A.B&quot;</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A.B.C&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A.B.C&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">C</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">B</span>
@@ -254,10 +254,10 @@ and <code class="docutils literal"><span class="pre">bond</span></code>, and are
 must be unique in a <code class="docutils literal"><span class="pre">UnitSpecies</span></code>. All the value have to be string. Do
 not include parenthesis, dot and blank, and not start from numbers
 except for <code class="docutils literal"><span class="pre">bond</span></code>.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">usp1</span> <span class="o">=</span> <span class="n">UnitSpecies</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)</span>
-<span class="n">usp1</span><span class="o">.</span><span class="n">add_site</span><span class="p">(</span><span class="s">&quot;us&quot;</span><span class="p">,</span> <span class="s">&quot;u&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
-<span class="n">usp1</span><span class="o">.</span><span class="n">add_site</span><span class="p">(</span><span class="s">&quot;ps&quot;</span><span class="p">,</span> <span class="s">&quot;p&quot;</span><span class="p">,</span> <span class="s">&quot;_&quot;</span><span class="p">)</span>
-<span class="n">usp1</span><span class="o">.</span><span class="n">add_site</span><span class="p">(</span><span class="s">&quot;bs&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;_&quot;</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">usp1</span> <span class="o">=</span> <span class="n">UnitSpecies</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="n">usp1</span><span class="o">.</span><span class="n">add_site</span><span class="p">(</span><span class="s2">&quot;us&quot;</span><span class="p">,</span> <span class="s2">&quot;u&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">usp1</span><span class="o">.</span><span class="n">add_site</span><span class="p">(</span><span class="s2">&quot;ps&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+<span class="n">usp1</span><span class="o">.</span><span class="n">add_site</span><span class="p">(</span><span class="s2">&quot;bs&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">usp1</span><span class="o">.</span><span class="n">serial</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -268,7 +268,7 @@ except for <code class="docutils literal"><span class="pre">bond</span></code>.<
 careful with the order of sites where a site with a state must be placed
 after sites with no state specification:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">usp1</span> <span class="o">=</span> <span class="n">UnitSpecies</span><span class="p">()</span>
-<span class="n">usp1</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="s">&quot;A(bs^_, us=u, ps=p^_)&quot;</span><span class="p">)</span>
+<span class="n">usp1</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="s2">&quot;A(bs^_, us=u, ps=p^_)&quot;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">usp1</span><span class="o">.</span><span class="n">serial</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -277,7 +277,7 @@ after sites with no state specification:</p>
 </div>
 <p>Of course, a site of <code class="docutils literal"><span class="pre">UnitSpecies</span></code> is available even in <code class="docutils literal"><span class="pre">Species</span></code>&#8216;
 serial.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A(bs^1, ps=u).A(bs, ps=p^1)&quot;</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A(bs^1, ps=u).A(bs, ps=p^1)&quot;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">sp1</span><span class="o">.</span><span class="n">serial</span><span class="p">())</span>
 <span class="k">print</span><span class="p">(</span><span class="n">sp1</span><span class="o">.</span><span class="n">num_units</span><span class="p">())</span>
 </pre></div>
@@ -297,9 +297,9 @@ Modeling</a>.</p>
 <code class="docutils literal"><span class="pre">reactants</span></code> and <code class="docutils literal"><span class="pre">products</span></code> are a list of <code class="docutils literal"><span class="pre">Species</span></code>, and <code class="docutils literal"><span class="pre">k</span></code> is a
 kinetic rate given as a floating number.</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">ReactionRule</span><span class="p">()</span>
-<span class="n">rr1</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">))</span>
-<span class="n">rr1</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">))</span>
-<span class="n">rr1</span><span class="o">.</span><span class="n">add_product</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">))</span>
+<span class="n">rr1</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">))</span>
+<span class="n">rr1</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">))</span>
+<span class="n">rr1</span><span class="o">.</span><span class="n">add_product</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">))</span>
 <span class="n">rr1</span><span class="o">.</span><span class="n">set_k</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -308,7 +308,7 @@ reaction definition, you don&#8217;t need to set attributes to <code class="docu
 This is equivalent to call an utility function as follows:
 <code class="docutils literal"><span class="pre">create_binding_reaction_rule(Species(&quot;A&quot;),</span> <span class="pre">Species(&quot;B&quot;),</span> <span class="pre">Species(&quot;C&quot;),</span> <span class="pre">1.0)</span></code>.</p>
 <p>To inspect <code class="docutils literal"><span class="pre">ReactionRule</span></code>, <code class="docutils literal"><span class="pre">as_string</span></code> function is available:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">create_binding_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">create_binding_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">rr1</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -316,7 +316,7 @@ This is equivalent to call an utility function as follows:
 </pre></div>
 </div>
 <p>You can also provide components to the constructor:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">ReactionRule</span><span class="p">([</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)],</span> <span class="p">[</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">)],</span> <span class="mf">1.0</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">ReactionRule</span><span class="p">([</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">)],</span> <span class="p">[</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)],</span> <span class="mf">1.0</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">rr1</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -333,13 +333,13 @@ Functions</a>.</p>
 <h2>2.3. NetworkModel<a class="headerlink" href="#networkmodel" title="Permalink to this headline">¶</a></h2>
 <p>Now you have known how to create components of <code class="docutils literal"><span class="pre">Model</span></code>. Next let&#8217;s
 register these components to <code class="docutils literal"><span class="pre">Model</span></code>.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;0.005&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">)</span>
-<span class="n">sp2</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">,</span> <span class="s">&quot;0.005&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">)</span>
-<span class="n">sp3</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">,</span> <span class="s">&quot;0.01&quot;</span><span class="p">,</span> <span class="s">&quot;0.5&quot;</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;0.005&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>
+<span class="n">sp2</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;0.005&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>
+<span class="n">sp3</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;0.01&quot;</span><span class="p">,</span> <span class="s2">&quot;0.5&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">create_binding_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">),</span> <span class="mf">0.01</span><span class="p">)</span>
-<span class="n">rr2</span> <span class="o">=</span> <span class="n">create_unbinding_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="mf">0.3</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">create_binding_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">),</span> <span class="mf">0.01</span><span class="p">)</span>
+<span class="n">rr2</span> <span class="o">=</span> <span class="n">create_unbinding_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">),</span> <span class="mf">0.3</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">NetworkModel</span></code> has interfaces to register <code class="docutils literal"><span class="pre">Species</span></code> and
@@ -359,8 +359,8 @@ register these components to <code class="docutils literal"><span class="pre">Mo
 <span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">m1</span><span class="o">.</span><span class="n">reaction_rules</span><span class="p">()])</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s">u&#39;A&#39;</span><span class="p">,</span> <span class="s">u&#39;B&#39;</span><span class="p">,</span> <span class="s">u&#39;C&#39;</span><span class="p">]</span>
-<span class="p">[</span><span class="s">u&#39;A+B&gt;C|0.01&#39;</span><span class="p">,</span> <span class="s">u&#39;C&gt;A+B|0.3&#39;</span><span class="p">]</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s1">u&#39;A&#39;</span><span class="p">,</span> <span class="s1">u&#39;B&#39;</span><span class="p">,</span> <span class="s1">u&#39;C&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">u&#39;A+B&gt;C|0.01&#39;</span><span class="p">,</span> <span class="s1">u&#39;C&gt;A+B|0.3&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">Species</span></code>&#8216; attributes in <code class="docutils literal"><span class="pre">Model</span></code> are indispensable for spatial
@@ -368,11 +368,11 @@ simulations, but not necessarily needed for non-spatial algorithms, i.e.
 <code class="docutils literal"><span class="pre">gillespie</span></code> and <code class="docutils literal"><span class="pre">ode</span></code>. The attribute pushed first has higher
 priority than one pushed later. You can also attribute a <code class="docutils literal"><span class="pre">Species</span></code>
 based on the attributes in a <code class="docutils literal"><span class="pre">Model</span></code>.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">sp1</span><span class="o">.</span><span class="n">has_attribute</span><span class="p">(</span><span class="s">&quot;radius&quot;</span><span class="p">))</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sp1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sp1</span><span class="o">.</span><span class="n">has_attribute</span><span class="p">(</span><span class="s2">&quot;radius&quot;</span><span class="p">))</span>
 <span class="n">sp2</span> <span class="o">=</span> <span class="n">m1</span><span class="o">.</span><span class="n">apply_species_attributes</span><span class="p">(</span><span class="n">sp1</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">sp2</span><span class="o">.</span><span class="n">has_attribute</span><span class="p">(</span><span class="s">&quot;radius&quot;</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="n">sp2</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">&quot;radius&quot;</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sp2</span><span class="o">.</span><span class="n">has_attribute</span><span class="p">(</span><span class="s2">&quot;radius&quot;</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sp2</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s2">&quot;radius&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="bp">False</span>
@@ -385,7 +385,7 @@ based on the attributes in a <code class="docutils literal"><span class="pre">Mo
 <p>You can solve this model with <code class="docutils literal"><span class="pre">run_simulation</span></code> as explained in <a class="reference external" href="1.%20Brief%20Tour%20of%20E-Cell4%20Simulations.ipynb">1.
 Brief Tour of E-Cell4
 Simulations</a>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;C&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">})</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">})</span>
 </pre></div>
 </div>
 <img alt="../_images/output_38_0.png" src="../_images/output_38_0.png" />
@@ -397,8 +397,8 @@ Simulations</a>,
 E-Cell4 also provides the easier way to build a model using <code class="docutils literal"><span class="pre">with</span></code>
 statement:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">species_attributes</span><span class="p">():</span>
-    <span class="n">A</span> <span class="o">|</span> <span class="n">B</span> <span class="o">|</span> <span class="p">{</span><span class="s">&#39;radius&#39;</span><span class="p">:</span> <span class="s">&#39;0.005&#39;</span><span class="p">,</span> <span class="s">&#39;D&#39;</span><span class="p">:</span> <span class="s">&#39;1&#39;</span><span class="p">}</span>
-    <span class="n">C</span> <span class="o">|</span> <span class="p">{</span><span class="s">&#39;radius&#39;</span><span class="p">:</span> <span class="s">&#39;0.01&#39;</span><span class="p">,</span> <span class="s">&#39;D&#39;</span><span class="p">:</span> <span class="s">&#39;0.5&#39;</span><span class="p">}</span>
+    <span class="n">A</span> <span class="o">|</span> <span class="n">B</span> <span class="o">|</span> <span class="p">{</span><span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="s1">&#39;0.005&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">}</span>
+    <span class="n">C</span> <span class="o">|</span> <span class="p">{</span><span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="s1">&#39;0.01&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="s1">&#39;0.5&#39;</span><span class="p">}</span>
 
 <span class="k">with</span> <span class="n">reaction_rules</span><span class="p">():</span>
     <span class="n">A</span> <span class="o">+</span> <span class="n">B</span> <span class="o">==</span> <span class="n">C</span> <span class="o">|</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
@@ -442,7 +442,7 @@ can not use its name as a <code class="docutils literal"><span class="pre">Speci
 <span class="k">del</span> <span class="n">A</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;invalid expression; &quot;10&quot; given&#39;</span><span class="p">,)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;invalid expression; &quot;10&quot; given&#39;</span><span class="p">,)</span>
 </pre></div>
 </div>
 <p>where <code class="docutils literal"><span class="pre">A</span> <span class="pre">+</span> <span class="pre">B</span> <span class="pre">==</span> <span class="pre">C</span></code> exactly means <code class="docutils literal"><span class="pre">10</span> <span class="pre">+</span> <span class="pre">B</span> <span class="pre">==</span> <span class="pre">C</span></code>.</p>
@@ -459,20 +459,20 @@ describe these cases, a special operator, tilde <code class="docutils literal"><
 zero, which means the <code class="docutils literal"><span class="pre">Species</span></code> is just ignored in the
 <code class="docutils literal"><span class="pre">ReactionRule</span></code>.</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">reaction_rules</span><span class="p">():</span>
-    <span class="o">~</span><span class="n">A</span> <span class="o">&gt;</span> <span class="n">A</span> <span class="o">|</span> <span class="mf">2.0</span>  <span class="c"># equivalent to `create_synthesis_reaction_rule`</span>
-    <span class="n">A</span> <span class="o">&gt;</span> <span class="o">~</span><span class="n">A</span> <span class="o">|</span> <span class="mf">1.0</span>  <span class="c"># equivalent to `create_degradation_reaction_rule`</span>
+    <span class="o">~</span><span class="n">A</span> <span class="o">&gt;</span> <span class="n">A</span> <span class="o">|</span> <span class="mf">2.0</span>  <span class="c1"># equivalent to `create_synthesis_reaction_rule`</span>
+    <span class="n">A</span> <span class="o">&gt;</span> <span class="o">~</span><span class="n">A</span> <span class="o">|</span> <span class="mf">1.0</span>  <span class="c1"># equivalent to `create_degradation_reaction_rule`</span>
 
 <span class="n">m1</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
 <span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">m1</span><span class="o">.</span><span class="n">reaction_rules</span><span class="p">()])</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s">u&#39;&gt;A|2&#39;</span><span class="p">,</span> <span class="s">u&#39;A&gt;|1&#39;</span><span class="p">]</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s1">u&#39;&gt;A|2&#39;</span><span class="p">,</span> <span class="s1">u&#39;A&gt;|1&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>The following <code class="docutils literal"><span class="pre">Species</span></code>&#8216; name is not necessarily needed to be the same
-as others. The model above describes :</p>
+as others. The model above describes <img class="math" src="../_images/math/03c5cc5be9ea09c33c5725609853591d521aac20.png" alt="[A]'=2-[A]"/>:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">exp</span>
-<span class="n">run_simulation</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">opt_args</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;-&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t</span><span class="p">)),</span> <span class="s">&#39;--&#39;</span><span class="p">])</span>
+<span class="n">run_simulation</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">opt_args</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t</span><span class="p">)),</span> <span class="s1">&#39;--&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <img alt="../_images/output_48_0.png" src="../_images/output_48_0.png" />
@@ -486,7 +486,7 @@ line into two or more physical lines, wrap lines in a parenthesis:</p>
 <span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">m1</span><span class="o">.</span><span class="n">reaction_rules</span><span class="p">()])</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s">u&#39;E+S&gt;ES|0.5&#39;</span><span class="p">,</span> <span class="s">u&#39;ES&gt;E+S|1&#39;</span><span class="p">,</span> <span class="s">u&#39;ES&gt;E+P|1.5&#39;</span><span class="p">]</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s1">u&#39;E+S&gt;ES|0.5&#39;</span><span class="p">,</span> <span class="s1">u&#39;ES&gt;E+S|1&#39;</span><span class="p">,</span> <span class="s1">u&#39;ES&gt;E+P|1.5&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>The method uses global variables in <code class="docutils literal"><span class="pre">ecell4.util.decorator</span></code> (e.g.
@@ -496,9 +496,9 @@ line into two or more physical lines, wrap lines in a parenthesis:</p>
 <span class="k">with</span> <span class="n">reaction_rules</span><span class="p">():</span>
     <span class="n">A</span> <span class="o">+</span> <span class="n">B</span> <span class="o">==</span> <span class="n">C</span> <span class="o">|</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">ecell4</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">decorator</span><span class="o">.</span><span class="n">REACTION_RULES</span><span class="p">)</span>  <span class="c">#XXX: Only for debugging</span>
+<span class="k">print</span><span class="p">(</span><span class="n">ecell4</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">decorator</span><span class="o">.</span><span class="n">REACTION_RULES</span><span class="p">)</span>  <span class="c1">#XXX: Only for debugging</span>
 <span class="n">get_model</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="n">ecell4</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">decorator</span><span class="o">.</span><span class="n">REACTION_RULES</span><span class="p">)</span>  <span class="c">#XXX: Only for debugging</span>
+<span class="k">print</span><span class="p">(</span><span class="n">ecell4</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">decorator</span><span class="o">.</span><span class="n">REACTION_RULES</span><span class="p">)</span>  <span class="c1">#XXX: Only for debugging</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre>[&lt;ecell4.core.ReactionRule object at 0x10d77bab0&gt;, &lt;ecell4.core.ReactionRule object at 0x111edf588&gt;]
@@ -509,8 +509,8 @@ line into two or more physical lines, wrap lines in a parenthesis:</p>
 usefull.</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="nd">@species_attributes</span>
 <span class="k">def</span> <span class="nf">attrgen1</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
-    <span class="n">A</span> <span class="o">|</span> <span class="n">B</span> <span class="o">|</span> <span class="p">{</span><span class="s">&#39;radius&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">radius</span><span class="p">),</span> <span class="s">&#39;D&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">D</span><span class="p">)}</span>
-    <span class="n">C</span> <span class="o">|</span> <span class="p">{</span><span class="s">&#39;radius&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">radius</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span> <span class="s">&#39;D&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">D</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">)}</span>
+    <span class="n">A</span> <span class="o">|</span> <span class="n">B</span> <span class="o">|</span> <span class="p">{</span><span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">radius</span><span class="p">),</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">D</span><span class="p">)}</span>
+    <span class="n">C</span> <span class="o">|</span> <span class="p">{</span><span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">radius</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">D</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">)}</span>
 
 <span class="nd">@reaction_rules</span>
 <span class="k">def</span> <span class="nf">rrgen1</span><span class="p">(</span><span class="n">kon</span><span class="p">,</span> <span class="n">koff</span><span class="p">):</span>

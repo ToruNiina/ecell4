@@ -83,19 +83,23 @@
             
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html#installation-and-usage">Installation and usage</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="">1. Brief Tour of E-Cell4 Simulations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#quick-demostration">1.1. Quick Demostration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-demo">1.1. Quick Demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#spatial-simulation-and-visualization">1.2. Spatial Simulation and Visualization</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial2/tutorial2.html">2. How to Build a Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial3/tutorial3.html">3. How to Setup the Initial Condition</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial4/tutorial4.html">4. How to Run a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial5/tutorial5.html">5. How to Log and Visualize Simulations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial6/tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial7/tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial8/tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial9/tutorial9.html">9. Spatial Gillespie Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial10/tutorial10.html">10. Spatiocyte Simulations at Single-Molecule Resolution</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../api/core.html">E-Cell4 core API</a></li>
@@ -110,16 +114,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/util.decorator.html">E-Cell4 util.decorator API</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../Attractors.html">Attractors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../DrosophilaCircadianClock.html">Drosophila Circadian Clock</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dpc.html">Dual Phosphorylation Cycle</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HumanErythrocytes.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../WorldSimBasics.html">World and Simulator with ODE solver</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Meso.html">Meso</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Spatiocyte.html">Spatiocyte simulations with single-molecule resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Attractors/Attractors.html">Attractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Drosophila/Drosophila.html">Drosophila Circadian Clock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DualPhospho/DualPhospho.html">Dual Phosphorylation Cycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glycolysis/Glycolysis.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HodgkinHuxley/HodgkinHuxley.html">Hodgkin-Huxley Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HodgkinHuxley/HodgkinHuxley.html#fitzhughnagumo-model">FitzHugh–Nagumo Model</a></li>
 </ul>
 
             
@@ -171,8 +171,8 @@
 from ecell4 import *
 </pre></div>
 </div>
-<div class="section" id="quick-demostration">
-<h2>1.1. Quick Demostration<a class="headerlink" href="#quick-demostration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="quick-demo">
+<h2>1.1. Quick Demo<a class="headerlink" href="#quick-demo" title="Permalink to this headline">¶</a></h2>
 <p>There are three fundamental components consisting of E-Cell System
 version 4, which are <code class="docutils literal"><span class="pre">Model</span></code>, <code class="docutils literal"><span class="pre">World</span></code>, and <code class="docutils literal"><span class="pre">Simulator</span></code>. These
 components describe concepts in simulation.</p>
@@ -192,8 +192,8 @@ supports multiple ways to buld a <code class="docutils literal"><span class="pre
 Model</a>). Here, we explain
 the simplest way using the <code class="docutils literal"><span class="pre">with</span></code> statement with <code class="docutils literal"><span class="pre">reaction_rules</span></code>:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">reaction_rules</span><span class="p">():</span>
-    <span class="n">A</span> <span class="o">+</span> <span class="n">B</span> <span class="o">&gt;</span> <span class="n">C</span> <span class="o">|</span> <span class="mf">0.01</span>  <span class="c"># equivalent to create_binding_reaction_rule</span>
-    <span class="n">C</span> <span class="o">&gt;</span> <span class="n">A</span> <span class="o">+</span> <span class="n">B</span> <span class="o">|</span> <span class="mf">0.3</span>   <span class="c"># equivalent to create_unbinding_reaction_rule</span>
+    <span class="n">A</span> <span class="o">+</span> <span class="n">B</span> <span class="o">&gt;</span> <span class="n">C</span> <span class="o">|</span> <span class="mf">0.01</span>  <span class="c1"># equivalent to create_binding_reaction_rule</span>
+    <span class="n">C</span> <span class="o">&gt;</span> <span class="n">A</span> <span class="o">+</span> <span class="n">B</span> <span class="o">|</span> <span class="mf">0.3</span>   <span class="c1"># equivalent to create_unbinding_reaction_rule</span>
 
 <span class="n">m1</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
 <span class="k">print</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
@@ -203,33 +203,31 @@ the simplest way using the <code class="docutils literal"><span class="pre">with
 </pre></div>
 </div>
 <p>Please remember to write parentheses <code class="docutils literal"><span class="pre">()</span></code> after <code class="docutils literal"><span class="pre">reaction_rules</span></code>.
-Here, a <code class="docutils literal"><span class="pre">Model</span></code> with two <code class="docutils literal"><span class="pre">ReactionRule</span></code>s named <code class="docutils literal"><span class="pre">m</span></code> was built.
+Here, a <code class="docutils literal"><span class="pre">Model</span></code> with two <code class="docutils literal"><span class="pre">ReactionRule</span></code>s named <code class="docutils literal"><span class="pre">m1</span></code> was built.
 Lines in the <code class="docutils literal"><span class="pre">with</span></code> block describe <code class="docutils literal"><span class="pre">ReactionRule</span></code>s, a binding and
 unbinding reaction respectively. A kinetic rate for the mass action
 reaction is defined after a separator <code class="docutils literal"><span class="pre">|</span></code>, i.e. <code class="docutils literal"><span class="pre">0.01</span></code> or <code class="docutils literal"><span class="pre">0.3</span></code>.
 In the form of ordinary differential equations, this model can be
 described as:</p>
-<p>For more compact description, <code class="docutils literal"><span class="pre">A</span> <span class="pre">+</span> <span class="pre">B</span> <span class="pre">==</span> <span class="pre">C</span> <span class="pre">|</span> <span class="pre">(0.01,</span> <span class="pre">0.3)</span></code> is also
+<div class="math">
+<p><img src="../_images/math/d2e628497e5008138407a4b05ab3db86e9b88e33.png" alt="[\mathrm{A}]'=[\mathrm{B}]'=-[\mathrm{C}]=-0.01[\mathrm{A}][\mathrm{B}]+0.3[\mathrm{C}]"/></p>
+</div><p>For more compact description, <code class="docutils literal"><span class="pre">A</span> <span class="pre">+</span> <span class="pre">B</span> <span class="pre">==</span> <span class="pre">C</span> <span class="pre">|</span> <span class="pre">(0.01,</span> <span class="pre">0.3)</span></code> is also
 acceptable.</p>
 <p>E-Cell4 has a simple interface to run simulations with the given model,
 <code class="docutils literal"><span class="pre">run_simulation</span></code>. This enables for you to run simulations without
 instanciate <code class="docutils literal"><span class="pre">World</span></code> and <code class="docutils literal"><span class="pre">Simulator</span></code> by yourself. To solve this
 model, you have to give a volume, an initial value for each <code class="docutils literal"><span class="pre">Species</span></code>
 and duration of time:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;A&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s">&#39;B&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">volume</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre>/Users/knishida/Library/Python/2.7/lib/python/site-packages/matplotlib/__init__.py:892: UserWarning: axes.color_cycle is deprecated and replaced with axes.prop_cycle; please use the latter.
-  warnings.warn(self.msg_depr % (key, alt_key))
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">volume</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/output_6_1.png" src="../_images/output_6_1.png" />
 <p>To switch simulation algorithm, you only need to give the type of solver
 (<code class="docutils literal"><span class="pre">ode</span></code> is used as a default) as follows:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;A&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s">&#39;B&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">solver</span><span class="o">=</span><span class="s">&#39;gillespie&#39;</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;gillespie&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../_images/output_8_0.png" src="../_images/output_8_0.png" />
+<img alt="../_images/output_8_02.png" src="../_images/output_8_02.png" />
 </div>
 <div class="section" id="spatial-simulation-and-visualization">
 <h2>1.2. Spatial Simulation and Visualization<a class="headerlink" href="#spatial-simulation-and-visualization" title="Permalink to this headline">¶</a></h2>
@@ -241,7 +239,7 @@ coefficient and radius.</p>
 <p>The <code class="docutils literal"><span class="pre">with</span></code> statement with <code class="docutils literal"><span class="pre">species_attributes</span></code> is available to
 describe these properties:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">species_attributes</span><span class="p">():</span>
-    <span class="n">A</span> <span class="o">|</span> <span class="n">B</span> <span class="o">|</span> <span class="n">C</span> <span class="o">|</span> <span class="p">{</span><span class="s">&#39;radius&#39;</span><span class="p">:</span> <span class="s">&#39;0.005&#39;</span><span class="p">,</span> <span class="s">&#39;D&#39;</span><span class="p">:</span> <span class="s">&#39;1&#39;</span><span class="p">}</span>  <span class="c"># &#39;D&#39; is for the diffusion coefficient</span>
+    <span class="n">A</span> <span class="o">|</span> <span class="n">B</span> <span class="o">|</span> <span class="n">C</span> <span class="o">|</span> <span class="p">{</span><span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="s1">&#39;0.005&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">}</span>  <span class="c1"># &#39;D&#39; is for the diffusion coefficient</span>
 
 <span class="k">with</span> <span class="n">reaction_rules</span><span class="p">():</span>
     <span class="n">A</span> <span class="o">+</span> <span class="n">B</span> <span class="o">==</span> <span class="n">C</span> <span class="o">|</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
@@ -253,7 +251,7 @@ describe these properties:</p>
 must be given as a string.</p>
 <p>Now you can run a spatial simulation in the same way as above (<code class="docutils literal"><span class="pre">egfrd</span></code>
 would need long time to simulate):</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m2</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;A&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s">&#39;B&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">solver</span><span class="o">=</span><span class="s">&#39;meso&#39;</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m2</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;meso&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/output_12_0.png" src="../_images/output_12_0.png" />
@@ -261,13 +259,13 @@ would need long time to simulate):</p>
 <code class="docutils literal"><span class="pre">spatiocyte</span></code> and <code class="docutils literal"><span class="pre">meso</span></code> now. For the simulation, <code class="docutils literal"><span class="pre">location</span></code> that
 each species belongs to must be specified in its attribute first.</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">species_attributes</span><span class="p">():</span>
-    <span class="n">A</span> <span class="o">|</span> <span class="p">{</span><span class="s">&#39;D&#39;</span><span class="p">:</span> <span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;location&#39;</span><span class="p">:</span> <span class="s">&#39;S&#39;</span><span class="p">}</span>  <span class="c"># &#39;S&#39; is a name of the structure</span>
+    <span class="n">A</span> <span class="o">|</span> <span class="p">{</span><span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;location&#39;</span><span class="p">:</span> <span class="s1">&#39;S&#39;</span><span class="p">}</span>  <span class="c1"># &#39;S&#39; is a name of the structure</span>
 
-<span class="n">m3</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>  <span class="c"># with no reactions</span>
+<span class="n">m3</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>  <span class="c1"># with no reactions</span>
 </pre></div>
 </div>
 <p>E-Cell4 supports primitive shapes as a structure like <code class="docutils literal"><span class="pre">Sphere</span></code>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sphere</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="mf">0.48</span><span class="p">)</span>  <span class="c"># a center position and radius</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">sphere</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="mf">0.48</span><span class="p">)</span>  <span class="c1"># a center position and radius</span>
 </pre></div>
 </div>
 <p>E-Cell4 provides various kinds of <code class="docutils literal"><span class="pre">Observer</span></code>s, which log the state
@@ -276,35 +274,34 @@ molecules. <code class="docutils literal"><span class="pre">FixedIntervalTraject
 molecule, and <code class="docutils literal"><span class="pre">FixedIntervalHDF5Observer</span></code> saves <code class="docutils literal"><span class="pre">World</span></code> to a HDF5
 file at the given interval:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">obs1</span> <span class="o">=</span> <span class="n">FixedIntervalTrajectoryObserver</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">)</span>
-<span class="n">obs2</span> <span class="o">=</span> <span class="n">FixedIntervalHDF5Observer</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="s">&#39;test</span><span class="si">%02d</span><span class="s">.h5&#39;</span><span class="p">)</span>
+<span class="n">obs2</span> <span class="o">=</span> <span class="n">FixedIntervalHDF5Observer</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;test</span><span class="si">%02d</span><span class="s1">.h5&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Then, <code class="docutils literal"><span class="pre">run_simulation</span></code> accepts structures and observers as arguments
 <code class="docutils literal"><span class="pre">structure</span></code> and <code class="docutils literal"><span class="pre">observers</span></code> respectively (see also
 <code class="docutils literal"><span class="pre">help(run_simulation)</span></code>):</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m3</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;A&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">structures</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;S&#39;</span><span class="p">:</span> <span class="n">sphere</span><span class="p">},</span>
-               <span class="n">solver</span><span class="o">=</span><span class="s">&#39;spatiocyte&#39;</span><span class="p">,</span> <span class="n">observers</span><span class="o">=</span><span class="p">(</span><span class="n">obs1</span><span class="p">,</span> <span class="n">obs2</span><span class="p">),</span> <span class="n">return_type</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m3</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">structures</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="n">sphere</span><span class="p">},</span>
+               <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;spatiocyte&#39;</span><span class="p">,</span> <span class="n">observers</span><span class="o">=</span><span class="p">(</span><span class="n">obs1</span><span class="p">,</span> <span class="n">obs2</span><span class="p">),</span> <span class="n">return_type</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>E-Cell4 also provides visualizations including an interactive
-visualization on IPython Notebook like <code class="docutils literal"><span class="pre">viz.plot_world</span></code>.
+visualization on Jupyter Notebook like <code class="docutils literal"><span class="pre">viz.plot_world</span></code>.
 <code class="docutils literal"><span class="pre">viz.plot_world</span></code> plots positions of molecules in 3D. In addition, by
 using <code class="docutils literal"><span class="pre">load_world</span></code>, you can easily restore the state of <code class="docutils literal"><span class="pre">World</span></code> from
 a HDF5 file:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># viz.plot_world(load_world(&#39;test00.h5&#39;), species_list=[&#39;A&#39;])</span>
-<span class="n">viz</span><span class="o">.</span><span class="n">plot_world</span><span class="p">(</span><span class="n">load_world</span><span class="p">(</span><span class="s">&#39;test00.h5&#39;</span><span class="p">),</span> <span class="n">species_list</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">],</span> <span class="n">interactive</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c1"># viz.plot_world(load_world(&#39;test00.h5&#39;), species_list=[&#39;A&#39;])</span>
+<span class="n">viz</span><span class="o">.</span><span class="n">plot_world</span><span class="p">(</span><span class="n">load_world</span><span class="p">(</span><span class="s1">&#39;test00.h5&#39;</span><span class="p">),</span> <span class="n">species_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">interactive</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/output_22_0.png" src="../_images/output_22_0.png" />
 <p>Also for <code class="docutils literal"><span class="pre">FixedIntervalTrajectoryObserver</span></code>, <code class="docutils literal"><span class="pre">viz.plot_trajectory</span></code>
 plots trajectories in the interactive way:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># viz.plot_trajectory(obs1)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c1"># viz.plot_trajectory(obs1)</span>
 <span class="n">viz</span><span class="o">.</span><span class="n">plot_trajectory</span><span class="p">(</span><span class="n">obs1</span><span class="p">,</span> <span class="n">interactive</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/output_24_0.png" src="../_images/output_24_0.png" />
-<p>For more details, see <a class="reference external" href="5.%20How%20to%20Log%20and%20Visualize%20Simulations.ipynb">5. How to Log and Visualize
-Simulations</a>.</p>
+<p>For more details, see <a class="reference internal" href="../tutorial5/tutorial5.html"><em>5. How to Log and Visualize Simulations</em></a></p>
 </div>
 </div>
 

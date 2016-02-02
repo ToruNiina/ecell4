@@ -32,7 +32,7 @@
   
     <link rel="top" title="E-Cell 4.0.0 documentation" href="../index.html"/>
         <link rel="next" title="7. Introduction of Rule-based Modeling" href="../tutorial7/tutorial7.html"/>
-        <link rel="prev" title="4. How to Run a Simulation" href="../tutorial4/tutorial4.html"/> 
+        <link rel="prev" title="5. How to Log and Visualize Simulations" href="../tutorial5/tutorial5.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -83,12 +83,14 @@
             
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html#installation-and-usage">Installation and usage</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../tutorial1/tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial2/tutorial2.html">2. How to Build a Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial3/tutorial3.html">3. How to Setup the Initial Condition</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial4/tutorial4.html">4. How to Run a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial5/tutorial5.html">5. How to Log and Visualize Simulations</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">6. How to Solve ODEs with Rate Law Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#ode-odereactionrule">6.1. ode.ODEReactionRule</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ode-oderatelaw">6.2. ode.ODERatelaw</a></li>
@@ -99,6 +101,8 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial7/tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial8/tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial9/tutorial9.html">9. Spatial Gillespie Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial10/tutorial10.html">10. Spatiocyte Simulations at Single-Molecule Resolution</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../api/core.html">E-Cell4 core API</a></li>
@@ -113,16 +117,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/util.decorator.html">E-Cell4 util.decorator API</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../Attractors.html">Attractors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../DrosophilaCircadianClock.html">Drosophila Circadian Clock</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dpc.html">Dual Phosphorylation Cycle</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HumanErythrocytes.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../WorldSimBasics.html">World and Simulator with ODE solver</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Meso.html">Meso</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Spatiocyte.html">Spatiocyte simulations with single-molecule resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Attractors/Attractors.html">Attractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Drosophila/Drosophila.html">Drosophila Circadian Clock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DualPhospho/DualPhospho.html">Dual Phosphorylation Cycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glycolysis/Glycolysis.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HodgkinHuxley/HodgkinHuxley.html">Hodgkin-Huxley Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HodgkinHuxley/HodgkinHuxley.html#fitzhughnagumo-model">FitzHugh–Nagumo Model</a></li>
 </ul>
 
             
@@ -190,14 +190,14 @@ activated as follows:</p>
 <h2>6.1. ode.ODEReactionRule<a class="headerlink" href="#ode-odereactionrule" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal"><span class="pre">ode.ODEReactionRule</span></code> has almost same members with <code class="docutils literal"><span class="pre">ReactionRule</span></code>.</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">ReactionRule</span><span class="p">()</span>
-<span class="n">rr1</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">))</span>
-<span class="n">rr1</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">))</span>
-<span class="n">rr1</span><span class="o">.</span><span class="n">add_product</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">))</span>
+<span class="n">rr1</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">))</span>
+<span class="n">rr1</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">))</span>
+<span class="n">rr1</span><span class="o">.</span><span class="n">add_product</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">))</span>
 <span class="n">rr1</span><span class="o">.</span><span class="n">set_k</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rr1</span><span class="o">.</span><span class="n">reactants</span><span class="p">()))</span>  <span class="c"># =&gt; 2</span>
-<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rr1</span><span class="o">.</span><span class="n">products</span><span class="p">()))</span>  <span class="c"># =&gt; 1</span>
-<span class="k">print</span><span class="p">(</span><span class="n">rr1</span><span class="o">.</span><span class="n">k</span><span class="p">())</span>  <span class="c"># =&gt; 1.0</span>
-<span class="k">print</span><span class="p">(</span><span class="n">rr1</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>  <span class="c"># =&gt; A+B&gt;C|1</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rr1</span><span class="o">.</span><span class="n">reactants</span><span class="p">()))</span>  <span class="c1"># =&gt; 2</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rr1</span><span class="o">.</span><span class="n">products</span><span class="p">()))</span>  <span class="c1"># =&gt; 1</span>
+<span class="k">print</span><span class="p">(</span><span class="n">rr1</span><span class="o">.</span><span class="n">k</span><span class="p">())</span>  <span class="c1"># =&gt; 1.0</span>
+<span class="k">print</span><span class="p">(</span><span class="n">rr1</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>  <span class="c1"># =&gt; A+B&gt;C|1</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="mi">2</span>
@@ -207,14 +207,14 @@ activated as follows:</p>
 </pre></div>
 </div>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr2</span> <span class="o">=</span> <span class="n">ode</span><span class="o">.</span><span class="n">ODEReactionRule</span><span class="p">()</span>
-<span class="n">rr2</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">))</span>
-<span class="n">rr2</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">))</span>
-<span class="n">rr2</span><span class="o">.</span><span class="n">add_product</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">))</span>
+<span class="n">rr2</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">))</span>
+<span class="n">rr2</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">))</span>
+<span class="n">rr2</span><span class="o">.</span><span class="n">add_product</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">))</span>
 <span class="n">rr2</span><span class="o">.</span><span class="n">set_k</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rr2</span><span class="o">.</span><span class="n">reactants</span><span class="p">()))</span>  <span class="c"># =&gt; 2</span>
-<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rr2</span><span class="o">.</span><span class="n">products</span><span class="p">()))</span>  <span class="c"># =&gt; 1</span>
-<span class="k">print</span><span class="p">(</span><span class="n">rr2</span><span class="o">.</span><span class="n">k</span><span class="p">())</span>  <span class="c"># =&gt; 1.0</span>
-<span class="k">print</span><span class="p">(</span><span class="n">rr2</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>  <span class="c"># =&gt; A+B&gt;C|1</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rr2</span><span class="o">.</span><span class="n">reactants</span><span class="p">()))</span>  <span class="c1"># =&gt; 2</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rr2</span><span class="o">.</span><span class="n">products</span><span class="p">()))</span>  <span class="c1"># =&gt; 1</span>
+<span class="k">print</span><span class="p">(</span><span class="n">rr2</span><span class="o">.</span><span class="n">k</span><span class="p">())</span>  <span class="c1"># =&gt; 1.0</span>
+<span class="k">print</span><span class="p">(</span><span class="n">rr2</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>  <span class="c1"># =&gt; A+B&gt;C|1</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="mi">2</span>
@@ -226,9 +226,9 @@ activated as follows:</p>
 <p>In addition to the common members, <code class="docutils literal"><span class="pre">ode.ODEReactionRule</span></code> can store
 stoichiometric coefficients for each <code class="docutils literal"><span class="pre">Species</span></code>:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr2</span> <span class="o">=</span> <span class="n">ode</span><span class="o">.</span><span class="n">ODEReactionRule</span><span class="p">()</span>
-<span class="n">rr2</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
-<span class="n">rr2</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="mf">2.0</span><span class="p">)</span>
-<span class="n">rr2</span><span class="o">.</span><span class="n">add_product</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">),</span> <span class="mf">2.5</span><span class="p">)</span>
+<span class="n">rr2</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">rr2</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">),</span> <span class="mf">2.0</span><span class="p">)</span>
+<span class="n">rr2</span><span class="o">.</span><span class="n">add_product</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">),</span> <span class="mf">2.5</span><span class="p">)</span>
 <span class="n">rr2</span><span class="o">.</span><span class="n">set_k</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">rr2</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
 </pre></div>
@@ -237,8 +237,8 @@ stoichiometric coefficients for each <code class="docutils literal"><span class=
 </pre></div>
 </div>
 <p>You can also access to the coefficients as follows:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">rr2</span><span class="o">.</span><span class="n">reactants_coefficients</span><span class="p">())</span>  <span class="c"># =&gt; [1.0, 2.0]</span>
-<span class="k">print</span><span class="p">(</span><span class="n">rr2</span><span class="o">.</span><span class="n">products_coefficients</span><span class="p">())</span>  <span class="c"># =&gt; [2.5]</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">rr2</span><span class="o">.</span><span class="n">reactants_coefficients</span><span class="p">())</span>  <span class="c1"># =&gt; [1.0, 2.0]</span>
+<span class="k">print</span><span class="p">(</span><span class="n">rr2</span><span class="o">.</span><span class="n">products_coefficients</span><span class="p">())</span>  <span class="c1"># =&gt; [2.5]</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]</span>
@@ -254,11 +254,11 @@ or velocity) based on the given values of <code class="docutils literal"><span c
 <code class="docutils literal"><span class="pre">ode.ODERatelawMassAction</span></code> is a default class bound to
 <code class="docutils literal"><span class="pre">ode.ODEReactionRule</span></code>.</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">rr1</span> <span class="o">=</span> <span class="n">ode</span><span class="o">.</span><span class="n">ODEReactionRule</span><span class="p">()</span>
-<span class="n">rr1</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">))</span>
-<span class="n">rr1</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">))</span>
-<span class="n">rr1</span><span class="o">.</span><span class="n">add_product</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">))</span>
+<span class="n">rr1</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">))</span>
+<span class="n">rr1</span><span class="o">.</span><span class="n">add_reactant</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">))</span>
+<span class="n">rr1</span><span class="o">.</span><span class="n">add_product</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">))</span>
 <span class="n">rl1</span> <span class="o">=</span> <span class="n">ode</span><span class="o">.</span><span class="n">ODERatelawMassAction</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
-<span class="n">rr1</span><span class="o">.</span><span class="n">set_ratelaw</span><span class="p">(</span><span class="n">rl1</span><span class="p">)</span>  <span class="c"># equivalent to rr1.set_k(2.0)</span>
+<span class="n">rr1</span><span class="o">.</span><span class="n">set_ratelaw</span><span class="p">(</span><span class="n">rl1</span><span class="p">)</span>  <span class="c1"># equivalent to rr1.set_k(2.0)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">rr1</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -303,9 +303,9 @@ arguments.</p>
 <code class="docutils literal"><span class="pre">ode.ODEReactionRule</span></code>. <code class="docutils literal"><span class="pre">ReactionRule</span></code> is implicitly converted and
 stored as a <code class="docutils literal"><span class="pre">ode.ODEReactionRule</span></code>.</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">m1</span> <span class="o">=</span> <span class="n">ode</span><span class="o">.</span><span class="n">ODENetworkModel</span><span class="p">()</span>
-<span class="n">rr1</span> <span class="o">=</span> <span class="n">create_unbinding_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="mf">3.0</span><span class="p">)</span>
+<span class="n">rr1</span> <span class="o">=</span> <span class="n">create_unbinding_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">),</span> <span class="mf">3.0</span><span class="p">)</span>
 <span class="n">m1</span><span class="o">.</span><span class="n">add_reaction_rule</span><span class="p">(</span><span class="n">rr1</span><span class="p">)</span>
-<span class="n">rr2</span> <span class="o">=</span> <span class="n">ode</span><span class="o">.</span><span class="n">ODEReactionRule</span><span class="p">(</span><span class="n">create_binding_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">))</span>
+<span class="n">rr2</span> <span class="o">=</span> <span class="n">ode</span><span class="o">.</span><span class="n">ODEReactionRule</span><span class="p">(</span><span class="n">create_binding_reaction_rule</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">),</span> <span class="n">Species</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">))</span>
 <span class="n">rr2</span><span class="o">.</span><span class="n">set_ratelaw</span><span class="p">(</span><span class="n">ode</span><span class="o">.</span><span class="n">ODERatelawCallback</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">rr</span><span class="p">:</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 <span class="n">m1</span><span class="o">.</span><span class="n">add_reaction_rule</span><span class="p">(</span><span class="n">rr2</span><span class="p">)</span>
 </pre></div>
@@ -315,12 +315,12 @@ stored as a <code class="docutils literal"><span class="pre">ode.ODEReactionRule
 <div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">([</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">m1</span><span class="o">.</span><span class="n">reaction_rules</span><span class="p">()])</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s">u&#39;C&gt;A+B|3&#39;</span><span class="p">,</span> <span class="s">u&#39;A+B&gt;C|&lt;lambda&gt;&#39;</span><span class="p">]</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s1">u&#39;C&gt;A+B|3&#39;</span><span class="p">,</span> <span class="s1">u&#39;A+B&gt;C|&lt;lambda&gt;&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Finally, you can run simulations in the same way with other solvers as
 follows:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;A&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s">&#39;B&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">})</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">})</span>
 </pre></div>
 </div>
 <img alt="../_images/output_22_01.png" src="../_images/output_22_01.png" />
@@ -356,14 +356,14 @@ automatically added to the list as an enzyme.</p>
 </div>
 <p>where <code class="docutils literal"><span class="pre">E</span></code> in the equation is appended to both reacant and product
 lists.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;S&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s">&#39;E&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">})</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">})</span>
 </pre></div>
 </div>
 <img alt="../_images/output_30_0.png" src="../_images/output_30_0.png" />
 <p>Please be careful about typo in <code class="docutils literal"><span class="pre">Species</span></code>&#8216; name. When you make a typo,
 it might be recognized as a new enzyme with no attention:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">reaction_rules</span><span class="p">():</span>
-    <span class="n">A13P2G</span> <span class="o">&gt;</span> <span class="n">A23P2G</span> <span class="o">|</span> <span class="mi">1500</span> <span class="o">*</span> <span class="n">A13B2G</span>  <span class="c"># typo: A13P2G -&gt; A13B2G</span>
+    <span class="n">A13P2G</span> <span class="o">&gt;</span> <span class="n">A23P2G</span> <span class="o">|</span> <span class="mi">1500</span> <span class="o">*</span> <span class="n">A13B2G</span>  <span class="c1"># typo: A13P2G -&gt; A13B2G</span>
 
 <span class="n">m1</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
 <span class="k">print</span><span class="p">(</span><span class="n">m1</span><span class="o">.</span><span class="n">reaction_rules</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
@@ -386,14 +386,16 @@ it might be recognized as a new enzyme with no attention:</p>
 <span class="n">util</span><span class="o">.</span><span class="n">decorator</span><span class="o">.</span><span class="n">ENABLE_IMPLICIT_DECLARATION</span> <span class="o">=</span> <span class="bp">True</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;unknown variable [A13B2G] was used.&#39;</span><span class="p">,)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;unknown variable [A13B2G] was used.&#39;</span><span class="p">,)</span>
 </pre></div>
 </div>
 <p>Although E-Cell4 is specialized for a simulation of biochemical reaction
 network, by using a synthetic reaction rule, ordinary differential
 equations can be translated intuitively. For example, the Lotka-Volterra
 equations:</p>
-<p>where , are solved as
+<div class="math">
+<p><img src="../_images/math/20dd70c5c55a2c434c05406040df4e476f4af53a.png" alt="\frac{dx}{dt} = Ax - Bxy\\\frac{dy}{dt} = -Cx + Dxy"/></p>
+</div><p>where <img class="math" src="../_images/math/ad602700978d4a1e3086527801aedbdc14537826.png" alt="A=1.5, B=1, C=3, D=1, x(0)=10, y(0)=5"/>, are solved as
 follows:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">reaction_rules</span><span class="p">():</span>
     <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span>
@@ -401,7 +403,7 @@ follows:</p>
     <span class="o">~</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">x</span> <span class="o">|</span> <span class="n">A</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">B</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
     <span class="o">~</span><span class="n">y</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="o">|</span> <span class="o">-</span><span class="n">C</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">D</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
 
-<span class="n">run_simulation</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">get_model</span><span class="p">(),</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;x&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s">&#39;y&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">})</span>
+<span class="n">run_simulation</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">get_model</span><span class="p">(),</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">})</span>
 </pre></div>
 </div>
 <img alt="../_images/output_36_0.png" src="../_images/output_36_0.png" />
@@ -422,7 +424,7 @@ available there even if you declare the function outside the block.</p>
     <span class="k">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;a float is required&#39;</span><span class="p">,)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;a float is required&#39;</span><span class="p">,)</span>
 </pre></div>
 </div>
 <p>This is because <code class="docutils literal"><span class="pre">erf</span></code> is tried to be evaluated agaist <code class="docutils literal"><span class="pre">S</span> <span class="pre">/</span> <span class="pre">30.0</span></code>
@@ -466,15 +468,15 @@ it can hold a reference to variables outside.</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">k1</span> <span class="o">=</span> <span class="mf">1.0</span>
 
 <span class="k">with</span> <span class="n">reaction_rules</span><span class="p">():</span>
-    <span class="n">S</span> <span class="o">&gt;</span> <span class="n">P</span> <span class="o">|</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c"># referring k1</span>
+    <span class="n">S</span> <span class="o">&gt;</span> <span class="n">P</span> <span class="o">|</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># referring k1</span>
 
 <span class="n">m1</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
 
-<span class="n">obs1</span> <span class="o">=</span> <span class="n">run_simulation</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;S&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">return_type</span><span class="o">=</span><span class="s">&#39;observer&#39;</span><span class="p">)</span>
+<span class="n">obs1</span> <span class="o">=</span> <span class="n">run_simulation</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;S&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">return_type</span><span class="o">=</span><span class="s1">&#39;observer&#39;</span><span class="p">)</span>
 <span class="n">k1</span> <span class="o">=</span> <span class="mf">2.0</span>
-<span class="n">obs2</span> <span class="o">=</span> <span class="n">run_simulation</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;S&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">return_type</span><span class="o">=</span><span class="s">&#39;observer&#39;</span><span class="p">)</span>
+<span class="n">obs2</span> <span class="o">=</span> <span class="n">run_simulation</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;S&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">return_type</span><span class="o">=</span><span class="s1">&#39;observer&#39;</span><span class="p">)</span>
 
-<span class="n">viz</span><span class="o">.</span><span class="n">plot_number_observer</span><span class="p">(</span><span class="n">obs1</span><span class="p">,</span> <span class="s">&#39;-&#39;</span><span class="p">,</span> <span class="n">obs2</span><span class="p">,</span> <span class="s">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">viz</span><span class="o">.</span><span class="n">plot_number_observer</span><span class="p">(</span><span class="n">obs1</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">obs2</span><span class="p">,</span> <span class="s1">&#39;--&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/output_44_0.png" src="../_images/output_44_0.png" />
@@ -486,9 +488,9 @@ parameters.</p>
 
     <span class="k">return</span> <span class="n">get_model</span><span class="p">()</span>
 
-<span class="n">obs1</span> <span class="o">=</span> <span class="n">run_simulation</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">create_model</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;S&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">return_type</span><span class="o">=</span><span class="s">&#39;observer&#39;</span><span class="p">)</span>
-<span class="n">obs2</span> <span class="o">=</span> <span class="n">run_simulation</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">create_model</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mf">2.0</span><span class="p">),</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;S&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">return_type</span><span class="o">=</span><span class="s">&#39;observer&#39;</span><span class="p">)</span>
-<span class="c"># viz.plot_number_observer(obs1, &#39;-&#39;, obs2, &#39;--&#39;)</span>
+<span class="n">obs1</span> <span class="o">=</span> <span class="n">run_simulation</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">create_model</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;S&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">return_type</span><span class="o">=</span><span class="s1">&#39;observer&#39;</span><span class="p">)</span>
+<span class="n">obs2</span> <span class="o">=</span> <span class="n">run_simulation</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">create_model</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mf">2.0</span><span class="p">),</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;S&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span> <span class="n">return_type</span><span class="o">=</span><span class="s1">&#39;observer&#39;</span><span class="p">)</span>
+<span class="c1"># viz.plot_number_observer(obs1, &#39;-&#39;, obs2, &#39;--&#39;)</span>
 </pre></div>
 </div>
 </div>
@@ -498,17 +500,17 @@ parameters.</p>
 However, for the compatibility, the common member <code class="docutils literal"><span class="pre">num_molecules</span></code> and
 <code class="docutils literal"><span class="pre">add_molecules</span></code> regard the value as an integer.</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">w</span> <span class="o">=</span> <span class="n">ode</span><span class="o">.</span><span class="n">ODEWorld</span><span class="p">()</span>
-<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">),</span> <span class="mf">2.5</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)))</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="mf">2.5</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)))</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="mi">2</span>
 </pre></div>
 </div>
 <p>To set/get a real number, use <code class="docutils literal"><span class="pre">set_value</span></code> and <code class="docutils literal"><span class="pre">get_value</span></code>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">w</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">),</span> <span class="mf">2.5</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)))</span>
-<span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">w</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">),</span> <span class="mf">2.5</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">)))</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="mf">2.0</span>
@@ -527,25 +529,23 @@ change the step size during time evolution due to error controll, but
 <span class="n">m1</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
 
 <span class="n">w1</span> <span class="o">=</span> <span class="n">ode</span><span class="o">.</span><span class="n">ODEWorld</span><span class="p">()</span>
-<span class="n">w1</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">w1</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
 <span class="n">sim1</span> <span class="o">=</span> <span class="n">ode</span><span class="o">.</span><span class="n">ODESimulator</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">ode</span><span class="o">.</span><span class="n">EULER</span><span class="p">)</span>
-<span class="n">sim1</span><span class="o">.</span><span class="n">set_dt</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span> <span class="c"># This is only effective for EULER</span>
+<span class="n">sim1</span><span class="o">.</span><span class="n">set_dt</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span> <span class="c1"># This is only effective for EULER</span>
 <span class="n">sim1</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">obs1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">ode.ODEFactory</span></code> also accepts a solver type and a default step
 interval.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;A&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span> <span class="n">factory</span><span class="o">=</span><span class="n">ode</span><span class="o">.</span><span class="n">ODEFactory</span><span class="p">(</span><span class="n">ode</span><span class="o">.</span><span class="n">EULER</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">))</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span> <span class="n">factory</span><span class="o">=</span><span class="n">ode</span><span class="o">.</span><span class="n">ODEFactory</span><span class="p">(</span><span class="n">ode</span><span class="o">.</span><span class="n">EULER</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">))</span>
 </pre></div>
 </div>
 <img alt="../_images/output_54_0.png" src="../_images/output_54_0.png" />
 <p>See also examples listed below:</p>
 <ul class="simple">
-<li><a class="reference external" href="../Examples/Glycolysis%20of%20Human%20Erythrocytes.ipynb">Glycolysis of Human
-Erythrocytes</a></li>
-<li><a class="reference external" href="../Examples/Drosophila%20Circadian%20Clock.ipynb">Drosophila Circadian
-Clock</a></li>
-<li><a class="reference external" href="../Examples/Attractors.ipynb">Attractors</a></li>
+<li><a class="reference internal" href="../Glycolysis/Glycolysis.html"><em>A Simple Model of the Glycolysis of Human Erythrocytes</em></a></li>
+<li><a class="reference internal" href="../Drosophila/Drosophila.html"><em>Drosophila Circadian Clock</em></a></li>
+<li><a class="reference internal" href="../Attractors/Attractors.html"><em>Attractors</em></a></li>
 </ul>
 </div>
 </div>
@@ -560,7 +560,7 @@ Clock</a></li>
         <a href="../tutorial7/tutorial7.html" class="btn btn-neutral float-right" title="7. Introduction of Rule-based Modeling" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../tutorial4/tutorial4.html" class="btn btn-neutral" title="4. How to Run a Simulation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../tutorial5/tutorial5.html" class="btn btn-neutral" title="5. How to Log and Visualize Simulations" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -82,15 +82,19 @@
             
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html#installation-and-usage">Installation and usage</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorial1/tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial2/tutorial2.html">2. How to Build a Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial3/tutorial3.html">3. How to Setup the Initial Condition</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial4/tutorial4.html">4. How to Run a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial5/tutorial5.html">5. How to Log and Visualize Simulations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial6/tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial7/tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial8/tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial9/tutorial9.html">9. Spatial Gillespie Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial10/tutorial10.html">10. Spatiocyte Simulations at Single-Molecule Resolution</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/core.html">E-Cell4 core API</a></li>
@@ -105,16 +109,12 @@
 <li class="toctree-l1"><a class="reference internal" href="api/util.decorator.html">E-Cell4 util.decorator API</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Attractors.html">Attractors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="DrosophilaCircadianClock.html">Drosophila Circadian Clock</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dpc.html">Dual Phosphorylation Cycle</a></li>
-<li class="toctree-l1"><a class="reference internal" href="HumanErythrocytes.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="WorldSimBasics.html">World and Simulator with ODE solver</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Meso.html">Meso</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Spatiocyte.html">Spatiocyte simulations with single-molecule resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attractors/Attractors.html">Attractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Drosophila/Drosophila.html">Drosophila Circadian Clock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DualPhospho/DualPhospho.html">Dual Phosphorylation Cycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Glycolysis/Glycolysis.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HodgkinHuxley/HodgkinHuxley.html">Hodgkin-Huxley Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HodgkinHuxley/HodgkinHuxley.html#fitzhughnagumo-model">FitzHugh–Nagumo Model</a></li>
 </ul>
 
             
@@ -180,38 +180,59 @@ General Public License version 2.</p>
 <li>Python valid rule based model</li>
 <li>IPython Notebook inline visualization</li>
 </ul>
-<p>Getting Started:</p>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#docker-users">Docker users</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#docker-container-for-e-cell-system-version4">Docker container for E-Cell System version4</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="installation.html#windows-or-mac">Windows or Mac</a></li>
 <li class="toctree-l3"><a class="reference internal" href="installation.html#linux">Linux</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#windows">Windows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#mac-or-linux">Mac or Linux</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="installation.html#note-about-jupyter-and-matplotlib-for-mac">Note about Jupyter and matplotlib for Mac</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#using-e-cell4-with-jupyter">Using E-Cell4 with jupyter</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="installation.html#windows-or-linux">Windows or Linux</a></li>
-<li class="toctree-l3"><a class="reference internal" href="installation.html#mac">Mac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html#installation-and-usage">Installation and usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#minimum-requirements">Minimum requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#optional-requirements">Optional requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#build-requirements">Build requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#windows">Windows</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#python2-series">Python2 series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#python3-series">Python3 series</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#mac">Mac</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#homebrew-users">homebrew users</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#pip-users">pip users</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#linux">Linux</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#custom-shell-script-for-ubuntu">Custom shell script for Ubuntu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#linuxbrew">Linuxbrew</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#simple-examples">Simple examples</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="installation.html#a-reversible-binding-reaction">A reversible binding reaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#particle-tracking-on-a-spherical-surface">Particle tracking on a spherical surface</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </div>
-<p>New Tutorials:</p>
+</div>
+<div class="section" id="tutorials">
+<h2>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h2>
+<p>We assume that you run the following tutorials from Jupyter Notebook.
+Please note that magic functions like <code class="docutils literal"><span class="pre">%matplotlib</span></code> work only on Jupyter Notebook.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorial1/tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorial1/tutorial1.html#quick-demostration">1.1. Quick Demostration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial1/tutorial1.html#quick-demo">1.1. Quick Demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial1/tutorial1.html#spatial-simulation-and-visualization">1.2. Spatial Simulation and Visualization</a></li>
 </ul>
 </li>
@@ -236,6 +257,11 @@ General Public License version 2.</p>
 <li class="toctree-l2"><a class="reference internal" href="tutorial4/tutorial4.html#capsulizing-algorithm-into-a-factory-class">4.3. Capsulizing Algorithm into a Factory Class</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial5/tutorial5.html">5. How to Log and Visualize Simulations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial5/tutorial5.html#logging-simulations-with-observers">5.1. Logging Simulations with Observers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial5/tutorial5.html#visualization-of-data-logged">5.2. Visualization of Data Logged</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial6/tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorial6/tutorial6.html#ode-odereactionrule">6.1. ode.ODEReactionRule</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial6/tutorial6.html#ode-oderatelaw">6.2. ode.ODERatelaw</a></li>
@@ -258,79 +284,73 @@ General Public License version 2.</p>
 <li class="toctree-l2"><a class="reference internal" href="tutorial8/tutorial8.html#switching-the-solver">Switching the Solver</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial9/tutorial9.html">9. Spatial Gillespie Method</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial9/tutorial9.html#spaces-in-e-cell4">9.1. Spaces in E-Cell4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial9/tutorial9.html#id1">9.2. Spatial Gillespie Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial9/tutorial9.html#defining-molecular-diffusion-coefficient">9.3. Defining Molecular Diffusion Coefficient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial9/tutorial9.html#molecular-localization">9.4. Molecular localization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial9/tutorial9.html#molecular-initial-location-and-the-reaction">9.5. Molecular initial location and the reaction</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial10/tutorial10.html">10. Spatiocyte Simulations at Single-Molecule Resolution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial10/tutorial10.html#spatiocyte-lattice-based-method">10.1. Spatiocyte Lattice-based Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial10/tutorial10.html#the-diffusion-movement-of-single-molecule">10.2. The Diffusion Movement of Single Molecule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial10/tutorial10.html#the-diffusion-coefficient-and-the-second-order-reaction">10.3 The Diffusion Coefficient and the Second-order Reaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial10/tutorial10.html#the-structure-in-the-spatiocyte-method">10.4. The Structure in the Spatiocyte Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial10/tutorial10.html#the-structure-and-the-reaction">10.5 The structure and the reaction</a></li>
+</ul>
+</li>
 </ul>
 </div>
-<p>API:</p>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/core.html">E-Cell4 core API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/gillespie.html">E-Cell4 gillespie API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/ode.html">E-Cell4 ode API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/meso.html">E-Cell4 meso API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/spatiocyte.html">E-Cell4 spatiocyte API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/bd.html">E-Cell4 bd API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/egfrd.html">E-Cell4 egfrd API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core.html">E-Cell4 core API</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/gillespie.html">E-Cell4 gillespie API</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/ode.html">E-Cell4 ode API</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/meso.html">E-Cell4 meso API</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/spatiocyte.html">E-Cell4 spatiocyte API</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/bd.html">E-Cell4 bd API</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/egfrd.html">E-Cell4 egfrd API</a><ul class="simple">
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api/util.html">E-Cell4 util API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/util.viz.html">E-Cell4 util.viz API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/util.decorator.html">E-Cell4 util.decorator API</a></li>
 </ul>
 </div>
-<p>Examples:</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="Attractors.html">Attractors</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Attractors.html#rossler-attractor">Rössler attractor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Attractors.html#modified-chua-chaotic-attractor">Modified Chua chaotic attractor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Attractors.html#lorenz-system">Lorenz system</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Attractors.html#tamari-attractor">Tamari attractor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Attractors.html#moore-spiegel-attractor">Moore-Spiegel attractor</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="DrosophilaCircadianClock.html">Drosophila Circadian Clock</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dpc.html">Dual Phosphorylation Cycle</a></li>
-<li class="toctree-l1"><a class="reference internal" href="HumanErythrocytes.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
-</ul>
 </div>
-<p>Old Tutorials:</p>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Introduction.html#e-cell4-fundamental-components">E-Cell4 fundamental components</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Introduction.html#a-basic-model-in-e-cell-4">A basic model in E-Cell 4</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Introduction.html#species">Species</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="Introduction.html#caution">Caution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attractors/Attractors.html">Attractors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Attractors/Attractors.html#rossler-attractor">Rössler attractor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Attractors/Attractors.html#modified-chua-chaotic-attractor">Modified Chua chaotic attractor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Attractors/Attractors.html#lorenz-system">Lorenz system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Attractors/Attractors.html#tamari-attractor">Tamari attractor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Attractors/Attractors.html#moore-spiegel-attractor">Moore-Spiegel attractor</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Introduction.html#reactionrule">ReactionRule</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Introduction.html#networkmodel">NetworkModel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Introduction.html#a-simple-simulation-with-e-cell4">A simple simulation with E-Cell4</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Introduction.html#special-model-notation-in-e-cell4">Special model notation in E-Cell4</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Introduction.html#notations-about-synthesis-and-degradation">Notations about synthesis and degradation</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="WorldSimBasics.html">World and Simulator with ODE solver</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="WorldSimBasics.html#creating-ode-world">Creating ODE world</a></li>
-<li class="toctree-l2"><a class="reference internal" href="WorldSimBasics.html#how-to-use-real3">How to use Real3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="WorldSimBasics.html#creating-and-running-odesimulator">Creating and Running ODESimulator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="WorldSimBasics.html#switching-the-solver">Switching the solver</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="Meso.html">Meso</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Meso.html#space-in-e-cell4">Space in E-Cell4</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Meso.html#spatial-gillespie-method">Spatial Gillespie method</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Meso.html#defining-molecular-diffusion-coefficient">Defining molecular diffusion coefficient</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Meso.html#molecular-localization">Molecular localization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Meso.html#molecular-initial-location-and-the-reaction">Molecular initial location and the reaction</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="Spatiocyte.html">Spatiocyte simulations with single-molecule resolution</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Spatiocyte.html#spatiocyte-lattice-based-method">Spatiocyte lattice-based method</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Spatiocyte.html#the-diffusion-movement-of-single-molecule">The diffusion movement of single molecule</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Spatiocyte.html#the-diffusion-coefficient-and-the-second-order-reaction">The diffusion coefficient and the second-order reaction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Spatiocyte.html#the-structure-in-the-spatiocyte-method">The structure in the Spatiocyte method</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Spatiocyte.html#the-structure-and-the-reaction">The structure and the reaction</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="Drosophila/Drosophila.html">Drosophila Circadian Clock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DualPhospho/DualPhospho.html">Dual Phosphorylation Cycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Glycolysis/Glycolysis.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HodgkinHuxley/HodgkinHuxley.html">Hodgkin-Huxley Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HodgkinHuxley/HodgkinHuxley.html#fitzhughnagumo-model">FitzHugh–Nagumo Model</a></li>
 </ul>
 </div>
 </div>

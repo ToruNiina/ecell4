@@ -81,15 +81,19 @@
             
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html#installation-and-usage">Installation and usage</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial1/tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial2/tutorial2.html">2. How to Build a Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial3/tutorial3.html">3. How to Setup the Initial Condition</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial4/tutorial4.html">4. How to Run a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial5/tutorial5.html">5. How to Log and Visualize Simulations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial6/tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial7/tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial8/tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial9/tutorial9.html">9. Spatial Gillespie Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial10/tutorial10.html">10. Spatiocyte Simulations at Single-Molecule Resolution</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../api/core.html">E-Cell4 core API</a></li>
@@ -104,16 +108,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/util.decorator.html">E-Cell4 util.decorator API</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../Attractors.html">Attractors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../DrosophilaCircadianClock.html">Drosophila Circadian Clock</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dpc.html">Dual Phosphorylation Cycle</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HumanErythrocytes.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../WorldSimBasics.html">World and Simulator with ODE solver</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Meso.html">Meso</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Spatiocyte.html">Spatiocyte simulations with single-molecule resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Attractors/Attractors.html">Attractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Drosophila/Drosophila.html">Drosophila Circadian Clock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DualPhospho/DualPhospho.html">Dual Phosphorylation Cycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glycolysis/Glycolysis.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HodgkinHuxley/HodgkinHuxley.html">Hodgkin-Huxley Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HodgkinHuxley/HodgkinHuxley.html#fitzhughnagumo-model">FitzHugh–Nagumo Model</a></li>
 </ul>
 
             
@@ -168,8 +168,8 @@
 </pre></div>
 </div>
 <p>We created a cube size1 on a side for ODE and Gillespie.In this case the volume only matters, that is</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">w3</span> <span class="o">=</span> <span class="n">ode</span><span class="o">.</span><span class="n">ODEWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>  <span class="c"># is almost equivalent to &#39;w1&#39;</span>
-<span class="n">w4</span> <span class="o">=</span> <span class="n">gillespie</span><span class="o">.</span><span class="n">GillespieWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">))</span>  <span class="c"># is almost equivalent to &#39;w2&#39;</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">w3</span> <span class="o">=</span> <span class="n">ode</span><span class="o">.</span><span class="n">ODEWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># is almost equivalent to &#39;w1&#39;</span>
+<span class="n">w4</span> <span class="o">=</span> <span class="n">gillespie</span><span class="o">.</span><span class="n">GillespieWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">))</span>  <span class="c1"># is almost equivalent to &#39;w2&#39;</span>
 </pre></div>
 </div>
 <p>This returns the same results. Because the volume is same 1.</p>
@@ -207,12 +207,12 @@ Next we will decompose <strong>run_simulation</strong>.</p>
 
 <span class="n">m</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
 
-<span class="n">w</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>  <span class="c"># XXX: Point2</span>
-<span class="n">w</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>  <span class="c"># XXX: Point1</span>
-<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">),</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># XXX: Point2</span>
+<span class="n">w</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>  <span class="c1"># XXX: Point1</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">),</span> <span class="mi">60</span><span class="p">)</span>
 
-<span class="n">sim</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicSimulator</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>  <span class="c"># XXX: Point1</span>
-<span class="n">obs</span> <span class="o">=</span> <span class="n">FixedIntervalNumberObserver</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;A&#39;</span><span class="p">,</span> <span class="s">&#39;B&#39;</span><span class="p">,</span> <span class="s">&#39;C&#39;</span><span class="p">))</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicSimulator</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>  <span class="c1"># XXX: Point1</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">FixedIntervalNumberObserver</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>
 <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">obs</span><span class="p">)</span>
 
 <span class="n">viz</span><span class="o">.</span><span class="n">plot_number_observer</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
@@ -234,12 +234,12 @@ Before we explain this, let&#8217;s change this argument and run the simulation.
 
 <span class="n">m</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
 
-<span class="n">w</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c"># XXX: Point2</span>
-<span class="n">w</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>  <span class="c"># XXX: Point1</span>
-<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">),</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># XXX: Point2</span>
+<span class="n">w</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>  <span class="c1"># XXX: Point1</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">),</span> <span class="mi">60</span><span class="p">)</span>
 
-<span class="n">sim</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicSimulator</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>  <span class="c"># XXX: Point1</span>
-<span class="n">obs</span> <span class="o">=</span> <span class="n">FixedIntervalNumberObserver</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;A&#39;</span><span class="p">,</span> <span class="s">&#39;B&#39;</span><span class="p">,</span> <span class="s">&#39;C&#39;</span><span class="p">))</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicSimulator</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>  <span class="c1"># XXX: Point1</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">FixedIntervalNumberObserver</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>
 <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">obs</span><span class="p">)</span>
 
 <span class="n">viz</span><span class="o">.</span><span class="n">plot_number_observer</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
@@ -279,15 +279,15 @@ Meanwhile in <strong>MesoscopicWorld</strong> you can put in molecules according
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ecell4</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">w</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;A&#39;</span><span class="p">),</span> <span class="mi">120</span><span class="p">)</span>
-<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;B&#39;</span><span class="p">),</span> <span class="mi">120</span><span class="p">,</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">),</span> <span class="mi">120</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">),</span> <span class="mi">120</span><span class="p">,</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>In <strong>MesoscopicWorld</strong>, you can set the <strong>Subvolume</strong> and the molecule locations by giving the third argument <strong>Integer3</strong> to <strong>add_molecules</strong>.
 In the above example, the molecule type <strong>A</strong> spreads all over the space, but the molecule type <strong>B</strong> only locates the center of the <strong>Subvolume</strong>.To check this, use <strong>num_molecules</strong> function.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;B&#39;</span><span class="p">)))</span>  <span class="c"># will print 120</span>
-<span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;B&#39;</span><span class="p">),</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>  <span class="c"># will print 0</span>
-<span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;B&#39;</span><span class="p">),</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>  <span class="c"># will print 120</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">)))</span>  <span class="c1"># will print 120</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">),</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>  <span class="c1"># will print 0</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">num_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">),</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>  <span class="c1"># will print 120</span>
 
 <span class="mi">120</span>
 <span class="mi">0</span>
@@ -346,7 +346,7 @@ exports: &#8216;Elegans&#8217;
   <body>
     <div id="viza28132b6-5a4b-4666-b170-dd755714561c"></div>
   </body>
-</html><div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&#39;A&#39;</span><span class="p">:</span> <span class="s">&#39;#a6cee3&#39;</span><span class="p">,</span> <span class="s">&#39;B&#39;</span><span class="p">:</span> <span class="s">&#39;#1f78b4&#39;</span><span class="p">,</span> <span class="s">&#39;C&#39;</span><span class="p">:</span> <span class="s">&#39;#b2df8a&#39;</span><span class="p">}</span>
+</html><div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="s1">&#39;#a6cee3&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="s1">&#39;#1f78b4&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="s1">&#39;#b2df8a&#39;</span><span class="p">}</span>
 </pre></div>
 </div>
 <p><strong>viz.plot_world</strong> function visualize the location of the molecules in IPython Notebook cell by giving the <strong>World</strong>. You can set the molecule size with <strong>radius</strong>.Now you can set the molecular localization to the <strong>World</strong>, next let&#8217;s simulate this.In the above example, we set the diffusion coefficient 1 and the World side 1, so 10 seconds is enough to stir this.After the simulation, check the result with calling <strong>viz.plot_world</strong> again.</p>
@@ -357,7 +357,7 @@ exports: &#8216;Elegans&#8217;
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ecell4</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="k">with</span> <span class="n">species_attributes</span><span class="p">():</span>
-    <span class="n">A</span> <span class="o">|</span> <span class="n">B</span> <span class="o">|</span> <span class="n">C</span> <span class="o">|</span> <span class="p">{</span><span class="s">&#39;D&#39;</span><span class="p">:</span> <span class="s">&#39;1&#39;</span><span class="p">}</span>
+    <span class="n">A</span> <span class="o">|</span> <span class="n">B</span> <span class="o">|</span> <span class="n">C</span> <span class="o">|</span> <span class="p">{</span><span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">}</span>
 
 <span class="k">with</span> <span class="n">reaction_rules</span><span class="p">():</span>
     <span class="n">A</span> <span class="o">+</span> <span class="n">B</span> <span class="o">&gt;</span> <span class="n">C</span> <span class="o">|</span> <span class="mf">0.01</span>
@@ -370,8 +370,8 @@ exports: &#8216;Elegans&#8217;
 <p>This model consists only of a simple binding reaction.
 The <strong>World</strong> is a long x axis cuboid.
 And locate the molecules off-center.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;A&#39;</span><span class="p">),</span> <span class="mi">1200</span><span class="p">,</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;B&#39;</span><span class="p">),</span> <span class="mi">1200</span><span class="p">,</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">),</span> <span class="mi">1200</span><span class="p">,</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">),</span> <span class="mi">1200</span><span class="p">,</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 <span class="n">viz</span><span class="o">.</span><span class="n">plot_world</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.025</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -423,7 +423,7 @@ exports: &#8216;Elegans&#8217;
   <body>
     <div id="vizd89b6e23-a827-4cfc-8299-64381fb1d2c5"></div>
   </body>
-</html><div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&#39;A&#39;</span><span class="p">:</span> <span class="s">&#39;#a6cee3&#39;</span><span class="p">,</span> <span class="s">&#39;B&#39;</span><span class="p">:</span> <span class="s">&#39;#1f78b4&#39;</span><span class="p">,</span> <span class="s">&#39;C&#39;</span><span class="p">:</span> <span class="s">&#39;#b2df8a&#39;</span><span class="p">}</span>
+</html><div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="s1">&#39;#a6cee3&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="s1">&#39;#1f78b4&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="s1">&#39;#b2df8a&#39;</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>On a different note, there is a reason not to set <strong>Integer3(0,0,0)</strong> or <strong>Integer3(9,0,0)</strong>.
@@ -431,7 +431,7 @@ In E-Cell4, basically we adopt periodic boundary condition for everything.
 So the forementioned two <strong>Subvolume</strong>s are actually adjoining.</p>
 <p>If you have the location expected, simulate it with <strong>MesoscopicSimulator</strong>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">sim</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicSimulator</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
-<span class="n">obs1</span> <span class="o">=</span> <span class="n">NumberObserver</span><span class="p">((</span><span class="s">&#39;A&#39;</span><span class="p">,</span> <span class="s">&#39;B&#39;</span><span class="p">,</span> <span class="s">&#39;C&#39;</span><span class="p">))</span>  <span class="c"># XXX: saves the numbers after every steps</span>
+<span class="n">obs1</span> <span class="o">=</span> <span class="n">NumberObserver</span><span class="p">((</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>  <span class="c1"># XXX: saves the numbers after every steps</span>
 <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">obs1</span><span class="p">)</span>
 <span class="n">viz</span><span class="o">.</span><span class="n">plot_number_observer</span><span class="p">(</span><span class="n">obs1</span><span class="p">)</span>
 </pre></div>
@@ -439,12 +439,12 @@ So the forementioned two <strong>Subvolume</strong>s are actually adjoining.</p>
 <p><img alt="png" src="../_images/Meso_32_0.png" /></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">w</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicWorld</span><span class="p">(</span><span class="n">Real3</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Integer3</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="n">w</span><span class="o">.</span><span class="n">bind_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
-<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;A&#39;</span><span class="p">),</span> <span class="mi">1200</span><span class="p">)</span>
-<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s">&#39;B&#39;</span><span class="p">),</span> <span class="mi">1200</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">),</span> <span class="mi">1200</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_molecules</span><span class="p">(</span><span class="n">Species</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">),</span> <span class="mi">1200</span><span class="p">)</span>
 <span class="n">sim</span> <span class="o">=</span> <span class="n">meso</span><span class="o">.</span><span class="n">MesoscopicSimulator</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
-<span class="n">obs2</span> <span class="o">=</span> <span class="n">NumberObserver</span><span class="p">((</span><span class="s">&#39;A&#39;</span><span class="p">,</span> <span class="s">&#39;B&#39;</span><span class="p">,</span> <span class="s">&#39;C&#39;</span><span class="p">))</span>  <span class="c"># XXX: saves the numbers after every steps</span>
+<span class="n">obs2</span> <span class="o">=</span> <span class="n">NumberObserver</span><span class="p">((</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>  <span class="c1"># XXX: saves the numbers after every steps</span>
 <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">obs2</span><span class="p">)</span>
-<span class="n">viz</span><span class="o">.</span><span class="n">plot_number_observer</span><span class="p">(</span><span class="n">obs1</span><span class="p">,</span> <span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="n">obs2</span><span class="p">,</span> <span class="s">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">viz</span><span class="o">.</span><span class="n">plot_number_observer</span><span class="p">(</span><span class="n">obs1</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">obs2</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><img alt="png" src="../_images/Meso_33_0.png" /></p>

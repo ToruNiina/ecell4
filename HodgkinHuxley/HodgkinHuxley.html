@@ -1,0 +1,329 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Hodgkin-Huxley Model &mdash; E-Cell 4.0.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="E-Cell 4.0.0 documentation" href="../index.html"/>
+        <link rel="prev" title="A Simple Model of the Glycolysis of Human Erythrocytes" href="../Glycolysis/Glycolysis.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> E-Cell
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html#installation-and-usage">Installation and usage</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial1/tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial2/tutorial2.html">2. How to Build a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial3/tutorial3.html">3. How to Setup the Initial Condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial4/tutorial4.html">4. How to Run a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial5/tutorial5.html">5. How to Log and Visualize Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial6/tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial7/tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial8/tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial9/tutorial9.html">9. Spatial Gillespie Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial10/tutorial10.html">10. Spatiocyte Simulations at Single-Molecule Resolution</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/core.html">E-Cell4 core API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/gillespie.html">E-Cell4 gillespie API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/ode.html">E-Cell4 ode API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/meso.html">E-Cell4 meso API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/spatiocyte.html">E-Cell4 spatiocyte API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/bd.html">E-Cell4 bd API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/egfrd.html">E-Cell4 egfrd API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util.html">E-Cell4 util API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util.viz.html">E-Cell4 util.viz API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util.decorator.html">E-Cell4 util.decorator API</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Attractors/Attractors.html">Attractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Drosophila/Drosophila.html">Drosophila Circadian Clock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DualPhospho/DualPhospho.html">Dual Phosphorylation Cycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glycolysis/Glycolysis.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Hodgkin-Huxley Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#fitzhughnagumo-model">FitzHugh–Nagumo Model</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">E-Cell</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Hodgkin-Huxley Model</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/HodgkinHuxley/HodgkinHuxley.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hodgkin-huxley-model">
+<h1>Hodgkin-Huxley Model<a class="headerlink" href="#hodgkin-huxley-model" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>A.L. Hodgkin, A.F. Huxley, &#8220;A quantitative description of membrane
+current and its application to conduction and excitation in nerve&#8221;,
+J. Physiol., 117, 500-544, 1952.</li>
+</ul>
+<div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+import numpy as np
+from ecell4 import *
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">Q10</span> <span class="o">=</span> <span class="mf">3.0</span>
+<span class="n">GNa</span> <span class="o">=</span> <span class="mf">120.0</span> <span class="c1"># mS/cm^2</span>
+<span class="n">GK</span> <span class="o">=</span> <span class="mf">36.0</span> <span class="c1"># mS/cm^2</span>
+<span class="n">gL</span> <span class="o">=</span> <span class="mf">0.3</span> <span class="c1"># mS/cm^2</span>
+<span class="n">EL</span> <span class="o">=</span> <span class="o">-</span><span class="mf">64.387</span> <span class="c1"># mV</span>
+<span class="n">ENa</span> <span class="o">=</span> <span class="mf">40.0</span> <span class="c1"># mV</span>
+<span class="n">EK</span> <span class="o">=</span> <span class="o">-</span><span class="mf">87.0</span> <span class="c1"># mV</span>
+<span class="n">Cm</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1"># uF/cm^2</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="mf">6.3</span> <span class="c1"># degrees C</span>
+<span class="n">Iext</span> <span class="o">=</span> <span class="mf">10.0</span> <span class="c1"># nA</span>
+
+<span class="k">with</span> <span class="n">reaction_rules</span><span class="p">():</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">Q10</span> <span class="o">**</span> <span class="p">((</span><span class="n">T</span> <span class="o">-</span> <span class="mf">6.3</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span>
+
+    <span class="n">alpha_m</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.1</span> <span class="o">*</span> <span class="p">(</span><span class="n">Vm</span> <span class="o">+</span> <span class="mi">50</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">Vm</span> <span class="o">+</span> <span class="mi">50</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">beta_m</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">Vm</span> <span class="o">+</span> <span class="mi">75</span><span class="p">)</span> <span class="o">/</span> <span class="mi">18</span><span class="p">)</span>
+    <span class="o">~</span><span class="n">m</span> <span class="o">&gt;</span> <span class="n">m</span> <span class="o">|</span> <span class="n">Q</span> <span class="o">*</span> <span class="p">(</span><span class="n">alpha_m</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">m</span><span class="p">)</span> <span class="o">-</span> <span class="n">beta_m</span> <span class="o">*</span> <span class="n">m</span><span class="p">)</span>
+
+    <span class="n">alpha_h</span> <span class="o">=</span> <span class="mf">0.07</span> <span class="o">*</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">Vm</span> <span class="o">+</span> <span class="mi">75</span><span class="p">)</span> <span class="o">/</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">beta_h</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">Vm</span> <span class="o">+</span> <span class="mi">45</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="o">~</span><span class="n">h</span> <span class="o">&gt;</span> <span class="n">h</span> <span class="o">|</span> <span class="n">Q</span> <span class="o">*</span> <span class="p">(</span><span class="n">alpha_h</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">h</span><span class="p">)</span> <span class="o">-</span> <span class="n">beta_h</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span>
+
+    <span class="n">alpha_n</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.01</span> <span class="o">*</span> <span class="p">(</span><span class="n">Vm</span> <span class="o">+</span> <span class="mi">65</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">Vm</span> <span class="o">+</span> <span class="mi">65</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">beta_n</span> <span class="o">=</span> <span class="mf">0.125</span> <span class="o">*</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">Vm</span> <span class="o">+</span> <span class="mi">75</span><span class="p">)</span> <span class="o">/</span> <span class="mi">80</span><span class="p">)</span>
+    <span class="o">~</span><span class="n">n</span> <span class="o">&gt;</span> <span class="n">n</span> <span class="o">|</span> <span class="n">Q</span> <span class="o">*</span> <span class="p">(</span><span class="n">alpha_n</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="n">beta_n</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="n">gNa</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span> <span class="o">**</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">h</span> <span class="o">*</span> <span class="n">GNa</span>
+    <span class="n">INa</span> <span class="o">=</span> <span class="n">gNa</span> <span class="o">*</span> <span class="p">(</span><span class="n">Vm</span> <span class="o">-</span> <span class="n">ENa</span><span class="p">)</span>
+    <span class="n">gK</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">**</span> <span class="mi">4</span><span class="p">)</span> <span class="o">*</span> <span class="n">GK</span>
+    <span class="n">IK</span> <span class="o">=</span> <span class="n">gK</span> <span class="o">*</span> <span class="p">(</span><span class="n">Vm</span> <span class="o">-</span> <span class="n">EK</span><span class="p">)</span>
+    <span class="n">IL</span> <span class="o">=</span> <span class="n">gL</span> <span class="o">*</span> <span class="p">(</span><span class="n">Vm</span> <span class="o">-</span> <span class="n">EL</span><span class="p">)</span>
+    <span class="o">~</span><span class="n">Vm</span> <span class="o">&gt;</span> <span class="n">Vm</span> <span class="o">|</span> <span class="p">(</span><span class="n">Iext</span> <span class="o">-</span> <span class="p">(</span><span class="n">IL</span> <span class="o">+</span> <span class="n">INa</span> <span class="o">+</span> <span class="n">IK</span><span class="p">))</span> <span class="o">/</span> <span class="n">Cm</span>
+
+<span class="n">hhm</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">hhm</span><span class="o">.</span><span class="n">reaction_rules</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Vm</span><span class="o">&gt;</span><span class="n">m</span><span class="o">+</span><span class="n">Vm</span><span class="o">|</span><span class="p">(</span><span class="mf">1.0</span><span class="o">*</span><span class="p">((((</span><span class="o">-</span><span class="mf">0.1</span><span class="o">*</span><span class="p">(</span><span class="n">Vm</span><span class="o">+</span><span class="mi">50</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">exp</span><span class="p">((</span><span class="o">-</span><span class="p">(</span><span class="n">Vm</span><span class="o">+</span><span class="mi">50</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="p">))</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">m</span><span class="p">))</span><span class="o">-</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">exp</span><span class="p">((</span><span class="o">-</span><span class="p">(</span><span class="n">Vm</span><span class="o">+</span><span class="mi">75</span><span class="p">)</span><span class="o">/</span><span class="mi">18</span><span class="p">))</span><span class="o">*</span><span class="n">m</span><span class="p">)))</span>
+<span class="n">Vm</span><span class="o">&gt;</span><span class="n">h</span><span class="o">+</span><span class="n">Vm</span><span class="o">|</span><span class="p">(</span><span class="mf">1.0</span><span class="o">*</span><span class="p">((</span><span class="mf">0.07</span><span class="o">*</span><span class="n">exp</span><span class="p">((</span><span class="o">-</span><span class="p">(</span><span class="n">Vm</span><span class="o">+</span><span class="mi">75</span><span class="p">)</span><span class="o">/</span><span class="mi">20</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">h</span><span class="p">))</span><span class="o">-</span><span class="p">((</span><span class="mf">1.0</span><span class="o">/</span><span class="p">(</span><span class="n">exp</span><span class="p">((</span><span class="o">-</span><span class="p">(</span><span class="n">Vm</span><span class="o">+</span><span class="mi">45</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="n">h</span><span class="p">)))</span>
+<span class="n">Vm</span><span class="o">&gt;</span><span class="n">n</span><span class="o">+</span><span class="n">Vm</span><span class="o">|</span><span class="p">(</span><span class="mf">1.0</span><span class="o">*</span><span class="p">((((</span><span class="o">-</span><span class="mf">0.01</span><span class="o">*</span><span class="p">(</span><span class="n">Vm</span><span class="o">+</span><span class="mi">65</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">exp</span><span class="p">((</span><span class="o">-</span><span class="p">(</span><span class="n">Vm</span><span class="o">+</span><span class="mi">65</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="p">))</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">n</span><span class="p">))</span><span class="o">-</span><span class="p">(</span><span class="mf">0.125</span><span class="o">*</span><span class="n">exp</span><span class="p">((</span><span class="o">-</span><span class="p">(</span><span class="n">Vm</span><span class="o">+</span><span class="mi">75</span><span class="p">)</span><span class="o">/</span><span class="mi">80</span><span class="p">))</span><span class="o">*</span><span class="n">n</span><span class="p">)))</span>
+<span class="n">m</span><span class="o">+</span><span class="n">h</span><span class="o">+</span><span class="n">n</span><span class="o">&gt;</span><span class="n">Vm</span><span class="o">+</span><span class="n">m</span><span class="o">+</span><span class="n">h</span><span class="o">+</span><span class="n">n</span><span class="o">|</span><span class="p">((</span><span class="mf">10.0</span><span class="o">-</span><span class="p">((</span><span class="mf">0.3</span><span class="o">*</span><span class="p">(</span><span class="n">Vm</span><span class="o">--</span><span class="mf">64.387</span><span class="p">))</span><span class="o">+</span><span class="p">((</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">h</span><span class="o">*</span><span class="mf">120.0</span><span class="o">*</span><span class="p">(</span><span class="n">Vm</span><span class="o">-</span><span class="mf">40.0</span><span class="p">))</span><span class="o">+</span><span class="p">((</span><span class="n">n</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span><span class="o">*</span><span class="mf">36.0</span><span class="o">*</span><span class="p">(</span><span class="n">Vm</span><span class="o">--</span><span class="mf">87.0</span><span class="p">))))</span><span class="o">/</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1001</span><span class="p">),</span> <span class="n">model</span><span class="o">=</span><span class="n">hhm</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Vm&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">75</span><span class="p">},</span> <span class="n">species_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Vm&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="../_images/output_4_03.png" src="../_images/output_4_03.png" />
+</div>
+<div class="section" id="fitzhughnagumo-model">
+<h1>FitzHugh–Nagumo Model<a class="headerlink" href="#fitzhughnagumo-model" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>R. FitzHugh, &#8220;Mathematical models of threshold phenomena in the nerve
+membrane.&#8221;, Bull. Math. Biophysics, 17:257—278, 1955.</li>
+</ul>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">a</span> <span class="o">=</span> <span class="mf">0.7</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mf">12.5</span>
+<span class="n">Iext</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+<span class="k">with</span> <span class="n">reaction_rules</span><span class="p">():</span>
+    <span class="o">~</span><span class="n">u</span> <span class="o">&gt;</span> <span class="n">u</span> <span class="o">|</span> <span class="o">-</span><span class="n">v</span> <span class="o">+</span> <span class="n">u</span> <span class="o">-</span> <span class="p">(</span><span class="n">u</span> <span class="o">**</span> <span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">Iext</span>
+    <span class="o">~</span><span class="n">v</span> <span class="o">&gt;</span> <span class="n">v</span> <span class="o">|</span> <span class="p">(</span><span class="n">u</span> <span class="o">-</span> <span class="n">b</span> <span class="o">*</span> <span class="n">v</span> <span class="o">+</span> <span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="n">c</span>
+
+<span class="n">fnm</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">fnm</span><span class="o">.</span><span class="n">reaction_rules</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">v</span><span class="o">&gt;</span><span class="n">u</span><span class="o">+</span><span class="n">v</span><span class="o">|</span><span class="p">(((</span><span class="o">-</span><span class="n">v</span><span class="o">+</span><span class="n">u</span><span class="p">)</span><span class="o">-</span><span class="p">((</span><span class="n">u</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">u</span><span class="o">&gt;</span><span class="n">v</span><span class="o">+</span><span class="n">u</span><span class="o">|</span><span class="p">(((</span><span class="n">u</span><span class="o">-</span><span class="p">(</span><span class="mf">0.8</span><span class="o">*</span><span class="n">v</span><span class="p">))</span><span class="o">+</span><span class="mf">0.7</span><span class="p">)</span><span class="o">/</span><span class="mf">12.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">501</span><span class="p">),</span> <span class="n">model</span><span class="o">=</span><span class="n">fnm</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/output_8_01.png" src="../_images/output_8_01.png" />
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">run_simulation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">501</span><span class="p">),</span> <span class="n">model</span><span class="o">=</span><span class="n">fnm</span><span class="p">,</span> <span class="c1"># return_type=&#39;nyaplot&#39;,</span>
+               <span class="n">opt_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]})</span>
+</pre></div>
+</div>
+<img alt="../_images/output_9_0.png" src="../_images/output_9_0.png" />
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../Glycolysis/Glycolysis.html" class="btn btn-neutral" title="A Simple Model of the Glycolysis of Human Erythrocytes" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, E-Cell project.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'4.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

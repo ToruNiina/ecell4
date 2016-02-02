@@ -30,9 +30,7 @@
   
 
   
-    <link rel="top" title="E-Cell 4.0.0 documentation" href="../index.html"/>
-        <link rel="next" title="E-Cell4 bd API" href="bd.html"/>
-        <link rel="prev" title="E-Cell4 meso API" href="meso.html"/> 
+    <link rel="top" title="E-Cell 4.0.0 documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -83,22 +81,28 @@
             
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html#installation-and-usage">Installation and usage</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial1/tutorial1.html">1. Brief Tour of E-Cell4 Simulations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial2/tutorial2.html">2. How to Build a Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial3/tutorial3.html">3. How to Setup the Initial Condition</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial4/tutorial4.html">4. How to Run a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial5/tutorial5.html">5. How to Log and Visualize Simulations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial6/tutorial6.html">6. How to Solve ODEs with Rate Law Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial7/tutorial7.html">7. Introduction of Rule-based Modeling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial8/tutorial8.html">8. More about 1. Brief Tour of E-Cell4 Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial9/tutorial9.html">9. Spatial Gillespie Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial10/tutorial10.html">10. Spatiocyte Simulations at Single-Molecule Resolution</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="core.html">E-Cell4 core API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gillespie.html">E-Cell4 gillespie API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ode.html">E-Cell4 ode API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="meso.html">E-Cell4 meso API</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">E-Cell4 spatiocyte API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">E-Cell4 spatiocyte API</a><ul class="simple">
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="bd.html">E-Cell4 bd API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="egfrd.html">E-Cell4 egfrd API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="util.html">E-Cell4 util API</a></li>
@@ -106,16 +110,12 @@
 <li class="toctree-l1"><a class="reference internal" href="util.decorator.html">E-Cell4 util.decorator API</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../Attractors.html">Attractors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../DrosophilaCircadianClock.html">Drosophila Circadian Clock</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dpc.html">Dual Phosphorylation Cycle</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../HumanErythrocytes.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../WorldSimBasics.html">World and Simulator with ODE solver</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Meso.html">Meso</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Spatiocyte.html">Spatiocyte simulations with single-molecule resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Attractors/Attractors.html">Attractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Drosophila/Drosophila.html">Drosophila Circadian Clock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DualPhospho/DualPhospho.html">Dual Phosphorylation Cycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glycolysis/Glycolysis.html">A Simple Model of the Glycolysis of Human Erythrocytes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HodgkinHuxley/HodgkinHuxley.html">Hodgkin-Huxley Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HodgkinHuxley/HodgkinHuxley.html#fitzhughnagumo-model">FitzHugh–Nagumo Model</a></li>
 </ul>
 
             
@@ -167,6 +167,24 @@
 <em class="property">class </em><code class="descclassname">ecell4.spatiocyte.</code><code class="descname">ReactionInfo</code><a class="headerlink" href="#ecell4.spatiocyte.ReactionInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class stores detailed information about a reaction in spatiocyte.</p>
 <p>ReactionInfo(t, reactants, products)</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.ReactionInfo.products" title="ecell4.spatiocyte.ReactionInfo.products"><code class="xref py py-obj docutils literal"><span class="pre">products</span></code></a></td>
+<td>Return a list of products</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.ReactionInfo.reactants" title="ecell4.spatiocyte.ReactionInfo.reactants"><code class="xref py py-obj docutils literal"><span class="pre">reactants</span></code></a></td>
+<td>Return a list of reactants</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.ReactionInfo.t" title="ecell4.spatiocyte.ReactionInfo.t"><code class="xref py py-obj docutils literal"><span class="pre">t</span></code></a></td>
+<td>Return a time when a reaction occurred.</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ecell4.spatiocyte.ReactionInfo.products">
 <code class="descname">products</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.ReactionInfo.products" title="Permalink to this definition">¶</a></dt>
@@ -200,44 +218,81 @@
 <em class="property">class </em><code class="descclassname">ecell4.spatiocyte.</code><code class="descname">SpatiocyteFactory</code><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteFactory" title="Permalink to this definition">¶</a></dt>
 <dd><p>A factory class creating a SpatiocyteWorld instance and a SpatiocyteSimulator instance.</p>
 <p>SpatiocyteFactory(voxel_radius, alpha, rng)</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteFactory.create_simulator" title="ecell4.spatiocyte.SpatiocyteFactory.create_simulator"><code class="xref py py-obj docutils literal"><span class="pre">create_simulator</span></code></a>((arg1,&nbsp;...)</td>
+<td>Return a SpatiocyteSimulator instance.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteFactory.create_world" title="ecell4.spatiocyte.SpatiocyteFactory.create_world"><code class="xref py py-obj docutils literal"><span class="pre">create_world</span></code></a>((arg1=None)&nbsp;-&gt;&nbsp;SpatiocyteWorld)</td>
+<td>Return a SpatiocyteWorld instance.</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteFactory.create_simulator">
 <code class="descname">create_simulator</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span> &rarr; SpatiocyteSimulator<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteFactory.create_simulator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a SpatiocyteSimulator instance.</p>
-<dl class="docutils">
-<dt>arg1 <span class="classifier-delimiter">:</span> <span class="classifier">SpatiocyteWorld</span></dt>
-<dd>A world</dd>
-</dl>
-<p>or</p>
-<dl class="docutils">
-<dt>arg1 <span class="classifier-delimiter">:</span> <span class="classifier">Model</span></dt>
-<dd>A simulation model</dd>
-<dt>arg2 <span class="classifier-delimiter">:</span> <span class="classifier">SpatiocyteWorld</span></dt>
-<dd>A world</dd>
-</dl>
-<dl class="docutils">
-<dt>SpatiocyteSimulator:</dt>
-<dd>The created simulator</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>arg1</strong> : SpatiocyteWorld</p>
+<blockquote>
+<div><p>A world</p>
+</div></blockquote>
+<p><strong>or</strong></p>
+<p><strong>arg1</strong> : Model</p>
+<blockquote>
+<div><p>A simulation model</p>
+</div></blockquote>
+<p><strong>arg2</strong> : SpatiocyteWorld</p>
+<blockquote>
+<div><p>A world</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">SpatiocyteSimulator:</p>
+<blockquote class="last">
+<div><p>The created simulator</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteFactory.create_world">
 <code class="descname">create_world</code><span class="sig-paren">(</span><em>arg1=None</em><span class="sig-paren">)</span> &rarr; SpatiocyteWorld<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteFactory.create_world" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a SpatiocyteWorld instance.</p>
-<dl class="docutils">
-<dt>arg1 <span class="classifier-delimiter">:</span> <span class="classifier">Real3</span></dt>
-<dd>The lengths of edges of a SpatiocyteWorld created</dd>
-</dl>
-<p>or</p>
-<dl class="docutils">
-<dt>arg1 <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd>The path of a HDF5 file for SpatiocyteWorld</dd>
-</dl>
-<dl class="docutils">
-<dt>SpatiocyteWorld:</dt>
-<dd>The created world</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>arg1</strong> : Real3</p>
+<blockquote>
+<div><p>The lengths of edges of a SpatiocyteWorld created</p>
+</div></blockquote>
+<p><strong>or</strong></p>
+<p><strong>arg1</strong> : str</p>
+<blockquote>
+<div><p>The path of a HDF5 file for SpatiocyteWorld</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">SpatiocyteWorld:</p>
+<blockquote class="last">
+<div><p>The created world</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -247,18 +302,85 @@
 <em class="property">class </em><code class="descclassname">ecell4.spatiocyte.</code><code class="descname">SpatiocyteSimulator</code><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteSimulator" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class running the simulation with the spatiocyte algorithm.</p>
 <p>SpatiocyteSimulator(m, w, alpha)</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteSimulator.calculate_alpha" title="ecell4.spatiocyte.SpatiocyteSimulator.calculate_alpha"><code class="xref py py-obj docutils literal"><span class="pre">calculate_alpha</span></code></a>((rule)&nbsp;-&gt;&nbsp;Real)</td>
+<td>Return the recommended value of alpha</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteSimulator.check_reaction" title="ecell4.spatiocyte.SpatiocyteSimulator.check_reaction"><code class="xref py py-obj docutils literal"><span class="pre">check_reaction</span></code></a></td>
+<td>Return if any reaction occurred at the last step, or not.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteSimulator.dt" title="ecell4.spatiocyte.SpatiocyteSimulator.dt"><code class="xref py py-obj docutils literal"><span class="pre">dt</span></code></a></td>
+<td>Return the step interval.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteSimulator.get_alpha" title="ecell4.spatiocyte.SpatiocyteSimulator.get_alpha"><code class="xref py py-obj docutils literal"><span class="pre">get_alpha</span></code></a></td>
+<td>Return the value of alpha.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteSimulator.initialize" title="ecell4.spatiocyte.SpatiocyteSimulator.initialize"><code class="xref py py-obj docutils literal"><span class="pre">initialize</span></code></a></td>
+<td>Initialize the simulator.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteSimulator.last_reactions" title="ecell4.spatiocyte.SpatiocyteSimulator.last_reactions"><code class="xref py py-obj docutils literal"><span class="pre">last_reactions</span></code></a>(()&nbsp;-&gt;&nbsp;[(ReactionRule,&nbsp;...)</td>
+<td>Return reactions occuring at the last step.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteSimulator.model" title="ecell4.spatiocyte.SpatiocyteSimulator.model"><code class="xref py py-obj docutils literal"><span class="pre">model</span></code></a></td>
+<td>Return the model bound.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteSimulator.next_time" title="ecell4.spatiocyte.SpatiocyteSimulator.next_time"><code class="xref py py-obj docutils literal"><span class="pre">next_time</span></code></a></td>
+<td>Return the scheduled time for the next step.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteSimulator.num_steps" title="ecell4.spatiocyte.SpatiocyteSimulator.num_steps"><code class="xref py py-obj docutils literal"><span class="pre">num_steps</span></code></a></td>
+<td>Return the number of steps.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteSimulator.run" title="ecell4.spatiocyte.SpatiocyteSimulator.run"><code class="xref py py-obj docutils literal"><span class="pre">run</span></code></a>(duration,&nbsp;observers)</td>
+<td>Run the simulation.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteSimulator.set_alpha" title="ecell4.spatiocyte.SpatiocyteSimulator.set_alpha"><code class="xref py py-obj docutils literal"><span class="pre">set_alpha</span></code></a>(alpha)</td>
+<td>Set the value of alpha.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteSimulator.set_dt" title="ecell4.spatiocyte.SpatiocyteSimulator.set_dt"><code class="xref py py-obj docutils literal"><span class="pre">set_dt</span></code></a>(dt)</td>
+<td>Set a step interval.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteSimulator.set_t" title="ecell4.spatiocyte.SpatiocyteSimulator.set_t"><code class="xref py py-obj docutils literal"><span class="pre">set_t</span></code></a>(t)</td>
+<td>Set the current time.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteSimulator.step" title="ecell4.spatiocyte.SpatiocyteSimulator.step"><code class="xref py py-obj docutils literal"><span class="pre">step</span></code></a>((upto=None)&nbsp;-&gt;&nbsp;bool)</td>
+<td>Step the simulation.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteSimulator.t" title="ecell4.spatiocyte.SpatiocyteSimulator.t"><code class="xref py py-obj docutils literal"><span class="pre">t</span></code></a></td>
+<td>Return the time.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteSimulator.world" title="ecell4.spatiocyte.SpatiocyteSimulator.world"><code class="xref py py-obj docutils literal"><span class="pre">world</span></code></a></td>
+<td>Return the world bound.</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteSimulator.calculate_alpha">
 <code class="descname">calculate_alpha</code><span class="sig-paren">(</span><em>rule</em><span class="sig-paren">)</span> &rarr; Real<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteSimulator.calculate_alpha" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the recommended value of alpha</p>
-<dl class="docutils">
-<dt>rule <span class="classifier-delimiter">:</span> <span class="classifier">ReactionRule</span></dt>
-<dd>A reaction rule.</dd>
-</dl>
-<dl class="docutils">
-<dt>Real:</dt>
-<dd>The recommneded value of alpha</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>rule</strong> : ReactionRule</p>
+<blockquote>
+<div><p>A reaction rule.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Real:</p>
+<blockquote class="last">
+<div><p>The recommneded value of alpha</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -289,10 +411,18 @@
 <dt id="ecell4.spatiocyte.SpatiocyteSimulator.last_reactions">
 <code class="descname">last_reactions</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; [(ReactionRule, ReactionInfo)]<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteSimulator.last_reactions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return reactions occuring at the last step.</p>
-<dl class="docutils">
-<dt>list:</dt>
-<dd>The list of reaction rules and infos.</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list:</p>
+<blockquote class="last">
+<div><p>The list of reaction rules and infos.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -317,58 +447,102 @@
 <dt id="ecell4.spatiocyte.SpatiocyteSimulator.run">
 <code class="descname">run</code><span class="sig-paren">(</span><em>duration</em>, <em>observers</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteSimulator.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the simulation.</p>
-<dl class="docutils">
-<dt>duration <span class="classifier-delimiter">:</span> <span class="classifier">Real</span></dt>
-<dd>A duration for running a simulation.
-A simulation is expected to be stopped at t() + duration.</dd>
-<dt>observers <span class="classifier-delimiter">:</span> <span class="classifier">list of Obeservers, optional</span></dt>
-<dd>observers</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>duration</strong> : Real</p>
+<blockquote>
+<div><p>A duration for running a simulation.
+A simulation is expected to be stopped at t() + duration.</p>
+</div></blockquote>
+<p><strong>observers</strong> : list of Obeservers, optional</p>
+<blockquote class="last">
+<div><p>observers</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteSimulator.set_alpha">
 <code class="descname">set_alpha</code><span class="sig-paren">(</span><em>alpha</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteSimulator.set_alpha" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the value of alpha.</p>
-<dl class="docutils">
-<dt>alpha <span class="classifier-delimiter">:</span> <span class="classifier">Real</span></dt>
-<dd>The value of alpha</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>alpha</strong> : Real</p>
+<blockquote class="last">
+<div><p>The value of alpha</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteSimulator.set_dt">
 <code class="descname">set_dt</code><span class="sig-paren">(</span><em>dt</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteSimulator.set_dt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a step interval.</p>
-<dl class="docutils">
-<dt>dt <span class="classifier-delimiter">:</span> <span class="classifier">Real</span></dt>
-<dd>A step interval</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dt</strong> : Real</p>
+<blockquote class="last">
+<div><p>A step interval</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteSimulator.set_t">
 <code class="descname">set_t</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteSimulator.set_t" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the current time.</p>
-<dl class="docutils">
-<dt>t <span class="classifier-delimiter">:</span> <span class="classifier">Real</span></dt>
-<dd>A current time.</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>t</strong> : Real</p>
+<blockquote class="last">
+<div><p>A current time.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteSimulator.step">
 <code class="descname">step</code><span class="sig-paren">(</span><em>upto=None</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteSimulator.step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Step the simulation.</p>
-<dl class="docutils">
-<dt>upto <span class="classifier-delimiter">:</span> <span class="classifier">Real, optional</span></dt>
-<dd>The time which to step the simulation up to</dd>
-</dl>
-<dl class="docutils">
-<dt>bool:</dt>
-<dd>True if the simulation did not reach the given time.
-When upto is not given, nothing will be returned.</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>upto</strong> : Real, optional</p>
+<blockquote>
+<div><p>The time which to step the simulation up to</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool:</p>
+<blockquote class="last">
+<div><p>True if the simulation did not reach the given time.
+When upto is not given, nothing will be returned.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -390,40 +564,253 @@ When upto is not given, nothing will be returned.</dd>
 <em class="property">class </em><code class="descclassname">ecell4.spatiocyte.</code><code class="descname">SpatiocyteWorld</code><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class containing the properties of the spatiocyte world.</p>
 <p>SpatiocyteWorld(edge_lengths=None, voxel_radius=None, GSLRandomNumberGenerator rng=None)</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.actual_lengths" title="ecell4.spatiocyte.SpatiocyteWorld.actual_lengths"><code class="xref py py-obj docutils literal"><span class="pre">actual_lengths</span></code></a></td>
+<td>Return the actual edge lengths of the world.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.add_molecules" title="ecell4.spatiocyte.SpatiocyteWorld.add_molecules"><code class="xref py py-obj docutils literal"><span class="pre">add_molecules</span></code></a>(sp,&nbsp;num[,&nbsp;shape])</td>
+<td>Add some molecules.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.add_structure" title="ecell4.spatiocyte.SpatiocyteWorld.add_structure"><code class="xref py py-obj docutils literal"><span class="pre">add_structure</span></code></a>(sp,&nbsp;shape)</td>
+<td>Add a structure.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.as_base" title="ecell4.spatiocyte.SpatiocyteWorld.as_base"><code class="xref py py-obj docutils literal"><span class="pre">as_base</span></code></a></td>
+<td>Return self as a base class.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.bind_to" title="ecell4.spatiocyte.SpatiocyteWorld.bind_to"><code class="xref py py-obj docutils literal"><span class="pre">bind_to</span></code></a>(m)</td>
+<td>Bind a model to the world</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.col_size" title="ecell4.spatiocyte.SpatiocyteWorld.col_size"><code class="xref py py-obj docutils literal"><span class="pre">col_size</span></code></a></td>
+<td>Return the size of the column of the world.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.coord2global" title="ecell4.spatiocyte.SpatiocyteWorld.coord2global"><code class="xref py py-obj docutils literal"><span class="pre">coord2global</span></code></a>((coord)&nbsp;-&gt;&nbsp;Integer3)</td>
+<td>Transform a coordinate to a global coordinate.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.coord2private" title="ecell4.spatiocyte.SpatiocyteWorld.coord2private"><code class="xref py py-obj docutils literal"><span class="pre">coord2private</span></code></a></td>
+<td>Transform a coordinate to a private coordinate.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.coordinate2position" title="ecell4.spatiocyte.SpatiocyteWorld.coordinate2position"><code class="xref py py-obj docutils literal"><span class="pre">coordinate2position</span></code></a>((coord)&nbsp;-&gt;&nbsp;Real3)</td>
+<td>Transform a coordinate to a position.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.edge_lengths" title="ecell4.spatiocyte.SpatiocyteWorld.edge_lengths"><code class="xref py py-obj docutils literal"><span class="pre">edge_lengths</span></code></a>(()&nbsp;-&gt;&nbsp;Real3)</td>
+<td>Return the edge lengths of the world.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.get_neighbor" title="ecell4.spatiocyte.SpatiocyteWorld.get_neighbor"><code class="xref py py-obj docutils literal"><span class="pre">get_neighbor</span></code></a>((coord,&nbsp;nrand)&nbsp;-&gt;&nbsp;Integer)</td>
+<td>Return the neighbor coordinate of a given coordinate.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.get_neighbor_private" title="ecell4.spatiocyte.SpatiocyteWorld.get_neighbor_private"><code class="xref py py-obj docutils literal"><span class="pre">get_neighbor_private</span></code></a>((coord,&nbsp;nrand)&nbsp;-&gt;&nbsp;Integer)</td>
+<td>Return the neighbor coordinate of a given coordinate in private.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.get_particle" title="ecell4.spatiocyte.SpatiocyteWorld.get_particle"><code class="xref py py-obj docutils literal"><span class="pre">get_particle</span></code></a>(pid)&nbsp;-&gt;&nbsp;(ParticleID,&nbsp;Particle)</td>
+<td>Return the particle associated a given ParticleID.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.get_value" title="ecell4.spatiocyte.SpatiocyteWorld.get_value"><code class="xref py py-obj docutils literal"><span class="pre">get_value</span></code></a>((sp)&nbsp;-&gt;&nbsp;Real)</td>
+<td>Return the value (number) corresponding the given Species.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.get_value_exact" title="ecell4.spatiocyte.SpatiocyteWorld.get_value_exact"><code class="xref py py-obj docutils literal"><span class="pre">get_value_exact</span></code></a>((sp)&nbsp;-&gt;&nbsp;Real)</td>
+<td>Return the value (number) corresponding the given Species.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.get_volume" title="ecell4.spatiocyte.SpatiocyteWorld.get_volume"><code class="xref py py-obj docutils literal"><span class="pre">get_volume</span></code></a></td>
+<td>Return the actual volume of the world.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.get_voxel" title="ecell4.spatiocyte.SpatiocyteWorld.get_voxel"><code class="xref py py-obj docutils literal"><span class="pre">get_voxel</span></code></a>(arg)&nbsp;-&gt;&nbsp;(ParticleID,&nbsp;Voxle)</td>
+<td>Return the voxel having a particle associated with a given ParticleID or coordinate.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.global2coord" title="ecell4.spatiocyte.SpatiocyteWorld.global2coord"><code class="xref py py-obj docutils literal"><span class="pre">global2coord</span></code></a>((g)&nbsp;-&gt;&nbsp;Integer)</td>
+<td>Transform a global coordinate to a coordinate.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.global2position" title="ecell4.spatiocyte.SpatiocyteWorld.global2position"><code class="xref py py-obj docutils literal"><span class="pre">global2position</span></code></a>((g)&nbsp;-&gt;&nbsp;Real3)</td>
+<td>Transform a global coordinate to a position.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.global2private" title="ecell4.spatiocyte.SpatiocyteWorld.global2private"><code class="xref py py-obj docutils literal"><span class="pre">global2private</span></code></a>((g)&nbsp;-&gt;&nbsp;Integer)</td>
+<td>Transform a global coordinate to a private coordinate.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.has_particle" title="ecell4.spatiocyte.SpatiocyteWorld.has_particle"><code class="xref py py-obj docutils literal"><span class="pre">has_particle</span></code></a>((pid)&nbsp;-&gt;&nbsp;bool)</td>
+<td>Check if a particle associated with a given particle id exists.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.has_voxel" title="ecell4.spatiocyte.SpatiocyteWorld.has_voxel"><code class="xref py py-obj docutils literal"><span class="pre">has_voxel</span></code></a>((pid)&nbsp;-&gt;&nbsp;bool)</td>
+<td>Check if a particle exists.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.layer_size" title="ecell4.spatiocyte.SpatiocyteWorld.layer_size"><code class="xref py py-obj docutils literal"><span class="pre">layer_size</span></code></a></td>
+<td>Return the size of layer of the world.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.list_particles" title="ecell4.spatiocyte.SpatiocyteWorld.list_particles"><code class="xref py py-obj docutils literal"><span class="pre">list_particles</span></code></a>((sp)&nbsp;-&gt;&nbsp;[(ParticleID,&nbsp;Particle)])</td>
+<td>Return the list of particles.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.list_particles_exact" title="ecell4.spatiocyte.SpatiocyteWorld.list_particles_exact"><code class="xref py py-obj docutils literal"><span class="pre">list_particles_exact</span></code></a>((sp)&nbsp;-&gt;&nbsp;[(ParticleID,&nbsp;...)</td>
+<td>Return the list of particles of a given species.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.list_voxels" title="ecell4.spatiocyte.SpatiocyteWorld.list_voxels"><code class="xref py py-obj docutils literal"><span class="pre">list_voxels</span></code></a>((sp=None)&nbsp;-&gt;&nbsp;[ParitcleID,&nbsp;Voxel])</td>
+<td>Returns the list of voxels.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.list_voxels_exact" title="ecell4.spatiocyte.SpatiocyteWorld.list_voxels_exact"><code class="xref py py-obj docutils literal"><span class="pre">list_voxels_exact</span></code></a>((sp)&nbsp;-&gt;&nbsp;[ParitcleID,&nbsp;Voxel])</td>
+<td>Returns the list of voxels.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.load" title="ecell4.spatiocyte.SpatiocyteWorld.load"><code class="xref py py-obj docutils literal"><span class="pre">load</span></code></a>(filename)</td>
+<td>Load the world from a file.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.new_particle" title="ecell4.spatiocyte.SpatiocyteWorld.new_particle"><code class="xref py py-obj docutils literal"><span class="pre">new_particle</span></code></a>(arg1[,&nbsp;arg2])</td>
+<td>Create a new particle.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.new_voxel" title="ecell4.spatiocyte.SpatiocyteWorld.new_voxel"><code class="xref py py-obj docutils literal"><span class="pre">new_voxel</span></code></a>(arg1,&nbsp;arg2)&nbsp;-&gt;&nbsp;(ParticleID,&nbsp;Voxel)</td>
+<td>Create a particle.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.num_molecules" title="ecell4.spatiocyte.SpatiocyteWorld.num_molecules"><code class="xref py py-obj docutils literal"><span class="pre">num_molecules</span></code></a>((sp)&nbsp;-&gt;&nbsp;Integer)</td>
+<td>Return the number of molecules.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.num_molecules_exact" title="ecell4.spatiocyte.SpatiocyteWorld.num_molecules_exact"><code class="xref py py-obj docutils literal"><span class="pre">num_molecules_exact</span></code></a>((sp)&nbsp;-&gt;&nbsp;Integer)</td>
+<td>Return the number of molecules of a given species.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.num_particles" title="ecell4.spatiocyte.SpatiocyteWorld.num_particles"><code class="xref py py-obj docutils literal"><span class="pre">num_particles</span></code></a>((sp=None)&nbsp;-&gt;&nbsp;Integer)</td>
+<td>Return the number of particles.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.num_particles_exact" title="ecell4.spatiocyte.SpatiocyteWorld.num_particles_exact"><code class="xref py py-obj docutils literal"><span class="pre">num_particles_exact</span></code></a>((sp)&nbsp;-&gt;&nbsp;Integer)</td>
+<td>Return the number of particles of a given species.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.num_voxels" title="ecell4.spatiocyte.SpatiocyteWorld.num_voxels"><code class="xref py py-obj docutils literal"><span class="pre">num_voxels</span></code></a>((sp=None)&nbsp;-&gt;&nbsp;Integer)</td>
+<td>Return the number of voxels.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.num_voxels_exact" title="ecell4.spatiocyte.SpatiocyteWorld.num_voxels_exact"><code class="xref py py-obj docutils literal"><span class="pre">num_voxels_exact</span></code></a>((sp)&nbsp;-&gt;&nbsp;Integer)</td>
+<td>Return the number of voxels of a given species.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.on_structure" title="ecell4.spatiocyte.SpatiocyteWorld.on_structure"><code class="xref py py-obj docutils literal"><span class="pre">on_structure</span></code></a>((sp,&nbsp;coord)&nbsp;-&gt;&nbsp;bool)</td>
+<td>Check if the given species would be on the proper structure at the coordinate.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.position2coordinate" title="ecell4.spatiocyte.SpatiocyteWorld.position2coordinate"><code class="xref py py-obj docutils literal"><span class="pre">position2coordinate</span></code></a>((pos)&nbsp;-&gt;&nbsp;Integer)</td>
+<td>Transform a position to a coordinate.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.position2global" title="ecell4.spatiocyte.SpatiocyteWorld.position2global"><code class="xref py py-obj docutils literal"><span class="pre">position2global</span></code></a>((pos)&nbsp;-&gt;&nbsp;Integer3)</td>
+<td>Transform a position to a global coordinate.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.private2coord" title="ecell4.spatiocyte.SpatiocyteWorld.private2coord"><code class="xref py py-obj docutils literal"><span class="pre">private2coord</span></code></a></td>
+<td>Transform a private coordinate to a coordinate.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.private2global" title="ecell4.spatiocyte.SpatiocyteWorld.private2global"><code class="xref py py-obj docutils literal"><span class="pre">private2global</span></code></a>((coord)&nbsp;-&gt;&nbsp;Integer3)</td>
+<td>Transform a private coordinate to a global coordinate.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.private2position" title="ecell4.spatiocyte.SpatiocyteWorld.private2position"><code class="xref py py-obj docutils literal"><span class="pre">private2position</span></code></a>((coord)&nbsp;-&gt;&nbsp;Real3)</td>
+<td>Transform a private coordinate to a position.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.remove_molecules" title="ecell4.spatiocyte.SpatiocyteWorld.remove_molecules"><code class="xref py py-obj docutils literal"><span class="pre">remove_molecules</span></code></a>(sp,&nbsp;num)</td>
+<td>Remove the molecules.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.remove_particle" title="ecell4.spatiocyte.SpatiocyteWorld.remove_particle"><code class="xref py py-obj docutils literal"><span class="pre">remove_particle</span></code></a>(pid)</td>
+<td>Remove the particle associated with a given ParticleID.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.remove_voxel" title="ecell4.spatiocyte.SpatiocyteWorld.remove_voxel"><code class="xref py py-obj docutils literal"><span class="pre">remove_voxel</span></code></a>(pid)</td>
+<td>Remove the particle associated with a given ParticleID.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.rng" title="ecell4.spatiocyte.SpatiocyteWorld.rng"><code class="xref py py-obj docutils literal"><span class="pre">rng</span></code></a></td>
+<td>Return a random number generator object.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.row_size" title="ecell4.spatiocyte.SpatiocyteWorld.row_size"><code class="xref py py-obj docutils literal"><span class="pre">row_size</span></code></a></td>
+<td>Return the size of row of the world.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.save" title="ecell4.spatiocyte.SpatiocyteWorld.save"><code class="xref py py-obj docutils literal"><span class="pre">save</span></code></a>(filename)</td>
+<td>Save the world to a file.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.set_t" title="ecell4.spatiocyte.SpatiocyteWorld.set_t"><code class="xref py py-obj docutils literal"><span class="pre">set_t</span></code></a>(t)</td>
+<td>Set the value of the time of the world.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.set_value" title="ecell4.spatiocyte.SpatiocyteWorld.set_value"><code class="xref py py-obj docutils literal"><span class="pre">set_value</span></code></a>(sp,&nbsp;value)</td>
+<td>Set the value of the given species.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.shape" title="ecell4.spatiocyte.SpatiocyteWorld.shape"><code class="xref py py-obj docutils literal"><span class="pre">shape</span></code></a>(()&nbsp;-&gt;&nbsp;Integer3)</td>
+<td>Return the triplet of sizes of column, row and layer.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.size" title="ecell4.spatiocyte.SpatiocyteWorld.size"><code class="xref py py-obj docutils literal"><span class="pre">size</span></code></a></td>
+<td>Return the size of voxels.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.t" title="ecell4.spatiocyte.SpatiocyteWorld.t"><code class="xref py py-obj docutils literal"><span class="pre">t</span></code></a></td>
+<td>Return the time of the world.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.update_particle" title="ecell4.spatiocyte.SpatiocyteWorld.update_particle"><code class="xref py py-obj docutils literal"><span class="pre">update_particle</span></code></a>(pid,&nbsp;p)</td>
+<td>Update a particle.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.update_voxel" title="ecell4.spatiocyte.SpatiocyteWorld.update_voxel"><code class="xref py py-obj docutils literal"><span class="pre">update_voxel</span></code></a>((pid,&nbsp;v)&nbsp;-&gt;&nbsp;bool)</td>
+<td>Update a particle.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.volume" title="ecell4.spatiocyte.SpatiocyteWorld.volume"><code class="xref py py-obj docutils literal"><span class="pre">volume</span></code></a></td>
+<td>Return the volume of the world.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.voxel_radius" title="ecell4.spatiocyte.SpatiocyteWorld.voxel_radius"><code class="xref py py-obj docutils literal"><span class="pre">voxel_radius</span></code></a></td>
+<td>Return the voxel radius.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#ecell4.spatiocyte.SpatiocyteWorld.voxel_volume" title="ecell4.spatiocyte.SpatiocyteWorld.voxel_volume"><code class="xref py py-obj docutils literal"><span class="pre">voxel_volume</span></code></a></td>
+<td>Return the volume of a voxel.</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.actual_lengths">
 <code class="descname">actual_lengths</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.actual_lengths" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the actual edge lengths of the world.</p>
-<dl class="docutils">
-<dt>Real3:</dt>
-<dd>The actual edge lengths of the world</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Real3:</p>
+<blockquote class="last">
+<div><p>The actual edge lengths of the world</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.add_molecules">
 <code class="descname">add_molecules</code><span class="sig-paren">(</span><em>sp</em>, <em>num</em>, <em>shape=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.add_molecules" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add some molecules.</p>
-<dl class="docutils">
-<dt>sp <span class="classifier-delimiter">:</span> <span class="classifier">Species</span></dt>
-<dd>A species of molecules to add</dd>
-<dt>num <span class="classifier-delimiter">:</span> <span class="classifier">Integer</span></dt>
-<dd>The number of molecules to add</dd>
-<dt>shape <span class="classifier-delimiter">:</span> <span class="classifier">Shape, optional</span></dt>
-<dd>A shape to add molecules on</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sp</strong> : Species</p>
+<blockquote>
+<div><p>A species of molecules to add</p>
+</div></blockquote>
+<p><strong>num</strong> : Integer</p>
+<blockquote>
+<div><p>The number of molecules to add</p>
+</div></blockquote>
+<p><strong>shape</strong> : Shape, optional</p>
+<blockquote class="last">
+<div><p>A shape to add molecules on</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.add_structure">
 <code class="descname">add_structure</code><span class="sig-paren">(</span><em>sp</em>, <em>shape</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.add_structure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a structure.</p>
-<dl class="docutils">
-<dt>sp <span class="classifier-delimiter">:</span> <span class="classifier">Species</span></dt>
-<dd>A species suggesting the shape.</dd>
-<dt>shape <span class="classifier-delimiter">:</span> <span class="classifier">Shape</span></dt>
-<dd>A shape of the structure.</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sp</strong> : Species</p>
+<blockquote>
+<div><p>A species suggesting the shape.</p>
+</div></blockquote>
+<p><strong>shape</strong> : Shape</p>
+<blockquote class="last">
+<div><p>A shape of the structure.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -436,10 +823,18 @@ When upto is not given, nothing will be returned.</dd>
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.bind_to">
 <code class="descname">bind_to</code><span class="sig-paren">(</span><em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.bind_to" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bind a model to the world</p>
-<dl class="docutils">
-<dt>m <span class="classifier-delimiter">:</span> <span class="classifier">Model</span></dt>
-<dd>A model to bind</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>m</strong> : Model</p>
+<blockquote class="last">
+<div><p>A model to bind</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -476,74 +871,128 @@ When upto is not given, nothing will be returned.</dd>
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.get_neighbor">
 <code class="descname">get_neighbor</code><span class="sig-paren">(</span><em>coord</em>, <em>nrand</em><span class="sig-paren">)</span> &rarr; Integer<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.get_neighbor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the neighbor coordinate of a given coordinate.</p>
-<dl class="docutils">
-<dt>coord <span class="classifier-delimiter">:</span> <span class="classifier">Integer</span></dt>
-<dd>A coordinate of a voxel</dd>
-<dt>nrand <span class="classifier-delimiter">:</span> <span class="classifier">Integer</span></dt>
-<dd>A key in the range from 0 to 11 to assign a neighbor voxel</dd>
-</dl>
-<dl class="docutils">
-<dt>Integer:</dt>
-<dd>The coordinate of the neighbor voxel</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>coord</strong> : Integer</p>
+<blockquote>
+<div><p>A coordinate of a voxel</p>
+</div></blockquote>
+<p><strong>nrand</strong> : Integer</p>
+<blockquote>
+<div><p>A key in the range from 0 to 11 to assign a neighbor voxel</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Integer:</p>
+<blockquote class="last">
+<div><p>The coordinate of the neighbor voxel</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.get_neighbor_private">
 <code class="descname">get_neighbor_private</code><span class="sig-paren">(</span><em>coord</em>, <em>nrand</em><span class="sig-paren">)</span> &rarr; Integer<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.get_neighbor_private" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the neighbor coordinate of a given coordinate in private.</p>
-<dl class="docutils">
-<dt>coord <span class="classifier-delimiter">:</span> <span class="classifier">Integer</span></dt>
-<dd>A private coordinate of a voxel</dd>
-<dt>nrand <span class="classifier-delimiter">:</span> <span class="classifier">Integer</span></dt>
-<dd>A key in the range from 0 to 11 to assign a neighbor voxel</dd>
-</dl>
-<dl class="docutils">
-<dt>Integer:</dt>
-<dd>The private coordinate of the neighbor voxel</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>coord</strong> : Integer</p>
+<blockquote>
+<div><p>A private coordinate of a voxel</p>
+</div></blockquote>
+<p><strong>nrand</strong> : Integer</p>
+<blockquote>
+<div><p>A key in the range from 0 to 11 to assign a neighbor voxel</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Integer:</p>
+<blockquote class="last">
+<div><p>The private coordinate of the neighbor voxel</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.get_particle">
 <code class="descname">get_particle</code><span class="sig-paren">(</span><em>pid) -&gt; (ParticleID</em>, <em>Particle</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.get_particle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the particle associated a given ParticleID.</p>
-<dl class="docutils">
-<dt>pid <span class="classifier-delimiter">:</span> <span class="classifier">ParticleID</span></dt>
-<dd>A id of the particle you want</dd>
-</dl>
-<dl class="docutils">
-<dt>tuple:</dt>
-<dd>A pair of ParticleID and Particle</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pid</strong> : ParticleID</p>
+<blockquote>
+<div><p>A id of the particle you want</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">tuple:</p>
+<blockquote class="last">
+<div><p>A pair of ParticleID and Particle</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.get_value">
 <code class="descname">get_value</code><span class="sig-paren">(</span><em>sp</em><span class="sig-paren">)</span> &rarr; Real<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.get_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the value (number) corresponding the given Species.</p>
-<dl class="docutils">
-<dt>sp <span class="classifier-delimiter">:</span> <span class="classifier">Species</span></dt>
-<dd>a species whose value you require</dd>
-</dl>
-<dl class="docutils">
-<dt>Real:</dt>
-<dd>the value</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sp</strong> : Species</p>
+<blockquote>
+<div><p>a species whose value you require</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Real:</p>
+<blockquote class="last">
+<div><p>the value</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.get_value_exact">
 <code class="descname">get_value_exact</code><span class="sig-paren">(</span><em>sp</em><span class="sig-paren">)</span> &rarr; Real<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.get_value_exact" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the value (number) corresponding the given Species.</p>
-<dl class="docutils">
-<dt>sp <span class="classifier-delimiter">:</span> <span class="classifier">Species</span></dt>
-<dd>a species whose value you require</dd>
-</dl>
-<dl class="docutils">
-<dt>Real:</dt>
-<dd>the value</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sp</strong> : Species</p>
+<blockquote>
+<div><p>a species whose value you require</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Real:</p>
+<blockquote class="last">
+<div><p>the value</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -557,84 +1006,144 @@ When upto is not given, nothing will be returned.</dd>
 <code class="descname">get_voxel</code><span class="sig-paren">(</span><em>arg) -&gt; (ParticleID</em>, <em>Voxle</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.get_voxel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the voxel having a particle associated with a given ParticleID
 or coordinate.</p>
-<dl class="docutils">
-<dt>arg <span class="classifier-delimiter">:</span> <span class="classifier">ParticleID or Integer</span></dt>
-<dd>An id or coordiante of the particle in the voxel you want</dd>
-</dl>
-<dl class="docutils">
-<dt>tuple:</dt>
-<dd>A pair of ParticleID and Voxel</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>arg</strong> : ParticleID or Integer</p>
+<blockquote>
+<div><p>An id or coordiante of the particle in the voxel you want</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">tuple:</p>
+<blockquote class="last">
+<div><p>A pair of ParticleID and Voxel</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.global2coord">
 <code class="descname">global2coord</code><span class="sig-paren">(</span><em>g</em><span class="sig-paren">)</span> &rarr; Integer<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.global2coord" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform a global coordinate to a coordinate.</p>
-<dl class="docutils">
-<dt>g <span class="classifier-delimiter">:</span> <span class="classifier">Integer3</span></dt>
-<dd>A global coordinate</dd>
-</dl>
-<dl class="docutils">
-<dt>Integer:</dt>
-<dd>A coordinate</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>g</strong> : Integer3</p>
+<blockquote>
+<div><p>A global coordinate</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Integer:</p>
+<blockquote class="last">
+<div><p>A coordinate</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.global2position">
 <code class="descname">global2position</code><span class="sig-paren">(</span><em>g</em><span class="sig-paren">)</span> &rarr; Real3<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.global2position" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform a global coordinate to a position.</p>
-<dl class="docutils">
-<dt>g <span class="classifier-delimiter">:</span> <span class="classifier">Integer3</span></dt>
-<dd>A global coordinate</dd>
-</dl>
-<dl class="docutils">
-<dt>Real3:</dt>
-<dd>A position</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>g</strong> : Integer3</p>
+<blockquote>
+<div><p>A global coordinate</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Real3:</p>
+<blockquote class="last">
+<div><p>A position</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.global2private">
 <code class="descname">global2private</code><span class="sig-paren">(</span><em>g</em><span class="sig-paren">)</span> &rarr; Integer<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.global2private" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform a global coordinate to a private coordinate.</p>
-<dl class="docutils">
-<dt>g <span class="classifier-delimiter">:</span> <span class="classifier">Integer3</span></dt>
-<dd>A global coordinate</dd>
-</dl>
-<dl class="docutils">
-<dt>Integer:</dt>
-<dd>A private coordinate</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>g</strong> : Integer3</p>
+<blockquote>
+<div><p>A global coordinate</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Integer:</p>
+<blockquote class="last">
+<div><p>A private coordinate</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.has_particle">
 <code class="descname">has_particle</code><span class="sig-paren">(</span><em>pid</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.has_particle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if a particle associated with a given particle id exists.</p>
-<dl class="docutils">
-<dt>pid <span class="classifier-delimiter">:</span> <span class="classifier">ParticleID</span></dt>
-<dd>A particle id to check</dd>
-</dl>
-<dl class="docutils">
-<dt>bool:</dt>
-<dd>if a particle exists, this is true. Otherwise false</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pid</strong> : ParticleID</p>
+<blockquote>
+<div><p>A particle id to check</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool:</p>
+<blockquote class="last">
+<div><p>if a particle exists, this is true. Otherwise false</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.has_voxel">
 <code class="descname">has_voxel</code><span class="sig-paren">(</span><em>pid</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.has_voxel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if a particle exists.</p>
-<dl class="docutils">
-<dt>pid <span class="classifier-delimiter">:</span> <span class="classifier">ParticleID</span></dt>
-<dd>A particle id of the particle to check</dd>
-</dl>
-<dl class="docutils">
-<dt>bool:</dt>
-<dd>whether a particle associated with a given particle id exists</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pid</strong> : ParticleID</p>
+<blockquote>
+<div><p>A particle id of the particle to check</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool:</p>
+<blockquote class="last">
+<div><p>whether a particle associated with a given particle id exists</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -647,240 +1156,404 @@ or coordinate.</p>
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.list_particles">
 <code class="descname">list_particles</code><span class="sig-paren">(</span><em>sp</em><span class="sig-paren">)</span> &rarr; [(ParticleID, Particle)]<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.list_particles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the list of particles.</p>
-<dl class="docutils">
-<dt>sp <span class="classifier-delimiter">:</span> <span class="classifier">Species, optional</span></dt>
-<dd>The species of particles to list up
-If no species is given, return the whole list of particles.</dd>
-</dl>
-<dl class="docutils">
-<dt>list:</dt>
-<dd>The list of particles (of the given species)</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sp</strong> : Species, optional</p>
+<blockquote>
+<div><p>The species of particles to list up
+If no species is given, return the whole list of particles.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list:</p>
+<blockquote class="last">
+<div><p>The list of particles (of the given species)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.list_particles_exact">
 <code class="descname">list_particles_exact</code><span class="sig-paren">(</span><em>sp</em><span class="sig-paren">)</span> &rarr; [(ParticleID, Particle)]<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.list_particles_exact" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the list of particles of a given species.</p>
-<dl class="docutils">
-<dt>sp <span class="classifier-delimiter">:</span> <span class="classifier">Species</span></dt>
-<dd>The species of particles to list up</dd>
-</dl>
-<dl class="docutils">
-<dt>list:</dt>
-<dd>The list of particles of a given species</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sp</strong> : Species</p>
+<blockquote>
+<div><p>The species of particles to list up</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list:</p>
+<blockquote class="last">
+<div><p>The list of particles of a given species</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.list_voxels">
 <code class="descname">list_voxels</code><span class="sig-paren">(</span><em>sp=None</em><span class="sig-paren">)</span> &rarr; [ParitcleID, Voxel]<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.list_voxels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the list of voxels.</p>
-<dl class="docutils">
-<dt>sp <span class="classifier-delimiter">:</span> <span class="classifier">Species, optional</span></dt>
-<dd>A species of particles to list up.
-If no species is given, return a list of all voxels.</dd>
-</dl>
-<dl class="docutils">
-<dt>list:</dt>
-<dd>The list of the pair of ParticleID and Voxel</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sp</strong> : Species, optional</p>
+<blockquote>
+<div><p>A species of particles to list up.
+If no species is given, return a list of all voxels.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list:</p>
+<blockquote class="last">
+<div><p>The list of the pair of ParticleID and Voxel</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.list_voxels_exact">
 <code class="descname">list_voxels_exact</code><span class="sig-paren">(</span><em>sp</em><span class="sig-paren">)</span> &rarr; [ParitcleID, Voxel]<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.list_voxels_exact" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the list of voxels.</p>
-<dl class="docutils">
-<dt>sp <span class="classifier-delimiter">:</span> <span class="classifier">Species, optional</span></dt>
-<dd>A species of particles to list up.
-If no species is given, return a list of all voxels.</dd>
-</dl>
-<dl class="docutils">
-<dt>list:</dt>
-<dd>The list of the pair of ParticleID and Voxel</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sp</strong> : Species, optional</p>
+<blockquote>
+<div><p>A species of particles to list up.
+If no species is given, return a list of all voxels.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list:</p>
+<blockquote class="last">
+<div><p>The list of the pair of ParticleID and Voxel</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.load">
 <code class="descname">load</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the world from a file.</p>
-<dl class="docutils">
-<dt>filename <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd>A filename to load from</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>filename</strong> : str</p>
+<blockquote class="last">
+<div><p>A filename to load from</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.new_particle">
 <code class="descname">new_particle</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2=None) -&gt; (ParticleID</em>, <em>Particle</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.new_particle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new particle.</p>
-<dl class="docutils">
-<dt>arg1 <span class="classifier-delimiter">:</span> <span class="classifier">Particle</span></dt>
-<dd>A particle to be placed.</dd>
-</dl>
-<p>or</p>
-<dl class="docutils">
-<dt>arg1 <span class="classifier-delimiter">:</span> <span class="classifier">Species</span></dt>
-<dd>A species of a particle</dd>
-<dt>arg2 <span class="classifier-delimiter">:</span> <span class="classifier">Real3</span></dt>
-<dd>A coordinate to place a particle</dd>
-</dl>
-<dl class="docutils">
-<dt>tuple:</dt>
-<dd>A pair of ParticleID and Particle of a new particle</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>arg1</strong> : Particle</p>
+<blockquote>
+<div><p>A particle to be placed.</p>
+</div></blockquote>
+<p><strong>or</strong></p>
+<p><strong>arg1</strong> : Species</p>
+<blockquote>
+<div><p>A species of a particle</p>
+</div></blockquote>
+<p><strong>arg2</strong> : Real3</p>
+<blockquote>
+<div><p>A coordinate to place a particle</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">tuple:</p>
+<blockquote class="last">
+<div><p>A pair of ParticleID and Particle of a new particle</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.new_voxel">
 <code class="descname">new_voxel</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2) -&gt; (ParticleID</em>, <em>Voxel</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.new_voxel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a particle.</p>
-<dl class="docutils">
-<dt>arg1 <span class="classifier-delimiter">:</span> <span class="classifier">Voxel</span></dt>
-<dd>The information to create</dd>
-</dl>
-<p>or</p>
-<dl class="docutils">
-<dt>arg1 <span class="classifier-delimiter">:</span> <span class="classifier">Species</span></dt>
-<dd>The Species of particles to create</dd>
-<dt>arg2 <span class="classifier-delimiter">:</span> <span class="classifier">Integer</span></dt>
-<dd>The number of particles(voxels)</dd>
-</dl>
-<dl class="docutils">
-<dt>tuple:</dt>
-<dd>A pair of ParticleID and Voxel</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>arg1</strong> : Voxel</p>
+<blockquote>
+<div><p>The information to create</p>
+</div></blockquote>
+<p><strong>or</strong></p>
+<p><strong>arg1</strong> : Species</p>
+<blockquote>
+<div><p>The Species of particles to create</p>
+</div></blockquote>
+<p><strong>arg2</strong> : Integer</p>
+<blockquote>
+<div><p>The number of particles(voxels)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">tuple:</p>
+<blockquote class="last">
+<div><p>A pair of ParticleID and Voxel</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.num_molecules">
 <code class="descname">num_molecules</code><span class="sig-paren">(</span><em>sp</em><span class="sig-paren">)</span> &rarr; Integer<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.num_molecules" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of molecules.</p>
-<dl class="docutils">
-<dt>sp <span class="classifier-delimiter">:</span> <span class="classifier">Species</span></dt>
-<dd>A species whose molecules you count</dd>
-</dl>
-<dl class="docutils">
-<dt>Integer:</dt>
-<dd>The number of molecules (of a given species)</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sp</strong> : Species</p>
+<blockquote>
+<div><p>A species whose molecules you count</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Integer:</p>
+<blockquote class="last">
+<div><p>The number of molecules (of a given species)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.num_molecules_exact">
 <code class="descname">num_molecules_exact</code><span class="sig-paren">(</span><em>sp</em><span class="sig-paren">)</span> &rarr; Integer<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.num_molecules_exact" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of molecules of a given species.</p>
-<dl class="docutils">
-<dt>sp <span class="classifier-delimiter">:</span> <span class="classifier">Species</span></dt>
-<dd>A species whose molecules you count</dd>
-</dl>
-<dl class="docutils">
-<dt>Integer:</dt>
-<dd>The number of molecules of a given species</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sp</strong> : Species</p>
+<blockquote>
+<div><p>A species whose molecules you count</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Integer:</p>
+<blockquote class="last">
+<div><p>The number of molecules of a given species</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.num_particles">
 <code class="descname">num_particles</code><span class="sig-paren">(</span><em>sp=None</em><span class="sig-paren">)</span> &rarr; Integer<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.num_particles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of particles.</p>
-<dl class="docutils">
-<dt>sp <span class="classifier-delimiter">:</span> <span class="classifier">Species, optional</span></dt>
-<dd>The species of particles to count
-If no species is given, return the total number of particles.</dd>
-</dl>
-<dl class="docutils">
-<dt>Integer:</dt>
-<dd>The number of particles (of the given species)</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sp</strong> : Species, optional</p>
+<blockquote>
+<div><p>The species of particles to count
+If no species is given, return the total number of particles.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Integer:</p>
+<blockquote class="last">
+<div><p>The number of particles (of the given species)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.num_particles_exact">
 <code class="descname">num_particles_exact</code><span class="sig-paren">(</span><em>sp</em><span class="sig-paren">)</span> &rarr; Integer<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.num_particles_exact" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of particles of a given species.</p>
-<dl class="docutils">
-<dt>sp <span class="classifier-delimiter">:</span> <span class="classifier">Species</span></dt>
-<dd>The species of particles to count</dd>
-</dl>
-<dl class="docutils">
-<dt>Integer:</dt>
-<dd>The number of particles of a given species</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sp</strong> : Species</p>
+<blockquote>
+<div><p>The species of particles to count</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Integer:</p>
+<blockquote class="last">
+<div><p>The number of particles of a given species</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.num_voxels">
 <code class="descname">num_voxels</code><span class="sig-paren">(</span><em>sp=None</em><span class="sig-paren">)</span> &rarr; Integer<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.num_voxels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of voxels.</p>
-<dl class="docutils">
-<dt>sp <span class="classifier-delimiter">:</span> <span class="classifier">Species, optional</span></dt>
-<dd>The species of particles to count</dd>
-</dl>
-<dl class="docutils">
-<dt>Integer:</dt>
-<dd>The number of voxels (of the given species)</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sp</strong> : Species, optional</p>
+<blockquote>
+<div><p>The species of particles to count</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Integer:</p>
+<blockquote class="last">
+<div><p>The number of voxels (of the given species)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.num_voxels_exact">
 <code class="descname">num_voxels_exact</code><span class="sig-paren">(</span><em>sp</em><span class="sig-paren">)</span> &rarr; Integer<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.num_voxels_exact" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of voxels of a given species.</p>
-<dl class="docutils">
-<dt>sp <span class="classifier-delimiter">:</span> <span class="classifier">Species</span></dt>
-<dd>The species of particles to count</dd>
-</dl>
-<dl class="docutils">
-<dt>Integer:</dt>
-<dd>The number of voxels of a given species</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sp</strong> : Species</p>
+<blockquote>
+<div><p>The species of particles to count</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Integer:</p>
+<blockquote class="last">
+<div><p>The number of voxels of a given species</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.on_structure">
 <code class="descname">on_structure</code><span class="sig-paren">(</span><em>sp</em>, <em>coord</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.on_structure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the given species would be on the proper structure at the coordinate.</p>
-<dl class="docutils">
-<dt>sp <span class="classifier-delimiter">:</span> <span class="classifier">Species</span></dt>
-<dd>A species scheduled to be placed</dd>
-<dt>coord <span class="classifier-delimiter">:</span> <span class="classifier">Integer</span></dt>
-<dd>A coordinate to be occupied</dd>
-</dl>
-<dl class="docutils">
-<dt>bool:</dt>
-<dd>if it is on the proper structure, or not</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sp</strong> : Species</p>
+<blockquote>
+<div><p>A species scheduled to be placed</p>
+</div></blockquote>
+<p><strong>coord</strong> : Integer</p>
+<blockquote>
+<div><p>A coordinate to be occupied</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool:</p>
+<blockquote class="last">
+<div><p>if it is on the proper structure, or not</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.position2coordinate">
 <code class="descname">position2coordinate</code><span class="sig-paren">(</span><em>pos</em><span class="sig-paren">)</span> &rarr; Integer<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.position2coordinate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform a position to a coordinate.</p>
-<dl class="docutils">
-<dt>pos <span class="classifier-delimiter">:</span> <span class="classifier">Real3</span></dt>
-<dd>A position</dd>
-</dl>
-<dl class="docutils">
-<dt>Integer:</dt>
-<dd>A coordinate</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pos</strong> : Real3</p>
+<blockquote>
+<div><p>A position</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Integer:</p>
+<blockquote class="last">
+<div><p>A coordinate</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.position2global">
 <code class="descname">position2global</code><span class="sig-paren">(</span><em>pos</em><span class="sig-paren">)</span> &rarr; Integer3<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.position2global" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform a position to a global coordinate.</p>
-<dl class="docutils">
-<dt>pos <span class="classifier-delimiter">:</span> <span class="classifier">Real3</span></dt>
-<dd>A position</dd>
-</dl>
-<dl class="docutils">
-<dt>Integer3:</dt>
-<dd>A global coordinate</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pos</strong> : Real3</p>
+<blockquote>
+<div><p>A position</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Integer3:</p>
+<blockquote class="last">
+<div><p>A global coordinate</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -905,32 +1578,58 @@ If no species is given, return the total number of particles.</dd>
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.remove_molecules">
 <code class="descname">remove_molecules</code><span class="sig-paren">(</span><em>sp</em>, <em>num</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.remove_molecules" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove the molecules.</p>
-<dl class="docutils">
-<dt>sp <span class="classifier-delimiter">:</span> <span class="classifier">Species</span></dt>
-<dd>A species whose molecules to remove</dd>
-<dt>num <span class="classifier-delimiter">:</span> <span class="classifier">Integer</span></dt>
-<dd>A number of molecules to be removed</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sp</strong> : Species</p>
+<blockquote>
+<div><p>A species whose molecules to remove</p>
+</div></blockquote>
+<p><strong>num</strong> : Integer</p>
+<blockquote class="last">
+<div><p>A number of molecules to be removed</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.remove_particle">
 <code class="descname">remove_particle</code><span class="sig-paren">(</span><em>pid</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.remove_particle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove the particle associated with a given ParticleID.</p>
-<dl class="docutils">
-<dt>pid <span class="classifier-delimiter">:</span> <span class="classifier">ParticleID</span></dt>
-<dd>A id of particle to remove</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pid</strong> : ParticleID</p>
+<blockquote class="last">
+<div><p>A id of particle to remove</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.remove_voxel">
 <code class="descname">remove_voxel</code><span class="sig-paren">(</span><em>pid</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.remove_voxel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove the particle associated with a given ParticleID.</p>
-<dl class="docutils">
-<dt>pid <span class="classifier-delimiter">:</span> <span class="classifier">ParticleID</span></dt>
-<dd>A id of particle to remove</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pid</strong> : ParticleID</p>
+<blockquote class="last">
+<div><p>A id of particle to remove</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -949,32 +1648,58 @@ If no species is given, return the total number of particles.</dd>
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.save">
 <code class="descname">save</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the world to a file.</p>
-<dl class="docutils">
-<dt>filename <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd>A filename to save to</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>filename</strong> : str</p>
+<blockquote class="last">
+<div><p>A filename to save to</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.set_t">
 <code class="descname">set_t</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.set_t" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the value of the time of the world.</p>
-<dl class="docutils">
-<dt>t <span class="classifier-delimiter">:</span> <span class="classifier">Real</span></dt>
-<dd>The time of the world</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>t</strong> : Real</p>
+<blockquote class="last">
+<div><p>The time of the world</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.set_value">
 <code class="descname">set_value</code><span class="sig-paren">(</span><em>sp</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.set_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the value of the given species.</p>
-<dl class="docutils">
-<dt>sp <span class="classifier-delimiter">:</span> <span class="classifier">Species</span></dt>
-<dd>a species whose value you set</dd>
-<dt>value <span class="classifier-delimiter">:</span> <span class="classifier">Real</span></dt>
-<dd>a value set</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sp</strong> : Species</p>
+<blockquote>
+<div><p>a species whose value you set</p>
+</div></blockquote>
+<p><strong>value</strong> : Real</p>
+<blockquote class="last">
+<div><p>a value set</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -999,32 +1724,56 @@ If no species is given, return the total number of particles.</dd>
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.update_particle">
 <code class="descname">update_particle</code><span class="sig-paren">(</span><em>pid</em>, <em>p</em><span class="sig-paren">)</span><a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.update_particle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update a particle.</p>
-<dl class="docutils">
-<dt>pid <span class="classifier-delimiter">:</span> <span class="classifier">ParticleID</span></dt>
-<dd>A particle id of the particle to update</dd>
-<dt>p <span class="classifier-delimiter">:</span> <span class="classifier">Particle</span></dt>
-<dd>The information to update a particle</dd>
-</dl>
-<dl class="docutils">
-<dt>bool:</dt>
-<dd>True if a new particle was created.</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pid</strong> : ParticleID</p>
+<blockquote>
+<div><p>A particle id of the particle to update</p>
+</div></blockquote>
+<p><strong>p</strong> : Particle</p>
+<blockquote>
+<div><p>The information to update a particle</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool:</p>
+<blockquote class="last">
+<div><p>True if a new particle was created.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ecell4.spatiocyte.SpatiocyteWorld.update_voxel">
 <code class="descname">update_voxel</code><span class="sig-paren">(</span><em>pid</em>, <em>v</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#ecell4.spatiocyte.SpatiocyteWorld.update_voxel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update a particle.</p>
-<dl class="docutils">
-<dt>pid <span class="classifier-delimiter">:</span> <span class="classifier">ParticleID</span></dt>
-<dd>A particle id of the particle to update</dd>
-<dt>v <span class="classifier-delimiter">:</span> <span class="classifier">Voxel</span></dt>
-<dd>The information to update</dd>
-</dl>
-<dl class="docutils">
-<dt>bool:</dt>
-<dd>whether to succeed to update the particle</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pid</strong> : ParticleID</p>
+<blockquote>
+<div><p>A particle id of the particle to update</p>
+</div></blockquote>
+<p><strong>v</strong> : Voxel</p>
+<blockquote>
+<div><p>The information to update</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool:</p>
+<blockquote class="last">
+<div><p>whether to succeed to update the particle</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1053,15 +1802,6 @@ If no species is given, return the total number of particles.</dd>
            </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="bd.html" class="btn btn-neutral float-right" title="E-Cell4 bd API" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="meso.html" class="btn btn-neutral" title="E-Cell4 meso API" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
