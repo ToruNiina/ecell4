@@ -19,7 +19,19 @@
     </section>
 
     <section class="main-content">
-      <h3>
+      <h1>
+<a id="hello-e-cell4" class="anchor" href="#hello-e-cell4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hello E-Cell4</h1>
+
+<p>E-Cell System is, a software platform for modeling, simulation and analysis of complex, heterogeneous and multi-scale systems like the cell.</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> ecell4 <span class="pl-k">import</span> <span class="pl-k">*</span>
+
+<span class="pl-k">with</span> reaction_rules():
+    <span class="pl-c1">A</span> <span class="pl-k">+</span> <span class="pl-c1">B</span> <span class="pl-k">==</span> <span class="pl-c1">C</span> <span class="pl-k">|</span> (<span class="pl-c1">0.01</span>, <span class="pl-c1">0.3</span>)
+
+run_simulation(<span class="pl-c1">10</span>, {<span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>: <span class="pl-c1">60</span>, <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>: <span class="pl-c1">60</span>})</pre></div>
+
+<h3>
 <a id="installation-and-usage" class="anchor" href="#installation-and-usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="http://ecell4.readthedocs.org/en/latest/installation.html">Installation and usage</a>
 </h3>
 
