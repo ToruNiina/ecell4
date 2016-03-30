@@ -1,6 +1,6 @@
 {
-  "name": "E-Cell4",
-  "tagline": "A multi-algorithm, multi-timescale biochemical simulation environment",
+  "name": "E-Cell System version 4",
+  "tagline": "A multi-algorithm, multi-timescale, multi-spatial-representation biochemical simulation environment",
   "body": "### [Installation and usage](http://ecell4.readthedocs.org/en/latest/installation.html)\r\n\r\n### [Documentation](http://ecell4.readthedocs.org)\r\n\r\n### [Help](https://gitter.im/ecell/ecell4)\r\n",
   "google": "",
   "note": "Don't delete this file! It's used internally to help with page regeneration."
