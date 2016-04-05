@@ -206,7 +206,7 @@ a {
 
 .main-content div.feature-tile {
   position: relative;
-  height: 18em;
+  height: 14em;
   min-width: 200px;
   /* background-color: #38A3DB; */
   padding: 0.8em;
@@ -226,7 +226,7 @@ a {
 
 .main-content div.example-tile {
   position: relative;
-  height: 24em;
+  height: 20em;
   min-width: 200px;
   /* background-color: #38A3DB; */
   padding: 0.8em;
