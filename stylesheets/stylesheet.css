@@ -212,6 +212,15 @@ a {
   /* background-color: #38A3DB; */
   margin: 10px;
   float: left; }
+.main-content div.example-tile {
+  position: relative;
+  height: 250px;
+  width: 30%;
+  min-width: 200px;
+  /* background-color: #38A3DB; */
+  margin: 10px;
+  text-align: center;
+  float: left; }
 
 @media screen and (min-width: 64em) {
   .main-content {
