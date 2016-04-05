@@ -226,7 +226,7 @@ a {
 
 .main-content div.example-tile {
   position: relative;
-  height: 20em;
+  height: 25em;
   min-width: 200px;
   /* background-color: #38A3DB; */
   padding: 0.8em;
@@ -235,13 +235,9 @@ a {
 
 @media screen and (min-width: 64em) {
   div.example-tile {
-    width: 33%; } }
-
-@media screen and (min-width: 42em) and (max-width: 64em) {
-  div.example-tile {
     width: 50%; } }
 
-@media screen and (max-width: 42em) {
+@media screen and (max-width: 64em) {
   div.example-tile {
     width: 100%; } }
 
