@@ -8,7 +8,7 @@
 
 template< typename T1_, typename T2_ >
 inline typename element_type_of< T1_ >::type distance(
-        T1_ const& p1, T2_ const p2,
+        T1_ const& p1, T2_ const& p2,
         typename boost::enable_if<
             typename boost::mpl::and_<
                 is_vector3<T1_>,
@@ -18,12 +18,6 @@ inline typename element_type_of< T1_ >::type distance(
         pow_2( p1[0] - p2[0] )
         + pow_2( p1[1] - p2[1] ) 
         + pow_2( p1[2] - p2[2] ) );
-}
-
-template<typename T_>
-inline typename element_type_of<T_>::type distance(T_ const& p1, T_ const& p2)
-{
-    return distance(p1, p2, (void*)0);
 }
 
 template<typename T_>
