@@ -20,6 +20,8 @@ build_script:
 - ps: |
     conda build conda.recipe
     conda install --use-local ecell4-base
+    type build/temp.win-amd64-3.6/Release/CMakeFiles/CMakeOutput.log
+    type build/temp.win-amd64-3.6/Release/CMakeFiles/CMakeError.log
 
 branches:
   only:
