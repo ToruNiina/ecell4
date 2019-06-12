@@ -5,7 +5,7 @@ platform:
 - x64
 environment:
   matrix:
-  - CONDA: 37-x64
+  - CONDA: 36-x64
 
 install:
 - ps: |
