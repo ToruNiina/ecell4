@@ -1,7 +1,5 @@
 version: '{build}'
 
-platform:
-- x64
 environment:
   matrix:
   - CONDA: 36-x64
