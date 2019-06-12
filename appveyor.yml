@@ -7,10 +7,14 @@ environment:
   matrix:
   - CONDA: 36-x64
 
+init:
+- ps: Start-FileDownload 'http://repo.continuum.io/miniconda/Miniconda3-latest-Windows-x86_64.exe' C:\Miniconda.exe;
+- cmd: C:\Miniconda.exe /S /D=C:\ecell4-base-conda
+- "set PATH=C:\\ecell4-base-conda;C:\\ecell4-base-conda\\Scripts;C:\\ecell4-base-conda\\Library\\bin;%PATH%"
+
 install:
 - ps: |
     git submodule update -q --init --recursive
-    $env:PATH = "C:\Miniconda$env:CONDA\;C:\Miniconda$env:CONDA\Scripts\;$env:PATH"
     conda config --set always_yes yes --set changeps1 no
     conda config --add channels conda-forge
     conda update -q conda
@@ -20,8 +24,6 @@ build_script:
 - ps: |
     conda build conda.recipe
     conda install --use-local ecell4-base
-    type build/temp.win-amd64-3.6/Release/CMakeFiles/CMakeOutput.log
-    type build/temp.win-amd64-3.6/Release/CMakeFiles/CMakeError.log
 
 branches:
   only:
