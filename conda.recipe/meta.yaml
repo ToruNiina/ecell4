@@ -24,7 +24,7 @@ requirements:
 
   run:
     - python
-    - vs2017_runtime  # [win]
+    - vs2015_runtime  # [win]
 
 about:
   summary: E-Cell4 project built with pybind11.
