@@ -24,15 +24,6 @@ requirements:
     - boost
     - blas
 
-  host:
-    - python
-    - setuptools
-    - pybind11
-    - hdf5
-    - gsl
-    - boost
-    - blas
-
   run:
     - python
     - notebook
