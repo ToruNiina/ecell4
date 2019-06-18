@@ -44,6 +44,8 @@
 #endif
 #define NO_STRICT
 
+#define GSL_DLL
+
 #endif // WIN32_MSC
 
 #endif /* ECELL4_CONFIG_H */
