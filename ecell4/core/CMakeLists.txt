@@ -9,7 +9,7 @@ file(GLOB CPP_FILES *.cpp)
 add_library(ecell4-core STATIC ${CPP_FILES})
 
 target_link_libraries(ecell4-core PRIVATE
-    ${HDF5_LIBRARIES} ${Boost_LIBRARIES} ${GSL_LIBRARIES} ${GSL_CBLAS_LIBRARIES})
+    ${HDF5_LIBRARIES} ${Boost_LIBRARIES} GSL::gsl GSL::gslcblas)
 
 if(WITH_VTK AND NOT VTK_LIBRARIES)
     target_link_libraries(ecell4-core PRIVATE vtkHybrid vtkWidgets)
