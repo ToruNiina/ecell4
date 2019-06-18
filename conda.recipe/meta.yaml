@@ -29,7 +29,6 @@ requirements:
     - notebook
     - ffmpeg # [osx]
     - vs2015_runtime  # [win]
-    - gsl
 
 about:
   summary: E-Cell4 project built with pybind11.
