@@ -26,7 +26,7 @@ requirements:
 
   run:
     - python
-    - numpy >=1.11
+    - numpy >=1.16
     - notebook
     - ffmpeg # [osx]
     - vs2015_runtime  # [win]
