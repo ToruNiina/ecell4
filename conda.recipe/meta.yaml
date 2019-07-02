@@ -23,10 +23,10 @@ requirements:
     - gsl
     - boost
     - blas
-    - numpy >= 1.11
 
   run:
     - python
+    - numpy >= 1.11
     - notebook
     - ffmpeg # [osx]
     - vs2015_runtime  # [win]
