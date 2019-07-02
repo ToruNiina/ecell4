@@ -23,6 +23,7 @@ requirements:
     - gsl
     - boost
     - blas
+    - numpy >= 1.11
 
   run:
     - python
