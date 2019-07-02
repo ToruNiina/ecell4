@@ -11,7 +11,6 @@ environment:
 init:
 - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
 - ps: $env:PATH = "C:\Miniconda$env:CONDA\;C:\Miniconda$env:CONDA\Scripts\;$env:PATH"
-- ps: $ErrorActionPreference = "Stop"
 
 install:
 - ps: |
@@ -22,7 +21,12 @@ install:
 
 build_script:
 - ps: |
-    conda build conda.recipe
+    try {
+        conda build conda.recipe
+    } catch {
+        Write-Output $error[0]
+        exit 1
+    }
     # Copy the conda build to the home dir, such that it can be registerd as an artifact
     #ls C:\Miniconda36-x64\conda-bld
     mv C:\Miniconda$env:CONDA\conda-bld .
