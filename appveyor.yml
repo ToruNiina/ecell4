@@ -21,9 +21,8 @@ install:
 
 build_script:
 - ps: |
-    try {
-        conda build conda.recipe
-    } catch {
+    conda build conda.recipe
+    if ($?) {
         Write-Output $error[0]
         exit 1
     }
