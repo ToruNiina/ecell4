@@ -22,7 +22,7 @@ install:
 build_script:
 - ps: |
     conda build conda.recipe
-    if ($?) {
+    if (!$?) {
         Write-Output $error[0]
         exit 1
     }
