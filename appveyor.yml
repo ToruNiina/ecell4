@@ -11,15 +11,23 @@ environment:
 init:
 - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
 - ps: $env:PATH = "C:\Miniconda$env:CONDA\;C:\Miniconda$env:CONDA\Scripts\;$env:PATH"
+- ps: $ErrorActionPreference = "Stop"
 
 install:
 - ps: |
     git submodule update -q --init --recursive
-    powershell .\install.ps1
+    conda config --set always_yes yes --set changeps1 no
+    conda update -q conda
+    conda install -q conda-build anaconda-client
 
 build_script:
 - ps: |
-    powershell .\build.ps1
+    conda build conda.recipe
+    # Copy the conda build to the home dir, such that it can be registerd as an artifact
+    #ls C:\Miniconda36-x64\conda-bld
+    mv C:\Miniconda$env:CONDA\conda-bld .
+    pwd
+    ls .
 
 artifacts:
   - path: 'conda-bld\win-*\*.tar.bz2'
