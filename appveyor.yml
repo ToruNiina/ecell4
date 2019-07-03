@@ -15,7 +15,7 @@ init:
 install:
 - ps: |
     git submodule update -q --init --recursive
-    conda config --set always_yes yes --set changeps1 no
+    conda config --set always_yes yes --set changeps1 no --set anaconda_upload yes
     conda update -q conda
     conda install -q conda-build anaconda-client conda-verify
 
