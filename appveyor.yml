@@ -23,6 +23,9 @@ build_script:
 - ps: |
     conda build conda.recipe
     if (!$?) {
+        foreach($i in $error) {
+            Write-Output $i
+        }
         exit 1
     }
     # Copy the conda build to the home dir, such that it can be registerd as an artifact
