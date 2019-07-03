@@ -23,6 +23,8 @@ build_script:
 - ps: |
     conda build conda.recipe
     if (!$?) {
+        echo "=========================================================================="
+        echo "Something failed. dumping errors ..."
         foreach($i in $error) {
             Write-Output $i
         }
