@@ -25,6 +25,8 @@ requirements:
     - blas
 
   run:
+    - libgcc_ng # [linux]
+    - libstdcxx-ng # [linux]
     - gsl
     - hdf5
     - python
