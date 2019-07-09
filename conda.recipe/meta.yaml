@@ -25,6 +25,7 @@ requirements:
     - blas
 
   run:
+    - gsl
     - python
     - notebook
     - ffmpeg # [osx]
