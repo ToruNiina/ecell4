@@ -26,6 +26,7 @@ requirements:
 
   run:
     - gsl
+    - hdf5
     - python
     - notebook
     - ffmpeg # [osx]
