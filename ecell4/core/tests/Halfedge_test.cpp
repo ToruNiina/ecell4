@@ -103,10 +103,10 @@ struct tetrahedron
         return ecell4::Polygon(Real3(10.0, 10.0, 10.0), triangles);
     }
 };
-const Real3 tetrahedron::p1 = Real3(0, 0, 0);
-const Real3 tetrahedron::p2 = Real3(1, 0, 0);
-const Real3 tetrahedron::p3 = Real3(0, 1, 0);
-const Real3 tetrahedron::p4 = Real3(0, 0, 1);
+const Real3 tetrahedron::p1 = Real3(1, 1, 1);
+const Real3 tetrahedron::p2 = Real3(2, 1, 1);
+const Real3 tetrahedron::p3 = Real3(1, 2, 1);
+const Real3 tetrahedron::p4 = Real3(1, 1, 2);
 
 BOOST_AUTO_TEST_CASE(Polygon_tetrahedron_construction_from_triangles)
 {
@@ -346,8 +346,8 @@ BOOST_AUTO_TEST_CASE(Polygon_tetrahedron_construction_from_triangles)
     const FaceID f3 = *(poly.find_face(v1, v3, v4));
     const FaceID f4 = *(poly.find_face(v2, v3, v4));
     {
-        const Real3 p1(0, 0, 0);
-        const Real3 p2(0, 0, 1);
+        const Real3 p1(1, 1, 1);
+        const Real3 p2(1, 1, 2);
 
         BOOST_CHECK_CLOSE_FRACTION(
                 poly.distance(std::make_pair(p1, f1), std::make_pair(p2, f2)),
@@ -372,8 +372,8 @@ BOOST_AUTO_TEST_CASE(Polygon_tetrahedron_construction_from_triangles)
     }
 
     {
-        const Real3 p1(1.0/3.0, 1.0/3.0, 0);
-        const Real3 p2(1.0/3.0, 1.0/3.0, 1.0/3.0);
+        const Real3 p1(4.0/3.0, 4.0/3.0, 1);
+        const Real3 p2(4.0/3.0, 4.0/3.0, 4.0/3.0);
 
         BOOST_CHECK_CLOSE_FRACTION(
                 poly.distance(std::make_pair(p1, f1), std::make_pair(p2, f4)),
