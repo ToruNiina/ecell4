@@ -477,7 +477,23 @@ Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
             const auto& vtxs = this->vertices_of(f2);
             if(std::find(vtxs.begin(), vtxs.end(), vid) != vtxs.end())
             {
+                if(dump)
+                {
+                    std::cout << "vertex " << vid << " at " << vpos
+                              << " is shared with " << " face " << f2 << " = { ";
+                    for(const auto& _v : vtxs) {std::cout << _v << " ";}
+                    std::cout << "}" << std::endl;
+                    std::cout << "current dist = " << std::sqrt(distance_sq)
+                              << ", next dist = " << vtop2_len << std::endl;
+                }
                 distance_sq = std::min(distance_sq, vtop2_len * vtop2_len);
+            }
+            else if(dump)
+            {
+                std::cout << "vertex " << vid << " at " << vpos
+                          << " is not shared with " << " face " << f2 << " = { ";
+                for(const auto& _v : vtxs) {std::cout << _v << " ";}
+                std::cout << "}" << std::endl;
             }
             continue;
         }
@@ -493,7 +509,23 @@ Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
             const auto& vtxs = this->vertices_of(f2);
             if(std::find(vtxs.begin(), vtxs.end(), vid) != vtxs.end())
             {
+                if(dump)
+                {
+                    std::cout << "vertex " << vid << " at " << vpos
+                              << " is shared with " << " face " << f2 << " = { ";
+                    for(const auto& _v : vtxs) {std::cout << _v << " ";}
+                    std::cout << "}" << std::endl;
+                    std::cout << "current dist = " << std::sqrt(distance_sq)
+                              << ", next dist = " << vtop1_len << std::endl;
+                }
                 distance_sq = std::min(distance_sq, vtop1_len * vtop1_len);
+            }
+            else if(dump)
+            {
+                std::cout << "vertex " << vid << " at " << vpos
+                          << " is not shared with " << " face " << f2 << " = { ";
+                for(const auto& _v : vtxs) {std::cout << _v << " ";}
+                std::cout << "}" << std::endl;
             }
             continue;
         }
@@ -652,6 +684,12 @@ Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
     {
         const Real  l1   = length(this->periodic_transpose(p1, vpos) - vpos);
         const Real  l2   = length(this->periodic_transpose(p2, vpos) - vpos);
+        if(dump)
+        {
+            std::cout << "via " << vpos << ", l1 = " << l1 << ", l2 = " << l2 << std::endl;
+            std::cout << "current dist = " << std::sqrt(distance_sq)
+                      << ", l1 + l2 = " << l1 + l2 << std::endl;
+        }
         distance_sq = std::min(distance_sq, (l1 + l2) * (l1 + l2));
     }
     return distance_sq;
