@@ -371,6 +371,13 @@ Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
             face_finder_type;
     constexpr Real pi = boost::math::constants::pi<Real>();
 
+    if(dump)
+    {
+        std::cout << "======================================================\n";
+        std::cout << "dist_sq between " << pos1.first << ":" << pos1.second
+                  << " and " << pos2.first << ":" << pos2.second << std::endl;
+    }
+
     // if two particles are on the same face, return just a 3D distance.
     if(pos1.second == pos2.second)
     {
