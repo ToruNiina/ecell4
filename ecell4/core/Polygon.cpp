@@ -536,11 +536,22 @@ Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
             }
             continue;
         }
+        if(dump)
+        {
+            std::cout << "neither pos1(" << pos1 << ") or pos2(" << pos2 << ") "
+                      << "locates on the vertex(" << vpos << "). calc angle and"
+                      << " use cosine theorem." << std::endl;
+        }
 
         // calc the initial angle
         const auto init_angle = calc_angle(p1tov, face.triangle.edge_at(i==0?2:i-1));
         Real angle = init_angle;
         const Real apex_angle = apex_angle_at(vid);
+
+        if(dump)
+        {
+            std::cout << "apex angle is " << apex_angle << std::endl;
+        }
 
         // ------------------------------------------------------------------
         // search `f2`
@@ -561,7 +572,26 @@ Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
         }
         if(!connected)
         {
+            if(dump)
+            {
+                std::cout << "no connection between f1{ ";
+                for(const auto& _v : this->vertices_of(f1)) {std::cout << _v << " ";}
+                std::cout << "} and f2 { ";
+                for(const auto& _v : this->vertices_of(f1)) {std::cout << _v << " ";}
+                std::cout << "} via vertex " << vid << "(" << vpos << "). "
+                          << "skip this vertex." << std::endl;
+            }
             continue;
+        }
+        else if(dump)
+        {
+            std::cout << "f1{ ";
+            for(const auto& _v : this->vertices_of(f1)) {std::cout << _v << " ";}
+            std::cout << "} and f2 { ";
+            for(const auto& _v : this->vertices_of(f1)) {std::cout << _v << " ";}
+            std::cout << "} are connected via vertex " << vid << "(" << vpos << "). "
+                      << "the angle is " << angle << "." << std::endl;
+
         }
         connecting_vtxs.push_back(vpos);
 
@@ -647,6 +677,10 @@ Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
         }
         if(is_case5) // no available path.
         {
+            if(dump)
+            {
+                std::cout << "there is a sharp triangle that breaks the path." << std::endl;
+            }
             continue;
         }
 
@@ -693,7 +727,10 @@ Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
         const Real  l2   = length(this->periodic_transpose(p2, vpos) - vpos);
         if(dump)
         {
-            std::cout << "via " << vpos << ", l1 = " << l1 << ", l2 = " << l2 << std::endl;
+            std::cout << "via " << vpos
+                << ", l1 (p1(" << p1 << ") - vpos(" << vpos << ")) = " << l1
+                << ", l2 (p2(" << p2 << ") - vpos(" << vpos << ")) = " << l2
+                << std::endl;
             std::cout << "current dist = " << std::sqrt(distance_sq)
                       << ", l1 + l2 = " << l1 + l2 << std::endl;
         }
