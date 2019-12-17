@@ -538,7 +538,7 @@ Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
         }
         if(dump)
         {
-            std::cout << "neither pos1(" << pos1 << ") or pos2(" << pos2 << ") "
+            std::cout << "neither pos1(" << pos1.first << ") or pos2(" << pos2.first << ") "
                       << "locates on the vertex(" << vpos << "). calc angle and"
                       << " use cosine theorem." << std::endl;
         }
