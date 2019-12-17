@@ -151,72 +151,48 @@ BOOST_AUTO_TEST_CASE(Polygon_tetrahedron_construction_from_triangles)
 
     // check all the outgoing_edges are terminated at the correct vertex.
     {
-        const std::vector<VertexID> ans = boost::assign::list_of(v2)(v3)(v4);
+        const std::vector<VertexID> ans{v2, v3, v4};
 
         std::vector<VertexID> result; result.reserve(3);
-        const std::vector<EdgeID> es = poly.outgoing_edges(v1);
-        for(typename std::vector<EdgeID>::const_iterator
-                i(es.begin()), e(es.end()); i != e; ++i)
+        for(const auto& e : poly.outgoing_edges(v1))
         {
-            result.push_back(poly.target_of(*i));
+            result.push_back(poly.target_of(e));
         }
         BOOST_CHECK(ans.size() == result.size());
         BOOST_CHECK(ecell::is_permutation(
                     ans.begin(), ans.end(), result.begin(), result.end()));
     }
     {
-        const std::vector<VertexID> ans = boost::assign::list_of(v1)(v3)(v4);
+        const std::vector<VertexID> ans{v1, v3, v4};
 
         std::vector<VertexID> result; result.reserve(3);
-        const std::vector<EdgeID> es = poly.outgoing_edges(v2);
-        for(typename std::vector<EdgeID>::const_iterator
-                i(es.begin()), e(es.end()); i != e; ++i)
+        for(const auto& e : poly.outgoing_edges(v2))
         {
-            result.push_back(poly.target_of(*i));
+            result.push_back(poly.target_of(e));
         }
         BOOST_CHECK(ans.size() == result.size());
         BOOST_CHECK(ecell::is_permutation(
                     ans.begin(), ans.end(), result.begin(), result.end()));
     }
     {
-        const std::vector<VertexID> ans = boost::assign::list_of(v1)(v2)(v4);
+        const std::vector<VertexID> ans{v1, v2, v4};
 
         std::vector<VertexID> result; result.reserve(3);
-        const std::vector<EdgeID> es = poly.outgoing_edges(v3);
-        for(typename std::vector<EdgeID>::const_iterator
-                i(es.begin()), e(es.end()); i != e; ++i)
+        for(const auto& e : poly.outgoing_edges(v3))
         {
-            result.push_back(poly.target_of(*i));
+            result.push_back(poly.target_of(e));
         }
         BOOST_CHECK(ans.size() == result.size());
         BOOST_CHECK(ecell::is_permutation(
                     ans.begin(), ans.end(), result.begin(), result.end()));
     }
     {
-        const std::vector<VertexID> ans = boost::assign::list_of(v1)(v2)(v3);
+        const std::vector<VertexID> ans{v1, v2, v3};
 
         std::vector<VertexID> result; result.reserve(3);
-        const std::vector<EdgeID> es = poly.outgoing_edges(v4);
-        for(typename std::vector<EdgeID>::const_iterator
-                i(es.begin()), e(es.end()); i != e; ++i)
+        for(const auto& e : poly.outgoing_edges(v4))
         {
-            result.push_back(poly.target_of(*i));
-        }
-        BOOST_CHECK(ans.size() == result.size());
-        BOOST_CHECK(ecell::is_permutation(
-                    ans.begin(), ans.end(), result.begin(), result.end()));
-    }
-
-    // check all the vertex are in contact with the correct set of faces.
-    {
-        const std::vector<VertexID> ans = boost::assign::list_of(v1)(v2)(v3);
-
-        std::vector<VertexID> result; result.reserve(3);
-        const std::vector<EdgeID> es = poly.outgoing_edges(v4);
-        for(typename std::vector<EdgeID>::const_iterator
-                i(es.begin()), e(es.end()); i != e; ++i)
-        {
-            result.push_back(poly.target_of(*i));
+            result.push_back(poly.target_of(e));
         }
         BOOST_CHECK(ans.size() == result.size());
         BOOST_CHECK(ecell::is_permutation(
@@ -240,6 +216,13 @@ BOOST_AUTO_TEST_CASE(Polygon_tetrahedron_construction_from_triangles)
     const EdgeID e12 = *poly.find_edge(v1, v2);
     const EdgeID e13 = *poly.find_edge(v1, v3);
     const EdgeID e14 = *poly.find_edge(v1, v4);
+
+    BOOST_CHECK_EQUAL(poly.target_of(e12), v2);
+    BOOST_CHECK_EQUAL(poly.target_of(e13), v3);
+    BOOST_CHECK_EQUAL(poly.target_of(e14), v4);
+    BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(e12)), v4);
+    BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(e13)), v2);
+    BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(e14)), v3);
     BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(poly.next_of(e12))), v1);
     BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(poly.next_of(e13))), v1);
     BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(poly.next_of(e14))), v1);
@@ -247,6 +230,15 @@ BOOST_AUTO_TEST_CASE(Polygon_tetrahedron_construction_from_triangles)
     const EdgeID e21 = *poly.find_edge(v2, v1);
     const EdgeID e23 = *poly.find_edge(v2, v3);
     const EdgeID e24 = *poly.find_edge(v2, v4);
+
+    BOOST_CHECK_EQUAL(poly.target_of(e21), v1);
+    BOOST_CHECK_EQUAL(poly.target_of(e23), v3);
+    BOOST_CHECK_EQUAL(poly.target_of(e24), v4);
+
+    BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(e21)), v3);
+    BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(e23)), v4);
+    BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(e24)), v1);
+
     BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(poly.next_of(e21))), v2);
     BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(poly.next_of(e23))), v2);
     BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(poly.next_of(e24))), v2);
@@ -254,6 +246,15 @@ BOOST_AUTO_TEST_CASE(Polygon_tetrahedron_construction_from_triangles)
     const EdgeID e31 = *poly.find_edge(v3, v1);
     const EdgeID e32 = *poly.find_edge(v3, v2);
     const EdgeID e34 = *poly.find_edge(v3, v4);
+
+    BOOST_CHECK_EQUAL(poly.target_of(e31), v1);
+    BOOST_CHECK_EQUAL(poly.target_of(e32), v2);
+    BOOST_CHECK_EQUAL(poly.target_of(e34), v4);
+
+    BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(e31)), v4);
+    BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(e32)), v1);
+    BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(e34)), v2);
+
     BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(poly.next_of(e31))), v3);
     BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(poly.next_of(e32))), v3);
     BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(poly.next_of(e34))), v3);
@@ -261,6 +262,14 @@ BOOST_AUTO_TEST_CASE(Polygon_tetrahedron_construction_from_triangles)
     const EdgeID e41 = *poly.find_edge(v4, v1);
     const EdgeID e42 = *poly.find_edge(v4, v2);
     const EdgeID e43 = *poly.find_edge(v4, v3);
+    BOOST_CHECK_EQUAL(poly.target_of(e41), v1);
+    BOOST_CHECK_EQUAL(poly.target_of(e42), v2);
+    BOOST_CHECK_EQUAL(poly.target_of(e43), v3);
+
+    BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(e41)), v2);
+    BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(e42)), v3);
+    BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(e43)), v1);
+
     BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(poly.next_of(e41))), v4);
     BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(poly.next_of(e42))), v4);
     BOOST_CHECK_EQUAL(poly.target_of(poly.next_of(poly.next_of(e43))), v4);
@@ -283,6 +292,27 @@ BOOST_AUTO_TEST_CASE(Polygon_tetrahedron_construction_from_triangles)
     BOOST_CHECK_EQUAL(poly.opposite_of(e43), e34);
 
     // check face ids
+    const FaceID f1 = *(poly.find_face(v1, v3, v2));
+    const FaceID f2 = *(poly.find_face(v1, v2, v4));
+    const FaceID f3 = *(poly.find_face(v1, v4, v3));
+    const FaceID f4 = *(poly.find_face(v2, v3, v4));
+
+    BOOST_CHECK_EQUAL(poly.face_of(e13), f1);
+    BOOST_CHECK_EQUAL(poly.face_of(e32), f1);
+    BOOST_CHECK_EQUAL(poly.face_of(e21), f1);
+
+    BOOST_CHECK_EQUAL(poly.face_of(e12), f2);
+    BOOST_CHECK_EQUAL(poly.face_of(e24), f2);
+    BOOST_CHECK_EQUAL(poly.face_of(e41), f2);
+
+    BOOST_CHECK_EQUAL(poly.face_of(e14), f3);
+    BOOST_CHECK_EQUAL(poly.face_of(e43), f3);
+    BOOST_CHECK_EQUAL(poly.face_of(e31), f3);
+
+    BOOST_CHECK_EQUAL(poly.face_of(e23), f4);
+    BOOST_CHECK_EQUAL(poly.face_of(e34), f4);
+    BOOST_CHECK_EQUAL(poly.face_of(e42), f4);
+
     BOOST_CHECK_EQUAL(poly.face_of(poly.next_of(             e12)),  poly.face_of(e12));
     BOOST_CHECK_EQUAL(poly.face_of(poly.next_of(poly.next_of(e12))), poly.face_of(e12));
     BOOST_CHECK_EQUAL(poly.face_of(poly.next_of(             e13)),  poly.face_of(e13));
@@ -339,12 +369,7 @@ BOOST_AUTO_TEST_CASE(Polygon_tetrahedron_construction_from_triangles)
     BOOST_CHECK(check_equal(poly.direction_of(e43), poly.periodic_transpose(
         poly.position_at(v3), poly.position_at(v4)) - poly.position_at(v4), 1e-8));
 
-
-    // test of distance
-    const FaceID f1 = *(poly.find_face(v1, v2, v3));
-    const FaceID f2 = *(poly.find_face(v1, v2, v4));
-    const FaceID f3 = *(poly.find_face(v1, v3, v4));
-    const FaceID f4 = *(poly.find_face(v2, v3, v4));
+    // test distance
     {
         const Real3 p1(1, 1, 1);
         const Real3 p2(1, 1, 2);
