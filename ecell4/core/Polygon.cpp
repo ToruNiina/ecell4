@@ -364,7 +364,8 @@ void Polygon::assign(const std::vector<Triangle>& ts)
 }
 
 Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
-                          const std::pair<Real3, FaceID>& pos2) const
+                          const std::pair<Real3, FaceID>& pos2,
+                          bool dump) const
 {
     typedef utils::pair_first_element_unary_predicator<FaceID, Triangle>
             face_finder_type;
@@ -373,6 +374,10 @@ Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
     // if two particles are on the same face, return just a 3D distance.
     if(pos1.second == pos2.second)
     {
+        if(dump)
+        {
+            std::cout << "pos1 and pos2 locates on the same face." << std::endl;
+        }
         return length_sq(pos2.first - pos1.first);
     }
 
@@ -459,6 +464,10 @@ Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
         const Real vtop2_len = length(vtop2);
         if(vtop1_len < relative_tolerance * min_edge_length)
         {
+            if(dump)
+            {
+                std::cout << "pos1 locates almost exactly on the vertex." << std::endl;
+            }
             // pos1 locates exactly on the vtx. distance from pos1 to pos2 is
             // equal to the distance from vtx to pos2.
 
@@ -474,6 +483,10 @@ Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
         }
         if(vtop2_len < relative_tolerance * min_edge_length)
         {
+            if(dump)
+            {
+                std::cout << "pos2 locates almost exactly on the vertex." << std::endl;
+            }
             // pos2 locates exactly on the vtx. distance from pos1 to pos2 is
             // equal to the distance from pos1 to vtx.
 
@@ -625,6 +638,16 @@ Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
     // through the vertex that connects `f1` and `f2`.
 
     // here, distance_sq is still infinity.
+    if(dump)
+    {
+        std::cout << "no direct path found. " << std::endl;
+        std::cout << "connecting_vtxs = { ";
+        for(const Real3 vpos : connecting_vtxs)
+        {
+            std::cout << vpos << " ";
+        }
+        std::cout << "}" << std::endl;
+    }
     for(const Real3 vpos : connecting_vtxs)
     {
         const Real  l1   = length(this->periodic_transpose(p1, vpos) - vpos);

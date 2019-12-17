@@ -392,7 +392,7 @@ BOOST_AUTO_TEST_CASE(Polygon_tetrahedron_construction_from_triangles)
                 poly.distance(std::make_pair(p1, f1), std::make_pair(p2, f4)),
                 1.0, 1e-8);
         BOOST_CHECK_CLOSE_FRACTION(
-                poly.distance(std::make_pair(p2, f4), std::make_pair(p1, f1)),
+                poly.distance(std::make_pair(p2, f4), std::make_pair(p1, f1), true),
                 1.0, 1e-8);
     }
 
@@ -406,7 +406,6 @@ BOOST_AUTO_TEST_CASE(Polygon_tetrahedron_construction_from_triangles)
         BOOST_CHECK_CLOSE_FRACTION(
                 poly.distance(std::make_pair(p2, f4), std::make_pair(p1, f1)),
                 (std::sqrt(2) + std::sqrt(6)) / 6.0, 1e-8);
-
     }
 
     {

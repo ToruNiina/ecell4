@@ -225,11 +225,12 @@ class Polygon : public Shape
                      const std::pair<Real3, FaceID>& pos2) const;
 
     Real distance_sq(const std::pair<Real3, FaceID>& pos1,
-                     const std::pair<Real3, FaceID>& pos2) const;
+                     const std::pair<Real3, FaceID>& pos2, bool dump = false) const;
     Real distance   (const std::pair<Real3, FaceID>& pos1,
-                     const std::pair<Real3, FaceID>& pos2) const
+                     const std::pair<Real3, FaceID>& pos2,
+                     bool dump = false) const
     {
-        return std::sqrt(this->distance_sq(pos1, pos2));
+        return std::sqrt(this->distance_sq(pos1, pos2, dump));
     }
 
     Real distance_sq(const std::pair<Real3, VertexID>& pos1,
