@@ -638,6 +638,15 @@ Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
 
                 if(nface.triangle.length_of_edge_at(vidx) < threshold * (1.0 + 1e-6))
                 {
+                    if(dump)
+                    {
+                        std::cout << "there is a too-sharp triangle that breaks the path." << std::endl;
+                        std::cout << "angle_ccw = " << angle_ccw << ", "
+                                  << "threshold = " << threshold << ", "
+                                  << "current angle = " << angle << ", "
+                                  << "edge length = " << nface.triangle.length_of_edge_at(vidx) << ", "
+                                  << std::endl;
+                    }
                     is_case5 = true;
                     break;
                 }
@@ -669,6 +678,15 @@ Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
                 const auto edge_idx = (vidx==0) ? 2 : vidx-1;
                 if(nface.triangle.length_of_edge_at(edge_idx) < threshold * (1.0 + 1e-6))
                 {
+                    if(dump)
+                    {
+                        std::cout << "there is a too-sharp triangle that breaks the path." << std::endl;
+                        std::cout << "angle_cw = "  << angle_cw << ", "
+                                  << "threshold = " << threshold << ", "
+                                  << "current angle = " << angle << ", "
+                                  << "edge length = " << nface.triangle.length_of_edge_at(vidx) << ", "
+                                  << std::endl;
+                    }
                     is_case5 = true;
                     break;
                 }
