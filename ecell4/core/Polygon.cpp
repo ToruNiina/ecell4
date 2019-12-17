@@ -636,7 +636,7 @@ Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
                 const auto threshold = vtop1_len * vtop2_len * sin_ccw /
                             (vtop1_len * sin_agl + vtop2_len * sin_opp);
 
-                if(nface.triangle.length_of_edge_at(vidx) < threshold * (1.0 - 1e-6))
+                if(nface.triangle.length_of_edge_at(vidx) < threshold * (1.0 - relative_tolerance))
                 {
                     if(dump)
                     {
@@ -676,7 +676,7 @@ Real Polygon::distance_sq(const std::pair<Real3, FaceID>& pos1,
                             (vtop1_len * sin_agl + vtop2_len * sin_opp);
 
                 const auto edge_idx = (vidx==0) ? 2 : vidx-1;
-                if(nface.triangle.length_of_edge_at(edge_idx) < threshold * (1.0 - 1e-6))
+                if(nface.triangle.length_of_edge_at(edge_idx) < threshold * (1.0 - relative_tolerance))
                 {
                     if(dump)
                     {
@@ -1090,7 +1090,7 @@ std::pair<Real3, Polygon::FaceID> Polygon::travel(
     // if the position is inside of the adjacent face, return the position
     // reconstructed from unfolded-Barycentric by using folded Triangle.
     const Barycentric unfolded_b(to_barycentric(np, next.second));
-    if(::ecell4::is_inside(unfolded_b, 1e-8))
+    if(::ecell4::is_inside(unfolded_b, relative_tolerance))
     {
         Real3 nxt = to_absolute(
                 force_put_inside(unfolded_b), this->triangle_at(next.first));
@@ -1206,7 +1206,7 @@ std::pair<Real3, Polygon::FaceID> Polygon::travel(
     // if the position is inside of the adjacent face, return the position
     // reconstructed from unfolded-Barycentric by using folded Triangle.
     const Barycentric unfolded_b(to_barycentric(np, next.second));
-    if(::ecell4::is_inside(unfolded_b, 1e-8))
+    if(::ecell4::is_inside(unfolded_b, relative_tolerance))
     {
         Real3 nxt = to_absolute(
                 force_put_inside(unfolded_b), this->triangle_at(next.first));
