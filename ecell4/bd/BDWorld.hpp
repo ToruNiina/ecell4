@@ -57,6 +57,12 @@ public:
         ;
     }
 
+    BDWorld(ParticleSpace* ps, boost::shared_ptr<RandomNumberGenerator> rng)
+        : ps_(ps), rng_(rng)
+    {
+        ;
+    }
+
     BDWorld(const std::string& filename)
         : ps_(new particle_space_type(Real3(1, 1, 1)))
     {
