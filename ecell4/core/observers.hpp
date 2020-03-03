@@ -14,13 +14,7 @@
 
 #include <fstream>
 #include <boost/format.hpp>
-
-#ifndef HAVE_CHRONO
-#include <time.h>
-#else
 #include <chrono>
-#endif
-
 
 namespace ecell4
 {
@@ -1075,11 +1069,7 @@ protected:
     Real interval_;
     Real duration_;
     Real acc_;
-#ifndef HAVE_CHRONO
-    time_t tstart_;
-#else
     std::chrono::system_clock::time_point tstart_;
-#endif
 };
 
 class FixedIntervalTrackingObserver
