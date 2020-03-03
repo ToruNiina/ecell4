@@ -10,7 +10,9 @@
 #include "Real3.hpp"
 #include "Particle.hpp"
 #include "Species.hpp"
-// #include "Space.hpp"
+#include "BoundaryCondition.hpp"
+#include "Context.hpp"
+#include "comparators.hpp"
 
 #ifdef WITH_HDF5
 #include "ParticleSpaceHDF5Writer.hpp"
@@ -239,27 +241,8 @@ public:
      * @param pos2 a reference position
      * @return a transposed position Real3
      */
-    Real3 periodic_transpose(
-        const Real3& pos1, const Real3& pos2) const
-    {
-        Real3 retval(pos1);
-        const Real3& edges(edge_lengths());
-        for (Real3::size_type dim(0); dim < 3; ++dim)
-        {
-            const Real edge_length(edges[dim]);
-            const Real diff(pos2[dim] - pos1[dim]), half(edge_length * 0.5);
-
-            if (diff > half)
-            {
-                retval[dim] += edge_length;
-            }
-            else if (diff < -half)
-            {
-                retval[dim] -= edge_length;
-            }
-        }
-        return retval;
-    }
+    virtual Real3 periodic_transpose(
+        const Real3& pos1, const Real3& pos2) const = 0;
 
     /**
      * transpose a position based on the periodic boundary condition.
@@ -268,10 +251,7 @@ public:
      * @param pos a target position
      * @return a transposed position Real3
      */
-    inline Real3 apply_boundary(const Real3& pos) const
-    {
-        return modulo(pos, edge_lengths());
-    }
+    virtual Real3 apply_boundary(const Real3& pos) const = 0;
 
     /**
      * calculate a square of the distance between positions
@@ -345,6 +325,7 @@ protected:
     Real t_;
 };
 
+template<typename BoundaryCondition>
 class ParticleSpaceVectorImpl
     : public ParticleSpace
 {
@@ -352,6 +333,7 @@ public:
 
     typedef ParticleSpace base_type;
     typedef ParticleSpace::particle_container_type particle_container_type;
+    typedef BoundaryCondition boundary_condition_type;
 
 protected:
 
@@ -369,7 +351,18 @@ public:
 
     const Real3& edge_lengths() const
     {
-        return edge_lengths_;
+        return boundary_.edge_lengths();
+    }
+
+    Real3 periodic_transpose(
+        const Real3& pos1, const Real3& pos2) const final
+    {
+        return boundary_.periodic_transpose(pos1, pos2);
+    }
+
+    Real3 apply_boundary(const Real3& pos) const final
+    {
+        return boundary_.apply_boundary(pos);
     }
 
     Integer num_particles() const;
@@ -434,11 +427,249 @@ public:
 
 protected:
 
-    Real3 edge_lengths_;
+    boundary_condition_type boundary_;
     particle_container_type particles_;
     particle_map_type index_map_;
 };
 
-} // ecell4
+extern template class ParticleSpaceVectorImpl<PeriodicBoundary>;
+extern template class ParticleSpaceVectorImpl<UnlimitedBoundary>;
 
+template<typename BoundaryCondition>
+Integer ParticleSpaceVectorImpl<BoundaryCondition>::num_particles() const
+{
+    return static_cast<Integer>(particles_.size());
+}
+
+template<typename BoundaryCondition>
+Integer ParticleSpaceVectorImpl<BoundaryCondition>::num_particles(const Species& sp) const
+{
+    return static_cast<Integer>(list_particles(sp).size());
+}
+
+template<typename BoundaryCondition>
+Integer ParticleSpaceVectorImpl<BoundaryCondition>::num_molecules(const Species& sp) const
+{
+    Integer retval(0);
+    SpeciesExpressionMatcher sexp(sp);
+    for (particle_container_type::const_iterator i(particles_.begin());
+         i != particles_.end(); ++i)
+    {
+        retval += sexp.count((*i).second.species());
+    }
+    return retval;
+}
+
+template<typename BoundaryCondition>
+Integer ParticleSpaceVectorImpl<BoundaryCondition>::num_molecules_exact(const Species& sp) const
+{
+    return num_particles_exact(sp);
+}
+
+template<typename BoundaryCondition>
+Integer ParticleSpaceVectorImpl<BoundaryCondition>::num_particles_exact(const Species& sp) const
+{
+    return static_cast<Integer>(list_particles_exact(sp).size());
+}
+
+template<typename BoundaryCondition>
+bool ParticleSpaceVectorImpl<BoundaryCondition>::has_particle(const ParticleID& pid) const
+{
+    particle_map_type::const_iterator i(index_map_.find(pid));
+    return (i != index_map_.end());
+}
+
+/**
+ * update or add a particle.
+ * @return true if adding a new particle
+ */
+template<typename BoundaryCondition>
+bool ParticleSpaceVectorImpl<BoundaryCondition>::update_particle(
+    const ParticleID& pid, const Particle& p)
+{
+    particle_map_type::const_iterator i(index_map_.find(pid));
+    if (i == index_map_.end())
+    {
+        particle_container_type::size_type idx(particles_.size());
+        index_map_[pid] = idx;
+        particles_.push_back(std::make_pair(pid, p));
+        return true;
+    }
+    else
+    {
+        particles_[(*i).second] = std::make_pair(pid, p);
+        return false;
+    }
+}
+
+template<typename BoundaryCondition>
+void ParticleSpaceVectorImpl<BoundaryCondition>::remove_particle(const ParticleID& pid)
+{
+    particle_map_type::const_iterator i(index_map_.find(pid));
+    if (i == index_map_.end())
+    {
+        throw NotFound("particle not found");
+    }
+
+    particle_map_type::mapped_type
+        idx((*i).second),last_idx(particles_.size() - 1);
+    if (idx != last_idx)
+    {
+        const std::pair<ParticleID, Particle>& last(particles_[last_idx]);
+        particles_[idx] = last;
+        index_map_[last.first] = idx;
+    }
+
+    particles_.pop_back();
+    index_map_.erase((*i).first);
+}
+
+template<typename BoundaryCondition>
+std::pair<ParticleID, Particle> ParticleSpaceVectorImpl<BoundaryCondition>::get_particle(
+    const ParticleID& pid) const
+{
+    particle_map_type::const_iterator i(index_map_.find(pid));
+    if (i == index_map_.end())
+    {
+        throw NotFound("particle not found");
+    }
+
+    return particles_[(*i).second];
+}
+
+template<typename BoundaryCondition>
+std::vector<std::pair<ParticleID, Particle> >
+ParticleSpaceVectorImpl<BoundaryCondition>::list_particles() const
+{
+    return particles_;
+}
+
+template<typename BoundaryCondition>
+std::vector<std::pair<ParticleID, Particle> >
+ParticleSpaceVectorImpl<BoundaryCondition>::list_particles(const Species& sp) const
+{
+    std::vector<std::pair<ParticleID, Particle> > retval;
+    SpeciesExpressionMatcher sexp(sp);
+
+    for (particle_container_type::const_iterator i(particles_.begin());
+         i != particles_.end(); ++i)
+    {
+        if (sexp.match((*i).second.species()))
+        {
+            retval.push_back(*i);
+        }
+    }
+    return retval;
+}
+
+template<typename BoundaryCondition>
+std::vector<std::pair<ParticleID, Particle> >
+ParticleSpaceVectorImpl<BoundaryCondition>::list_particles_exact(const Species& sp) const
+{
+    std::vector<std::pair<ParticleID, Particle> > retval;
+
+    for (particle_container_type::const_iterator i(particles_.begin());
+         i != particles_.end(); ++i)
+    {
+        if ((*i).second.species() == sp)
+        {
+            retval.push_back(*i);
+        }
+    }
+
+    return retval;
+}
+
+template<typename BoundaryCondition>
+std::vector<std::pair<std::pair<ParticleID, Particle>, Real> >
+ParticleSpaceVectorImpl<BoundaryCondition>::list_particles_within_radius(
+    const Real3& pos, const Real& radius) const
+{
+    std::vector<std::pair<std::pair<ParticleID, Particle>, Real> > retval;
+
+    for (particle_container_type::const_iterator i(particles_.begin());
+         i != particles_.end(); ++i)
+    {
+        const Real dist(distance((*i).second.position(), pos) - (*i).second.radius());
+        if (dist <= radius)
+        {
+            retval.push_back(std::make_pair(*i, dist));
+        }
+    }
+
+    std::sort(retval.begin(), retval.end(),
+        utils::pair_second_element_comparator<std::pair<ParticleID, Particle>, Real>());
+    return retval;
+}
+
+template<typename BoundaryCondition>
+std::vector<std::pair<std::pair<ParticleID, Particle>, Real> >
+ParticleSpaceVectorImpl<BoundaryCondition>::list_particles_within_radius(
+    const Real3& pos, const Real& radius, const ParticleID& ignore) const
+{
+    std::vector<std::pair<std::pair<ParticleID, Particle>, Real> > retval;
+
+    for (particle_container_type::const_iterator i(particles_.begin());
+         i != particles_.end(); ++i)
+    {
+        const Real dist(distance((*i).second.position(), pos) - (*i).second.radius());
+        if (dist <= radius)
+        {
+            if ((*i).first != ignore)
+            {
+                retval.push_back(std::make_pair(*i, dist));
+            }
+        }
+    }
+
+    std::sort(retval.begin(), retval.end(),
+        utils::pair_second_element_comparator<std::pair<ParticleID, Particle>, Real>());
+    return retval;
+}
+
+template<typename BoundaryCondition>
+std::vector<std::pair<std::pair<ParticleID, Particle>, Real> >
+ParticleSpaceVectorImpl<BoundaryCondition>::list_particles_within_radius(
+    const Real3& pos, const Real& radius,
+    const ParticleID& ignore1, const ParticleID& ignore2) const
+{
+    std::vector<std::pair<std::pair<ParticleID, Particle>, Real> > retval;
+
+    for (particle_container_type::const_iterator i(particles_.begin());
+         i != particles_.end(); ++i)
+    {
+        const Real dist(distance((*i).second.position(), pos) - (*i).second.radius());
+        if (dist <= radius)
+        {
+            if ((*i).first != ignore1 && (*i).first != ignore2)
+            {
+                retval.push_back(std::make_pair(*i, dist));
+            }
+        }
+    }
+
+    std::sort(retval.begin(), retval.end(),
+        utils::pair_second_element_comparator<std::pair<ParticleID, Particle>, Real>());
+    return retval;
+}
+
+template<typename BoundaryCondition>
+void ParticleSpaceVectorImpl<BoundaryCondition>::reset(const Real3& edge_lengths)
+{
+    base_type::t_ = 0.0;
+    particles_.clear();
+    index_map_.clear();
+
+    for (Real3::size_type dim(0); dim < 3; ++dim)
+    {
+        if (edge_lengths[dim] <= 0)
+        {
+            throw std::invalid_argument("the edge length must be positive.");
+        }
+    }
+
+    this->boundary_.update(edge_lengths);
+}
+
+} // ecell4
 #endif /* ECELL4_PARTICLE_SPACE_HPP */
