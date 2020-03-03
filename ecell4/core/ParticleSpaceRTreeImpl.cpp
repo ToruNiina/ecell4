@@ -13,7 +13,7 @@ void ParticleSpaceRTreeImpl::reset(const Real3& edge_lengths)
     particle_pool_.clear();
     rtree_.clear();
 
-    this->edge_lengths_ = edge_lengths;
+    this->boundary_.update(edge_lengths);
 }
 
 std::vector<Species> ParticleSpaceRTreeImpl::list_species() const
@@ -116,7 +116,7 @@ ParticleSpaceRTreeImpl::list_particles_within_radius(
     query_boxes_container_type
         boxes(1, self_type::make_box(pos, radius+this->max_radius_));
 
-    const box_type boundary(Real3(0,0,0), this->edge_lengths_);
+    const box_type boundary(Real3(0,0,0), this->boundary_.edge_lengths());
     if(not boost::geometry::within(boxes.front(), boundary))
     {// if the query box is out of periodic-boundary, split the query box
         this->split_box_by_boundary<0>(boxes);
@@ -162,7 +162,7 @@ ParticleSpaceRTreeImpl::list_particles_within_radius(
     query_boxes_container_type
         boxes(1, self_type::make_box(pos, radius+this->max_radius_));
 
-    const box_type boundary(Real3(0,0,0), this->edge_lengths_);
+    const box_type boundary(Real3(0,0,0), this->boundary_.edge_lengths());
     if(not boost::geometry::within(boxes.front(), boundary))
     {// if the query box is out of periodic-boundary, split the query box
         this->split_box_by_boundary<0>(boxes);
@@ -212,7 +212,7 @@ ParticleSpaceRTreeImpl::list_particles_within_radius(
     query_boxes_container_type
         boxes(1, self_type::make_box(pos, radius+this->max_radius_));
 
-    const box_type boundary(Real3(0,0,0), this->edge_lengths_);
+    const box_type boundary(Real3(0,0,0), this->boundary_.edge_lengths());
 
     if(not boost::geometry::within(boxes.front(), boundary))
     {// if the query box is out of periodic-boundary, split the query box

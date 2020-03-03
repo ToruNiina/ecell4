@@ -137,6 +137,8 @@ public:
     typedef utils::get_mapper_mf<Species::serial_type, particle_id_set>::type
             per_species_particle_id_set;
 
+    typedef PeriodicBoundary boundary_condition_type;
+
 protected:
 
 #ifdef ECELL4_HAS_BOOST_SMALL_VECTOR
@@ -187,7 +189,7 @@ protected:
 public:
 
     explicit ParticleSpaceRTreeImpl(const Real3& edge_lengths)
-        : base_type(), max_radius_(0.0), edge_lengths_(edge_lengths)
+        : base_type(), max_radius_(0.0), boundary_(edge_lengths)
     {}
 
     void reset(const Real3& edge_lengths);
@@ -210,7 +212,18 @@ public:
 
     const Real3& edge_lengths() const
     {
-        return edge_lengths_;
+        return boundary_.edge_lengths();
+    }
+
+    Real3 periodic_transpose(
+        const Real3& pos1, const Real3& pos2) const final
+    {
+        return boundary_.periodic_transpose(pos1, pos2);
+    }
+
+    Real3 apply_boundary(const Real3& pos) const final
+    {
+        return boundary_.apply_boundary(pos);
     }
 
     const particle_container_type& particles() const
@@ -345,19 +358,19 @@ protected:
         const std::size_t sz = boxes.size();
         for(std::size_t i=0; i<sz; ++i)
         {
-            if(this->edge_lengths_[N] < boxes[i].upper()[N])
+            if(this->boundary_.edge_lengths()[N] < boxes[i].upper()[N])
             {
                 box_type bx(boxes[i]);
                 bx.lower()[N] = 0.0;
-                bx.upper()[N] = boxes[i].upper()[N] - this->edge_lengths_[N];
-                boxes[i].upper()[N] = this->edge_lengths_[N];
+                bx.upper()[N] = boxes[i].upper()[N] - this->boundary_.edge_lengths()[N];
+                boxes[i].upper()[N] = this->boundary_.edge_lengths()[N];
                 boxes.push_back(bx);// XXX do not use iterator
             }
             else if(boxes[i].lower()[N] < 0)
             {
                 box_type bx(boxes[i]);
-                bx.lower()[N] = boxes[i].lower()[N] + this->edge_lengths_[N];
-                bx.upper()[N] = this->edge_lengths_[N];
+                bx.lower()[N] = boxes[i].lower()[N] + this->boundary_.edge_lengths()[N];
+                bx.upper()[N] = this->boundary_.edge_lengths()[N];
                 boxes[i].lower()[N] = 0.0;
                 boxes.push_back(bx);// XXX do not use iterator
             }
@@ -455,8 +468,7 @@ protected:
 protected:
 
     Real  max_radius_; // XXX
-    Real3 edge_lengths_;
-
+    boundary_condition_type     boundary_;
     rtree_type                  rtree_;
     particle_container_type     particles_;
     key_to_value_map_type       idx_map_;
