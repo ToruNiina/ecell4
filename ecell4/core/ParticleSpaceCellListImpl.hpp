@@ -35,24 +35,26 @@ public:
     typedef boost::array<matrix_type::size_type, 3> cell_index_type;
     typedef boost::array<matrix_type::difference_type, 3> cell_offset_type;
 
+    typedef PeriodicBoundary boundary_condition_type;
+
 public:
 
     ParticleSpaceCellListImpl(const Real3& edge_lengths)
-        : base_type(), edge_lengths_(edge_lengths), matrix_(boost::extents[3][3][3])
+        : base_type(), boundary_(edge_lengths), matrix_(boost::extents[3][3][3])
     {
-        cell_sizes_[0] = edge_lengths_[0] / matrix_.shape()[0];
-        cell_sizes_[1] = edge_lengths_[1] / matrix_.shape()[1];
-        cell_sizes_[2] = edge_lengths_[2] / matrix_.shape()[2];
+        cell_sizes_[0] = boundary_.edge_lengths()[0] / matrix_.shape()[0];
+        cell_sizes_[1] = boundary_.edge_lengths()[1] / matrix_.shape()[1];
+        cell_sizes_[2] = boundary_.edge_lengths()[2] / matrix_.shape()[2];
     }
 
     ParticleSpaceCellListImpl(
         const Real3& edge_lengths, const Integer3& matrix_sizes)
-        : base_type(), edge_lengths_(edge_lengths),
+        : base_type(), boundary_(edge_lengths),
         matrix_(boost::extents[matrix_sizes.col][matrix_sizes.row][matrix_sizes.layer])
     {
-        cell_sizes_[0] = edge_lengths_[0] / matrix_.shape()[0];
-        cell_sizes_[1] = edge_lengths_[1] / matrix_.shape()[1];
-        cell_sizes_[2] = edge_lengths_[2] / matrix_.shape()[2];
+        cell_sizes_[0] = boundary_.edge_lengths()[0] / matrix_.shape()[0];
+        cell_sizes_[1] = boundary_.edge_lengths()[1] / matrix_.shape()[1];
+        cell_sizes_[2] = boundary_.edge_lengths()[2] / matrix_.shape()[2];
     }
 
     void diagnosis() const
@@ -102,7 +104,18 @@ public:
 
     const Real3& edge_lengths() const
     {
-        return edge_lengths_;
+        return boundary_.edge_lengths();
+    }
+
+    Real3 periodic_transpose(
+        const Real3& pos1, const Real3& pos2) const final
+    {
+        return boundary_.periodic_transpose(pos1, pos2);
+    }
+
+    Real3 apply_boundary(const Real3& pos) const final
+    {
+        return boundary_.apply_boundary(pos);
     }
 
     const Real3& cell_sizes() const
@@ -491,7 +504,7 @@ protected:
 
 protected:
 
-    Real3 edge_lengths_;
+    boundary_condition_type boundary_;
 
     particle_container_type particles_;
     key_to_value_map_type rmap_;
