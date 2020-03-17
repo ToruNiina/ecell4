@@ -4,6 +4,7 @@
 #include <ecell4/core/Real3.hpp>
 #include <ecell4/core/Integer3.hpp>
 #include <ecell4/core/AABB.hpp>
+#include <ecell4/core/BoundaryCondition.hpp>
 #include <ecell4/core/exceptions.hpp>
 #include <boost/container/static_vector.hpp>
 #include <boost/optional.hpp>
@@ -125,8 +126,8 @@ public:
 
 public:
 
-    explicit PeriodicRTree(const Real3& edge_lengths, const Real margin = 0.0)
-        : root_(nil), margin_(margin), edge_lengths_(edge_lengths)
+    explicit PeriodicRTree(const PeriodicBoundary& boundary, const Real margin = 0.0)
+        : root_(nil), margin_(margin), boundary_(boundary)
     {
         // do nothing
     }
@@ -149,6 +150,13 @@ public:
         this->container_.clear();
         this->rmap_.clear();
         this->overwritable_nodes_.clear();
+        return;
+    }
+
+    void reset(const PeriodicBoundary& new_boundary)
+    {
+        this->clear();
+        this->boundary_ = new_boundary;
         return;
     }
 
@@ -298,8 +306,7 @@ public:
         throw NotFound("PeriodicRTree::erase: value not found.");
     }
 
-    Real3 const& edge_lengths() const noexcept {return edge_lengths_;}
-    Real3&       edge_lengths()       noexcept {return edge_lengths_;}
+    Real3 const& edge_lengths() const noexcept {return boundary_.edge_lengths();}
 
     // user-defined AABBGetter may be stateful (unlikely).
     AABBGetter const& get_aabb_getter() const noexcept {return box_getter_;}
@@ -507,7 +514,7 @@ private:
             for(const auto& entry : node.leaf_entry())
             {
                 const auto& value = container_.at(rmap_.at(entry));
-                if(const auto info = matches(value, this->edge_lengths_))
+                if(const auto info = matches(value, this->boundary_))
                 {
                     *out = *info;
                     ++out;
@@ -519,7 +526,7 @@ private:
         for(const std::size_t entry : node.inode_entry())
         {
             const auto& node_aabb = node_at(entry).box;
-            if(matches(node_aabb, this->edge_lengths_))
+            if(matches(node_aabb, this->boundary_))
             {
                 this->query_recursive(entry, matches, out);
             }
@@ -1325,7 +1332,7 @@ private:
         const auto lc = (lhs.upper() + lhs.lower()) * 0.5; // center of lhs
         const auto rc = (rhs.upper() + rhs.lower()) * 0.5; // center of rhs
         const auto rr =  rhs.upper() - rc;                 // radius of rhs
-        const auto dc = restrict_direction(rc - lc); // distance between centers
+        const auto dc = restrict_direction(lc, rc); // distance between centers
         const auto l1 = lhs.lower();
         const auto u1 = lhs.upper();
         const auto l2 = lc + dc - rr; // boundary-adjusted rhs' lower bound
@@ -1338,7 +1345,7 @@ private:
             up[i] = std::max(u1[i], u2[i]);
         }
         const auto c = (up + lw) * 0.5;
-        const auto d = restrict_position(c) - c;
+        const auto d = boundary_.apply_boundary(c) - c;
 
         box_type expanded(lw + d, up + d);
 
@@ -1358,7 +1365,7 @@ private:
         const auto rr = (rhs.upper() - rhs.lower()) * 0.5; // radius of rhs
 
         const auto r2 = lr + rr;
-        const auto dc = ecell4::abs(this->restrict_direction(lc - rc));
+        const auto dc = ecell4::abs(this->restrict_direction(rc, lc));
 
         // if they are close along all the axes, they intersects each other.
         return ((dc[0] - r2[0]) <= tol) &&
@@ -1376,48 +1383,37 @@ private:
         const auto rr = (rhs.upper() - rhs.lower()) * 0.5; // radius of rhs
 
         const auto dr = rr - lr; // radius difference
-        const auto dc = abs(this->restrict_direction(lc - rc)); // distance between centers
+        // distance between centers
+        const auto dc = ecell4::abs(this->restrict_direction(rc, lc));
 
+        const auto& edges = this->edge_lengths();
         // if the radius (of the right hand side) is larger than the half width,
         // that means that the right hand side wraps the whole world.
-        return ((dc[0] - dr[0]) <= tol || (edge_lengths_[0] * 0.5 <= rr[0])) &&
-               ((dc[1] - dr[1]) <= tol || (edge_lengths_[1] * 0.5 <= rr[1])) &&
-               ((dc[2] - dr[2]) <= tol || (edge_lengths_[2] * 0.5 <= rr[2]));
+        return ((dc[0] - dr[0]) <= tol || (edges[0] * 0.5 <= rr[0])) &&
+               ((dc[1] - dr[1]) <= tol || (edges[1] * 0.5 <= rr[1])) &&
+               ((dc[2] - dr[2]) <= tol || (edges[2] * 0.5 <= rr[2]));
     }
 
     bool is_inside_of_boundary(const Real3 r, const Real tol = 1e-8) const noexcept
     {
-        const auto rel_tol = edge_lengths_ * tol;
-        if(r[0] < -rel_tol[0] || edge_lengths_[0] + rel_tol[0] < r[0]) {return false;}
-        if(r[1] < -rel_tol[1] || edge_lengths_[1] + rel_tol[1] < r[1]) {return false;}
-        if(r[2] < -rel_tol[2] || edge_lengths_[2] + rel_tol[2] < r[2]) {return false;}
+        const auto& edges = this->edge_lengths();
+        const auto rel_tol = edges * tol;
+        if(r[0] < -rel_tol[0] || edges[0] + rel_tol[0] < r[0]) {return false;}
+        if(r[1] < -rel_tol[1] || edges[1] + rel_tol[1] < r[1]) {return false;}
+        if(r[2] < -rel_tol[2] || edges[2] + rel_tol[2] < r[2]) {return false;}
         return true;
     }
 
-    Real3 restrict_position(Real3 r) const noexcept
+    Real3 restrict_direction(const Real3& from, const Real3& to) const noexcept
     {
-        return modulo(r, edge_lengths_);
-    }
-    Real3 restrict_direction(Real3 dr) const noexcept
-    {
-        // Assuming that ...
-        //  - dr = r1 - r2
-        //  - Both r1 and r2 are inside of the boundary.
-        const auto halfw = edge_lengths_ * 0.5;
-        if     (   dr[0] < -halfw[0]) {dr[0] += edge_lengths_[0];}
-        else if(halfw[0] <=    dr[0]) {dr[0] -= edge_lengths_[0];}
-        if     (   dr[1] < -halfw[1]) {dr[1] += edge_lengths_[1];}
-        else if(halfw[1] <=    dr[1]) {dr[1] -= edge_lengths_[1];}
-        if     (   dr[2] < -halfw[2]) {dr[2] += edge_lengths_[2];}
-        else if(halfw[2] <=    dr[2]) {dr[2] -= edge_lengths_[2];}
-        return dr;
+        return boundary_.periodic_transpose(to, from) - from;
     }
 
 private:
 
     std::size_t           root_;                // index of the root node.
     Real                  margin_;              // margin of the Box.
-    Real3                 edge_lengths_;        // (Lx, Ly, Lz) of PBC.
+    PeriodicBoundary      boundary_;            // boundary condition.
     tree_type             tree_;                // vector of nodes.
     container_type        container_;           // vector of Objects.
     key_to_value_map_type rmap_;                // map from ObjectID to index

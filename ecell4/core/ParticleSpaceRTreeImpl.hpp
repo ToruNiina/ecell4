@@ -32,7 +32,8 @@ public:
         }
     };
 
-    using base_type  = ParticleSpace;
+    using base_type     = ParticleSpace;
+    using boundary_type = PeriodicBoundary;
     using rtree_type = PeriodicRTree<ParticleID, Particle, ParticleAABBGetter>;
     using box_type                = typename rtree_type::box_type;
     using value_type              = typename rtree_type::value_type;
@@ -56,7 +57,7 @@ public:
     // the default value of margin should be tuned later.
     explicit ParticleSpaceRTreeImpl(const Real3& edge_lengths,
                                     const Real margin = 0.1)
-        : base_type(), rtree_(edge_lengths, margin)
+        : base_type(), boundary_(edge_lengths), rtree_(boundary_, margin)
     {}
 
     void reset(const Real3& edge_lengths);
@@ -77,22 +78,12 @@ public:
 
     const Real3& edge_lengths() const override
     {
-        return rtree_.edge_lengths();
+        return boundary_.edge_lengths();
     }
 
     const particle_container_type& particles() const override
     {
-        // Since PeriodicRTree manages particles as their index, the container
-        // can occasionally contains "already-erased" particles marked as
-        // "overwritable", like a colony (P0447R1). Because of this, the raw
-        // reference may contain an invalid particle that is already removed
-        // from the space. It may invalidates subsequent operation.
-        //     To avoid confusion, this method throws an exception. This will
-        // never be implemented, so it throws a `NotSupported`, not a
-        // `NotImplemented`. Since the default implementation of `list_species()`
-        // uses this function, it is overriden later.
-        throw NotSupported("ParticleSpaceRTreeImpl does not support "
-                           "`particle_container_type const& particles()`");
+        return rtree_.list_objects();
     }
 
     // ParticleSpace has the default list_species implementation.
@@ -258,13 +249,13 @@ protected:
         // If it does not matches, return boost::none.
         // If it matches, return pairof(pidp, distance).
         boost::optional<std::pair<value_type, Real>>
-        operator()(const value_type& pidp, const Real3& edges) const noexcept
+        operator()(const value_type& pidp, const boundary_type& boundary) const noexcept
         {
             if(ignores(pidp)){return boost::none;}
 
-            // use the same algorithm as the ParticleSpaceVectorImpl.
-            const auto rhs = this->periodic_transpose(pidp.second.position(),
-                                                      this->center, edges);
+            const auto rhs = boundary.periodic_transpose(
+                    pidp.second.position(), this->center);
+
             const auto dist = length(this->center - rhs) - pidp.second.radius();
             if(dist <= this->radius)
             {
@@ -273,19 +264,19 @@ protected:
             return boost::none;
         }
 
-        bool operator()(const AABB& box, const Real3& edges) const noexcept
+        bool operator()(const AABB& box, const boundary_type& boundary) const noexcept
         {
-            return this->distance_sq(box, this->center, edges) <=
+            return this->distance_sq(box, this->center, boundary) <=
                    this->radius * this->radius;
         }
 
         // -------------------------------------------------------------------
         // geometry stuffs
 
-        // AABB-sphere intersection query under the PBC
-        Real distance_sq(const AABB& box, Real3 pos, const Real3& edge_lengths) const noexcept
+        // point-sphere distance
+        Real distance_sq(const AABB& box, Real3 pos, const boundary_type& boundary) const noexcept
         {
-            pos = periodic_transpose(pos, (box.upper() + box.lower()) * 0.5, edge_lengths);
+            pos = boundary.periodic_transpose(pos, (box.upper() + box.lower()) * 0.5);
 
             Real dist_sq = 0;
             for(std::size_t i=0; i<3; ++i)
@@ -302,28 +293,6 @@ protected:
             }
             return dist_sq;
         }
-
-        // transpose a position based on the periodic boundary condition.
-        Real3 periodic_transpose(
-            const Real3& pos1, const Real3& pos2, const Real3& edges) const
-        {
-            Real3 retval(pos1);
-            for(std::size_t dim(0); dim < 3; ++dim)
-            {
-                const Real edge_length(edges[dim]);
-                const Real diff(pos2[dim] - pos1[dim]), half(edge_length * 0.5);
-
-                if (half < diff)
-                {
-                    retval[dim] += edge_length;
-                }
-                else if (diff < -half)
-                {
-                    retval[dim] -= edge_length;
-                }
-            }
-            return retval;
-        }
     };
 
     template<typename Filter>
@@ -335,6 +304,7 @@ protected:
 
 protected:
 
+    boundary_type               boundary_;
     rtree_type                  rtree_;
     per_species_particle_id_set particle_pool_;
 };
