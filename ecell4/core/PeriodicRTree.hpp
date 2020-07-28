@@ -1389,9 +1389,9 @@ private:
         const auto dc = ecell4::abs(this->restrict_direction(lc - rc));
 
         // if they are close along all the axes, they intersects each other.
-        return ((dc[0] - r2[0]) <= tol) &&
-               ((dc[1] - r2[1]) <= tol) &&
-               ((dc[2] - r2[2]) <= tol);
+        return ((dc[0] - r2[0]) <= r2[0] * tol) &&
+               ((dc[1] - r2[1]) <= r2[1] * tol) &&
+               ((dc[2] - r2[2]) <= r2[2] * tol);
     }
 
     // if lhs is inside of rhs, return true.
