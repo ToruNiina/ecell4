@@ -1,3 +1,4 @@
+#ifdef WITH_HDF5
 #include <ecell4/core/PolygonHDF5Writer.hpp>
 #include <ecell4/core/Polygon.hpp>
 
@@ -140,3 +141,4 @@ void load_polygon_hdf5(const H5::Group& root, Polygon* p)
 }
 
 } // ecell4
+#endif
