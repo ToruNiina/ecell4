@@ -1086,6 +1086,8 @@ private:
                 this->root_ = node.inode_entry().front();
                 this->erase_node(N);
                 assert(!this->is_valid_node_index(N));
+                // overwrite parent node index with nil because now it's the root.
+                this->node_at(this->root_).parent = nil;
                 return;
             }
             // if we hit the root, then everything is done.
