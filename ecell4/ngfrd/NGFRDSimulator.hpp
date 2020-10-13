@@ -146,12 +146,14 @@ public:
                 continue;
             }
             this->burst_domain(did, dom);
+            assert(this->diagnosis());
         }
 
         // then burst non-single domains
         for(const auto& did : non_singles)
         {
             this->burst_domain(did, this->get_domain(did));
+            assert(this->diagnosis());
         }
         this->dt_ = 0.0;
         this->is_uninitialized_ = true;
@@ -187,6 +189,11 @@ public:
     {
         // XXX: currently, all the domains are multi.
         return false;
+    }
+
+    bool diagnosis() const
+    {
+        return shells_.diagnosis();
     }
 
 private:
@@ -300,6 +307,8 @@ private:
         // step until this->t()
         const auto dt = this->t() - dom.begin_time();
         dom.step(*(this->model_), *this, *(this->world_), dt);
+
+        assert(shells_.diagnosis()); // XXX
 
         // remove shells
         for(const auto& sidp : dom.shells())

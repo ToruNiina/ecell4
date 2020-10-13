@@ -48,15 +48,16 @@ int main()
     const ecell4::Real dt(1e-2);
     for(std::size_t i=1; i<100; ++i)
     {
+        sim.initialize();
         while(sim.next_event_time() <= i * dt)
         {
             std::cout << "t = " << world->t() << std::endl;
             sim.step();
         }
         assert(sim.next_event_time() > i * dt);
+        sim.diagnosis();
         sim.finalize();
         snapshot_output(traj, world);
-        sim.initialize();
     }
 
     return 0;
