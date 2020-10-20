@@ -71,15 +71,18 @@ class SingleSphericalPropagator
     reaction(const SingleSphericalDomain& dom);
 
     boost::container::static_vector<ParticleID, 2>
-    attempt_1to1_reaction(const SingleSphericalDomain& dom, const ReactionRule& rule);
+    attempt_1to1_reaction(const SingleSphericalDomain& dom,
+            const ParticleID&, const Particle&, const ReactionRule& rule);
     boost::container::static_vector<ParticleID, 2>
-    attempt_1to2_reaction(const SingleSphericalDomain& dom, const ReactionRule& rule);
+    attempt_1to2_reaction(const SingleSphericalDomain& dom,
+            const ParticleID&, const Particle&, const ReactionRule& rule);
 
     ParticleID propagate(const SingleSphericalDomain& dom, const Real dt);
 
     ReactionRule const& determine_reaction_rule(const Species& sp, const Real rnd);
 
-    bool is_inside_of_shell(const SingleSphericalDomain& dom, const Particle& p);
+    bool is_inside_of_shell(const SingleSphericalDomain& dom,
+                            const Real3& center, const Real radius);
 
   private:
 

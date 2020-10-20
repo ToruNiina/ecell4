@@ -1,4 +1,5 @@
 #include <ecell4/core/exceptions.hpp>
+#include <ecell4/ngfrd/BDMath.hpp>
 #include <ecell4/ngfrd/SingleSphericalPropagator.hpp>
 #include <ecell4/ngfrd/NGFRDSimulator.hpp>
 #include <ecell4/ngfrd/Logger.hpp>
@@ -8,6 +9,7 @@
 #include <boost/math/constants/constants.hpp>
 #include <boost/math/special_functions/erf.hpp>
 #include <boost/math/tools/roots.hpp>
+#include <numeric>
 
 namespace ecell4
 {
@@ -23,11 +25,11 @@ SingleSphericalPropagator::escape(const SingleSphericalDomain& dom)
     assert( ! world_.on_which_face(pid));
     Particle p = world_.get_particle(pid).second;
 
-    const Real R = shell_.shape().radius() - p.radius();
+    const Real R = dom.shell().shape().radius() - p.radius();
     p.position() = world_.boundary().apply_boundary(
-        sh.shape().center() + rng_.direction3d(R));
+        dom.shell().shape().center() + rng_.direction3d(R));
 
-    world_.update_particle(pid, p);
+    world_.update_particle_3D(pid, p);
 
     return boost::container::static_vector<ParticleID, 2>{pid};
 }
@@ -37,7 +39,7 @@ SingleSphericalPropagator::reaction(const SingleSphericalDomain& dom)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
     // move particle and update world
-    this->propagate(dom, this->domain_.dt());
+    this->propagate(dom, dom.dt());
 
     // fetch propagated particle positions
     const auto pid   = dom.particle_id();
@@ -64,7 +66,7 @@ SingleSphericalPropagator::reaction(const SingleSphericalDomain& dom)
         }
         default:
         {
-            format_throw<NotSupported>("invalid number of products");
+            throw_exception<NotSupported>("invalid number of products");
         }
     }
 }
@@ -87,7 +89,8 @@ SingleSphericalPropagator::attempt_1to1_reaction(const SingleSphericalDomain& do
     {
         if(world_.has_overlapping_faces(newp.position(), radius_new))
         {
-            return false;
+            this->rejected_move_count_ += 1;
+            return boost::container::static_vector<ParticleID, 2>{pid};
         }
         // determine positions of particles in overlapping domains
         sim_.determine_positions_3D(newp.position(), radius_new);
@@ -96,7 +99,8 @@ SingleSphericalPropagator::attempt_1to1_reaction(const SingleSphericalDomain& do
         if(world_.has_overlapping_particles_3D(
                     newp.position(), radius_new, /*ignore = */ pid))
         {
-            return false;
+            this->rejected_move_count_ += 1;
+            return boost::container::static_vector<ParticleID, 2>{pid};
         }
     }
 
@@ -139,28 +143,15 @@ SingleSphericalPropagator::attempt_1to2_reaction(const SingleSphericalDomain& do
     Real3 pos2_new(p.position());
 
     const Real separation_length = r12 * NGFRDSimulator::SAFETY; // = 1+epsilon
-
-    // XXX Since single shell considers only the radius of reactant, not the
-    //     products. The radius of products could be larger than that of
-    //     reactant, they may stick out of the shell and overlaps with other
-    //     particles or faces.
-    //         To make checking easier, we first determine particles around the
-    //     reacting volume which is a sphere centering at p.position(), and its
-    //     radius is separation_length.
-    //         It rarely bursts other domains.
-    if(this->is_inside_of_shell(dom, p.position(), separation_length))
-    {
-        // if reacting volume sticks out of the shell, the products may also
-        // stick out of the shell.
-        sim_.determine_positions_3D(p.position(), separation_length);
-    }
-
     std::size_t separation_count = 1 + max_retry_count_;
     while(separation_count != 0)
     {
         --separation_count;
 
-        const Real3 ipv = draw_ipv_3D(separation_length, dt_, D12);
+        const Real R = bd_math::drawR_gbd_3D(separation_length, dom.dt(), D12,
+                                             rng_.uniform(0.0, 1.0));
+        const Real3 ipv = rng_.direction3d(R);
+
         Real3 disp1 = ipv * (D1 / D12);
         Real3 disp2 = disp1 - ipv; // disp1 + (-disp2) = ipv
 
@@ -174,7 +165,15 @@ SingleSphericalPropagator::attempt_1to2_reaction(const SingleSphericalDomain& do
             continue;
         }
 
-        // we already bursted other domains that might overlaps with them.
+        // burst domains around the reactants.
+        if(this->is_inside_of_shell(dom, pos1_new, r1))
+        {
+            sim_.determine_positions_3D(pos1_new, r1);
+        }
+        if(this->is_inside_of_shell(dom, pos2_new, r2))
+        {
+            sim_.determine_positions_3D(pos2_new, r2);
+        }
 
         if(world_.has_overlapping_faces(pos1_new, r1) ||
            world_.has_overlapping_faces(pos2_new, r2))
@@ -191,7 +190,7 @@ SingleSphericalPropagator::attempt_1to2_reaction(const SingleSphericalDomain& do
     {
         // could not find an appropreate configuration in max_retry_count_.
         this->rejected_move_count_ += 1;
-        return false;
+        return boost::container::static_vector<ParticleID, 2>{pid};
     }
 
     Particle p1_new(sp1, pos1_new, r1, D1);
@@ -204,7 +203,6 @@ SingleSphericalPropagator::attempt_1to2_reaction(const SingleSphericalDomain& do
     assert(result2.second); // should succeed
 
     const auto pid2 = result2.first.first;
-    this->particles_.push_back(pid2);
 
     last_reactions_.emplace_back(rule, make_unbinding_reaction_info(world_.t(),
                 pid, p, pid, p1_new, pid2, p2_new));
@@ -216,7 +214,8 @@ SingleSphericalPropagator::attempt_1to2_reaction(const SingleSphericalDomain& do
 // Since proapgate is called only when burst is called, no reaction happens.
 // Also, SingleSphericalDomain is formed avoiding collision, no collision happens.
 //
-ParticleID SingleSphericalPropagator::propagate(const SingleSphericalDomain& dom)
+ParticleID SingleSphericalPropagator::propagate(
+        const SingleSphericalDomain& dom, const Real dt)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
 
@@ -226,18 +225,18 @@ ParticleID SingleSphericalPropagator::propagate(const SingleSphericalDomain& dom
     Particle p = world_.get_particle(pid).second;
 
     const auto& gf = dom.gf();
-    const Real R = gf.drawR(rng_.uniform(0.0, 1.0));
+    const Real R = gf.drawR(rng_.uniform(0.0, 1.0), dt);
     p.position() = world_.boundary().apply_boundary(
-        sh.shape().center() + rng_.direction3d(R));
+        dom.shell().shape().center() + rng_.direction3d(R));
 
-    world_.update_particle(pid, p);
+    world_.update_particle_3D(pid, p);
     return pid;
 }
 
 ReactionRule const& SingleSphericalPropagator::determine_reaction_rule(
         const Species& sp, const Real rnd)
 {
-    const auto rules = this->model_.query_reaction_rules(p.species());
+    const auto rules = this->model_.query_reaction_rules(sp);
     assert(!rules.empty());
 
     if(rules.size() == 1)
@@ -268,8 +267,8 @@ bool SingleSphericalPropagator::is_inside_of_shell(
         const SingleSphericalDomain& dom, const Real3& center, const Real radius)
 {
     const auto b  = this->world_.boundary();
-    const Real threshold = dom.shape().radius() - radius;
-    const auto dr = b.periodic_transpose(dom.shape().center(), center) - center;
+    const Real threshold = dom.shell().shape().radius() - radius;
+    const auto dr = b.periodic_transpose(dom.shell().shape().center(), center) - center;
     return length_sq(dr) < (threshold * threshold);
 }
 
