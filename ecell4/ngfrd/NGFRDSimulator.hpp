@@ -310,6 +310,9 @@ private:
 
         assert(shells_.diagnosis()); // XXX
 
+        // The multi is going to be bursted, so we don't need to check if
+        // any reaction or escape happened.
+
         // remove shells
         for(const auto& sidp : dom.shells())
         {

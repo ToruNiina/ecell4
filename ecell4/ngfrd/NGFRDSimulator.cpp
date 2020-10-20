@@ -329,7 +329,8 @@ NGFRDSimulator::fire_multi(const DomainID& did, MultiDomain dom)
 
         return {/* All particles are re-inserted as Multi! */};
     }
-    // something happens. remove multi and assign domains for each particles.
+    // something happens. remove multi and return resulting particles
+    // to re-wrap the particles by new domain
 
     // remove shells
     for(const auto& sidp : dom.shells())
@@ -338,6 +339,7 @@ NGFRDSimulator::fire_multi(const DomainID& did, MultiDomain dom)
         this->shells_.remove_shell(sidp.first);
     }
 
+    // collect resulting particles
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4> retval;
     for(const auto& pid : dom.particle_ids())
     {
