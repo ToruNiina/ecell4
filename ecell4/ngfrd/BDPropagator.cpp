@@ -663,6 +663,9 @@ bool BDPropagator::attempt_1to2_reaction_3D(
             continue;
         }
 
+        // XXX Here, it roughly checks if the configuration seems to be okay.
+        //     Later we will rigorously check the overlaps.
+
         if(world_.has_overlapping_faces(pos1_new, r1) ||
            world_.has_overlapping_faces(pos2_new, r2))
         {
