@@ -1,7 +1,9 @@
 #ifndef ECELL4_NGFRD_SINGLE_SPHERICAL_DOMAIN_HPP
 #define ECELL4_NGFRD_SINGLE_SPHERICAL_DOMAIN_HPP
-#include <ecell4/ngfrd/ShellID.hpp>
 #include <ecell4/core/Identifier.hpp>
+#include <ecell4/core/Particle.hpp>
+#include <ecell4/ngfrd/ShellID.hpp>
+#include <ecell4/ngfrd/Shell.hpp>
 #include <greens_functions/GreensFunctions3DAbsSym.hpp>
 #include <cstdint>
 
@@ -20,22 +22,23 @@ class SingleSphericalDomain
         Reaction,
         Unknown,
     };
-    using shell_id_type    = ShellID;
-    using particle_id_type = ParticleID;
 
   public:
 
-    SingleSphericalDomain(): kind_(EventKind::Unknown), dt_(0.), begin_time_(0.){}
-    SingleSphericalDomain(const EventKind kind, const Real dt, const Real begin,
-                          const shell_id_type shid, const particle_id_type& pid,
-                          const Real D, const Real effective_radius)
-        : kind_(kind), dt_(dt), begin_time_(begin),
-          shell_id_(shid), particle_id_(pid), gf_(D, effective_radius)
+    SingleSphericalDomain()
+        : kind_(EventKind::Unknown), dt_(0.0), begin_time_(0.0)
+    {}
+    SingleSphericalDomain(
+            const EventKind kind, const Real   dt, const Real        begin,
+            const ShellID&  shid, const Shell& sh, const ParticleID& pid,
+            const Real D, const Real effective_radius)
+        : kind_(kind), dt_(dt), begin_time_(begin), shell_id_(shid), shell_(sh),
+          particle_id_(pid), gf_(D, effective_radius)
     {}
     ~SingleDomain() = default;
 
-    shell_id_type&       shell_id()       noexcept {return shell_id_;}
-    shell_id_type const& shell_id() const noexcept {return shell_id_;}
+    ShellID&          shell_id()       noexcept {return shell_id_;}
+    ShellID const&    shell_id() const noexcept {return shell_id_;}
     ParticleID&       particle_id()       noexcept {return particle_id_;}
     ParticleID const& particle_id() const noexcept {return particle_id_;}
 
@@ -55,11 +58,12 @@ class SingleSphericalDomain
 
   private:
 
-    EventKind kind_;
-    Real dt_;
-    Real begin_time_;
-    shell_id_type    shell_id_;
-    particle_id_type particle_id_;
+    EventKind      kind_;
+    Real           dt_;
+    Real           begin_time_;
+    ShellID        shell_id_;
+    SphericalShell shell_;
+    ParticleID     particle_id_;
     GreensFunctions3DAbsSym gf_;
 };
 
