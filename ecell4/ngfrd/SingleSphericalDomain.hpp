@@ -1,7 +1,8 @@
-#ifndef ECELL4_NGFRD_SINGLE_DOMAIN
-#define ECELL4_NGFRD_SINGLE_DOMAIN
+#ifndef ECELL4_NGFRD_SINGLE_SPHERICAL_DOMAIN_HPP
+#define ECELL4_NGFRD_SINGLE_SPHERICAL_DOMAIN_HPP
 #include <ecell4/ngfrd/ShellID.hpp>
 #include <ecell4/core/Identifier.hpp>
+#include <greens_functions/GreensFunctions3DAbsSym.hpp>
 #include <cstdint>
 
 namespace ecell4
@@ -9,10 +10,10 @@ namespace ecell4
 namespace ngfrd
 {
 
-class SingleDomain
+// 3D, spherical shell
+class SingleSphericalDomain
 {
   public:
-
     enum class EventKind : std::uint8_t
     {
         Escape,
@@ -24,11 +25,12 @@ class SingleDomain
 
   public:
 
-    SingleDomain(): kind_(EventKind::Unknown), dt_(0.), begin_time_(0.){}
-    SingleDomain(const EventKind kind, const Real dt, const Real begin_time,
-           const shell_id_type shid, const particle_id_type& pid)
-        : kind_(kind), dt_(dt), begin_time_(begin_time),
-          shell_id_(shid), particle_id_(pid)
+    SingleSphericalDomain(): kind_(EventKind::Unknown), dt_(0.), begin_time_(0.){}
+    SingleSphericalDomain(const EventKind kind, const Real dt, const Real begin,
+                          const shell_id_type shid, const particle_id_type& pid,
+                          const Real D, const Real effective_radius)
+        : kind_(kind), dt_(dt), begin_time_(begin),
+          shell_id_(shid), particle_id_(pid), gf_(D, effective_radius)
     {}
     ~SingleDomain() = default;
 
@@ -45,6 +47,9 @@ class SingleDomain
     EventKind  eventkind() const {return kind_;}
     EventKind& eventkind()       {return kind_;}
 
+    GreensFunctions3DAbsSym const& gf() const noexcept {return gf_;}
+    GreensFunctions3DAbsSym&       gf()       noexcept {return gf_;}
+
     constexpr std::size_t num_shells()   const noexcept {return 1;}
     constexpr std::size_t multiplicity() const noexcept {return 1;}
 
@@ -55,8 +60,9 @@ class SingleDomain
     Real begin_time_;
     shell_id_type    shell_id_;
     particle_id_type particle_id_;
+    GreensFunctions3DAbsSym gf_;
 };
 
-} // sgfrd
+} // ngfrd
 } // ecell4
-#endif /* ECELL4_SGFRD_SINGLE_DOMAIN */
+#endif /* ECELL4_NGFRD_SINGLE_SPHERICAL_DOMAIN_HPP */
