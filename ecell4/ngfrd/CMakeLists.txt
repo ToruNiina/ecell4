@@ -1,8 +1,10 @@
 # file(GLOB CPP_FILES *.cpp)
 set(CPP_FILES
+    BDMath.cpp
     BDPropagator.cpp
     MultiDomain.cpp
     NGFRDSimulator.cpp
+    SingleSphericalPropagator.cpp
 )
 
 add_definitions(-DECELL4_NGFRD_LOG_DEBUG)

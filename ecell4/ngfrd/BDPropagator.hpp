@@ -8,6 +8,7 @@
 #include <ecell4/ngfrd/Shell.hpp>
 #include <ecell4/ngfrd/NGFRDWorld.hpp>
 #include <ecell4/ngfrd/Logger.hpp>
+#include <ecell4/ngfrd/BDMath.hpp>
 
 #include <greens_functions/freeFunctions.hpp>
 #include <boost/math/constants/constants.hpp>
@@ -18,12 +19,6 @@ namespace ecell4
 {
 namespace ngfrd
 {
-
-// determine the distance between particles that are dissociated from each other
-namespace bd_math
-{
-Real drawR_gbd_3D(const Real sigma, const Real t, const Real D, const Real rnd) noexcept;
-} // bd_math
 
 class NGFRDSimulator; // forward
 
