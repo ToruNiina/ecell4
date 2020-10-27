@@ -11,6 +11,8 @@ constexpr Real NGFRDSimulator::MULTI_SHELL_FACTOR;
 constexpr Real NGFRDSimulator::DEFAULT_DT_FACTOR;
 constexpr Real NGFRDSimulator::CUTOFF_FACTOR;
 
+constexpr std::size_t NGFRDSimulator::SINGLE_SPHERICAL_MAX_RETRY;
+
 void NGFRDSimulator::form_domain_2D(
         const ParticleID& pid, const Particle& p, const FaceID& fid)
 {
@@ -143,7 +145,6 @@ void NGFRDSimulator::form_domain_2D(
 void NGFRDSimulator::form_domain_3D(const ParticleID& pid, const Particle& p)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
-    // TODO: Currently we always form a multi domain.
     ECELL4_NGFRD_LOG("form_domain_3D: forming domain for particle ", pid);
 
     // -----------------------------------------------------------------------
@@ -348,7 +349,7 @@ NGFRDSimulator::fire_single_spherical(const DomainID& did, SingleSphericalDomain
     std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
     SingleSphericalPropagator prop(
             did, *(this->model_), *(this->world_), *this,
-            *(this->world_->rng()), SINGLE_3D_MAX_RETRY, last_reactions);
+            *(this->world_->rng()), SINGLE_SPHERICAL_MAX_RETRY, last_reactions);
 
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4> results;
     for(const auto& pid : prop(dom))

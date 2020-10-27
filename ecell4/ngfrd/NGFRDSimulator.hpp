@@ -43,8 +43,7 @@ public:
     static constexpr Real DEFAULT_DT_FACTOR   = 1e-5;
     static constexpr Real CUTOFF_FACTOR       = 5.6;
 
-    static constexpr std::size_t SINGLE_3D_MAX_RETRY = 4;
-
+    static constexpr std::size_t SINGLE_SPHERICAL_MAX_RETRY = 4;
 
 public:
 
