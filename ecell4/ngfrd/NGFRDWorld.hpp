@@ -172,7 +172,7 @@ public:
     bool update_particle_3D(const ParticleID& pid, const Particle& p)
     {
         if( ! has_overlapping_faces(p.position(), p.radius()) &&
-           list_particles_within_radius_3D(p.position(), p.radius()).empty())
+            ! has_overlapping_particles_3D(p.position(), p.radius(), pid))
         {
             // if `pid` already exists and was a 2D particle, we need to reset
             // the relationship.
@@ -192,7 +192,7 @@ public:
                             const FaceID& fid)
     {
         if(this->list_particles_within_radius_2D(
-                    std::make_pair(p.position(), fid), p.radius()).empty())
+                    std::make_pair(p.position(), fid), p.radius(), pid).empty())
         {
             this->poly_con_.update(pid, fid);
             return this->ps_->update_particle(pid, p);
@@ -319,11 +319,11 @@ public:
     std::vector<std::pair<std::pair<ParticleID, Particle>, Real>>
     list_particles_within_radius_2D(
             const std::pair<Real3, FaceID>& center, const Real radius,
-            const ParticleID& ignore) const
+            const ParticleID& ign) const
     {
         return this->list_particles_within_radius_2D_impl(center, radius,
-                [&ignore](const ParticleID& pid) noexcept -> bool {
-                    return pid == ignore;
+                [&ign](const ParticleID& pid) noexcept -> bool {
+                    return pid == ign;
                 });
     }
     std::vector<std::pair<std::pair<ParticleID, Particle>, Real>>
@@ -649,6 +649,8 @@ private:
         {
             for(const auto& pid : *particles)
             {
+                if(filter(pid)) {continue;}
+
                 auto pp = ps_->get_particle(pid);
                 // it is okay to use 3D distance because both are on the same face
                 const Real dist = length(pos - pp.second.position()) -
@@ -667,6 +669,8 @@ private:
             {
                 for(const auto& pid : *particles)
                 {
+                    if(filter(pid)) {continue;}
+
                     auto pp = ps_->get_particle(pid);
                     const Real dist = ecell4::polygon::distance(*polygon_,
                         center, std::make_pair(pp.second.position(), nfid)
