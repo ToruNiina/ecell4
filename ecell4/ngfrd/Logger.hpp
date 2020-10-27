@@ -23,8 +23,8 @@ namespace logger_detail
 {
 template<typename T, typename Alloc>
 std::ostream& operator<<(std::ostream& os, const std::vector<T, Alloc>& v);
-template<typename T, std::size_t N, typename Alloc, typename Options>
-std::ostream& operator<<(std::ostream& os, const boost::container::small_vector<T, N, Alloc, Options>& v);
+template<typename T, std::size_t N, typename Alloc, typename ...Options>
+std::ostream& operator<<(std::ostream& os, const boost::container::small_vector<T, N, Alloc, Options...>& v);
 template<typename T, typename U>
 std::ostream& operator<<(std::ostream& os, const std::pair<T, U>& p);
 
@@ -41,9 +41,9 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T, Alloc>& v)
     os << "]";
     return os;
 }
-template<typename T, std::size_t N, typename Alloc, typename Options>
+template<typename T, std::size_t N, typename Alloc, typename ... Options>
 std::ostream& operator<<(std::ostream& os,
-           const boost::container::small_vector<T, N, Alloc, Options>& v)
+           const boost::container::small_vector<T, N, Alloc, Options...>& v)
 {
     os << "\"boost::small_vector<" << utils::type_name_of<T>::value() << ", " << N << ">\":[";
     for(std::size_t i=0; i<v.size(); ++i)
