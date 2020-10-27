@@ -15,13 +15,16 @@ namespace ngfrd
 void BDPropagator::propagate_2D_particle(
         const ParticleID& pid, Particle p, FaceID fid)
 {
+    ECELL4_NGFRD_LOG_FUNCTION();
     if(attempt_single_reaction_2D(pid, p, fid))
     {
-        return; // reaction happened. done.
+        ECELL4_NGFRD_LOG("single reaction happened. done.");
+        return;
     }
     if(p.D() == Real(0.0))
     {
-        return; // particle does not move. done.
+        ECELL4_NGFRD_LOG("diffusion coefficient is zero. no move.");
+        return;
     }
 
     const auto prev_pos = std::make_pair(p.position(), fid);
@@ -29,20 +32,14 @@ void BDPropagator::propagate_2D_particle(
     auto disp    = this->draw_2D_displacement(p, fid);
     auto new_pos = ecell4::polygon::travel(world_.polygon(), prev_pos, disp);
 
+    ECELL4_NGFRD_LOG("displacement = ", disp);
+
     if(not is_inside_of_shells_2D(new_pos, p.radius()))
     {
+        ECELL4_NGFRD_LOG("new position is not inside of the domain.");
+        ECELL4_NGFRD_LOG("bursting other domains that overlaps with this.");
         // determine positions of particles in overlapping shells.
         sim_.determine_positions_2D(new_pos, p.radius());
-
-        if(world_.has_overlapping_particles_2D(new_pos, p.radius(), pid))
-        {
-            // if overlap exists, the movement would be rejected.
-
-            // XXX this includes the case where the particle collides with a
-            //     particle in a multi shell, not a particle at outside...
-            ++rejected_move_count_;
-            return;
-        }
     }
 
     // collect particles within reactive range
@@ -62,6 +59,7 @@ void BDPropagator::propagate_2D_particle(
 
     if(not core_overlapped)
     {
+        ECELL4_NGFRD_LOG("there is no core-overlap. applying displacement");
         // movement accepted. update the position.
         p.position() = new_pos.first;
         fid          = new_pos.second;
@@ -69,12 +67,14 @@ void BDPropagator::propagate_2D_particle(
     }
     else // core overlap
     {
+        ECELL4_NGFRD_LOG("there is a core-overlap. discarding displacement");
         // reject this displacement. But still, it can attempt pair reaction
         // if there is a reactive partner around the original position.
 
         // Update overlapping particles with the previous position.
         overlapped = world_.list_particles_within_radius_2D(
             prev_pos, p.radius() + reaction_length_, /*ignore = */ pid);
+        rejected_move_count_ += 1;
     }
 
     if(overlapped.empty())
@@ -388,7 +388,7 @@ bool BDPropagator::attempt_pair_reaction_2D(
             case 1:
             {
                 const auto fid2 = world_.on_which_face(pid2);
-                assert(fid2.has_value());
+                assert(fid2);
 
                 return attempt_2to1_reaction_2D(pid, p, fid, pid2, p2, *fid2, rule);
             }
