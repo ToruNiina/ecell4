@@ -178,19 +178,35 @@ public:
 
     // shrink domains that overlap with the sphere centered at pos with radius.
     // Multi domains are kept intact.
-    // If it successfully shrink everything, returns true. If it encounters
-    // multi, returns false.
-    bool determine_positions_3D(const Real3& pos, const Real radius)
+    void determine_positions_3D(const Real3& pos, const Real radius)
     {
-        // XXX: currently, all the domains are multi.
-        return false;
+        this->determine_positions_3D_impl(pos, radius,
+                [](const DomainID&){return false;});
+        return;
     }
-    bool determine_positions_2D(const std::pair<Real3, FaceID>& pos, const Real radius)
+    void determine_positions_3D(const Real3& pos, const Real radius,
+                                const DomainID& ignored)
     {
-        // XXX: currently, all the domains are multi.
-        return false;
+        this->determine_positions_3D_impl(pos, radius,
+                [&](const DomainID& did){return did == ignored;});
+        return;
     }
 
+    void determine_positions_2D(const std::pair<Real3, FaceID>& pos,
+                                const Real radius)
+    {
+        // XXX: currently, all the domains are multi.
+        return;
+    }
+    void determine_positions_2D(const std::pair<Real3, FaceID>& pos,
+                                const Real radius, const DomainID& ignored)
+    {
+        // XXX: currently, all the domains are multi.
+        return;
+    }
+
+
+    // health check
     bool diagnosis() const
     {
         return shells_.diagnosis();
@@ -329,6 +345,71 @@ private:
     }
 
     Polygon const& polygon() const noexcept {return this->world_->polygon();}
+
+private:
+
+    // -----------------------------------------------------------------------
+    // determine_positions
+    // - It propagates domains until world_->t(), regardless of the original dt.
+    // - It automatically adds a new domain to the resulting particles.
+    //   - The original domain (that could be troublesome) is removed, and
+    //   - Newly formed (less trouble) domain is added
+    template<typename Filter>
+    void determine_positions_3D_impl(
+            const Real3& pos, const Real radius, Filter filter)
+    {
+        ECELL4_NGFRD_LOG_FUNCTION();
+
+        // fetch shells that overlaps with this region
+        boost::container::small_vector<DomainID, 8> dids;
+        for(const auto& shd : shells_.list_shells_within_radius_3D(pos, radius))
+        {
+            if(const auto did = shd.first.second.domain_id())
+            {
+                if(filter(*did)) {continue;}
+
+                if(std::find(dids.begin(), dids.end(), *did) != dids.end())
+                {
+                    continue; // already assigned. It may be Multi.
+                }
+                dids.push_back(*did);
+            }
+            else
+            {
+                throw_exception<IllegalState>("shell ", shd.first.first, ": ",
+                        shd.first.second, " does not know its own DomainID.");
+            }
+        }
+
+        // shrink all the domains that have listed
+        for(const auto& did : dids)
+        {
+            if(domains_.at(did).second.is_multi())
+            {
+                continue;
+            }
+            // burst the domain
+            // - propagate particle             via burst_domain()
+            // - remove shell  from shells_     via burst_domain()
+            // - remove domain from domains_    by myself
+            // - remove event  from scheduler_  by myself
+
+            const auto evid = this->domains_.at(did).first;
+            this->scheduler_.remove(evid);
+
+            auto dom = std::move(this->domains_.at(did).second);
+            this->domains_.erase(did);
+
+            const auto results = burst_domain(did, std::move(dom));
+
+            // re-wrap the particles by tight domains
+            for(const auto& pidp : results)
+            {
+                this->form_tight_domain_3D(pidp.first, pidp.second);
+            }
+        }
+        return;
+    }
 
 private:
 
