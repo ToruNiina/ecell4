@@ -1,3 +1,5 @@
+#include <ecell4/core/config.h>
+
 #ifdef WITH_HDF5
 #include <ecell4/core/PolygonHDF5Writer.hpp>
 #include <ecell4/core/Polygon.hpp>
