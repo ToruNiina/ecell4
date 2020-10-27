@@ -43,6 +43,9 @@ public:
     static constexpr Real DEFAULT_DT_FACTOR   = 1e-5;
     static constexpr Real CUTOFF_FACTOR       = 5.6;
 
+    static constexpr std::size_t SINGLE_3D_MAX_RETRY = 4;
+
+
 public:
 
     using base_type       = SimulatorBase<NGFRDWorld>;
@@ -76,6 +79,7 @@ public:
         domains_  .clear();
         shells_   .clear();
         shells_.reset_boundary(this->world_->edge_lengths());
+        last_reactions_.clear();
 
         // --------------------------------------------------------------------
         // form domain for all particles
@@ -88,6 +92,7 @@ public:
 
         // --------------------------------------------------------------------
         // form birth domain if needed
+
         // TODO!
 
         this->is_uninitialized_ = false;
@@ -133,28 +138,40 @@ public:
         std::vector<DomainID> non_singles;
 
         // Single does not stick out from shell when it is bursted.
+        // So burst single first.
+        // Events are cleared later, so we don't need to pop it in the loop
         for(const auto& eidp: scheduler_.events())
         {
             const auto& eid = eidp.first;
             const auto& ev  = eidp.second;
             const auto& did = ev->domain_id();
-            const auto& dom = this->get_domain(did);
 
-            if(dom.multiplicity() != 1)
+            if(!this->domains_.at(did).second.is_single_sphecal())
             {
                 non_singles.push_back(ev->domain_id());
                 continue;
             }
-            this->burst_domain(did, dom);
+
+            // move out the domain from domtain conteiner
+            auto dom = std::move(this->domains_.at(did).second);
+            this->domains_.erase(did); // remove the element from container
+
+            this->burst_domain(did, std::move(dom));
+
             assert(this->diagnosis());
         }
 
-        // then burst non-single domains
+        // then burst non-single domains.
         for(const auto& did : non_singles)
         {
-            this->burst_domain(did, this->get_domain(did));
+            auto dom = std::move(this->domains_.at(did).second);
+            this->domains_.erase(did);
+
+            this->burst_domain(did, std::move(dom));
             assert(this->diagnosis());
         }
+        assert(this->domains_.empty());
+
         this->dt_ = 0.0;
         this->is_uninitialized_ = true;
 
@@ -214,9 +231,6 @@ public:
 
 private:
 
-    Domain const& get_domain(const DomainID& did) const {return domains_.at(did).second;}
-    Domain&       get_domain(const DomainID& did)       {return domains_.at(did).second;}
-
     void step_unchecked()
     {
         ECELL4_NGFRD_LOG_FUNCTION();
@@ -250,6 +264,9 @@ private:
         return;
     }
 
+    // -----------------------------------------------------------------------
+    // form_domain
+
     void form_domain(const ParticleID& pid, const Particle& p)
     {
         if(const auto fid = this->world_->on_which_face(pid))
@@ -261,8 +278,17 @@ private:
             this->form_domain_3D(pid, p);
         }
     }
+
     void form_domain_2D(const ParticleID& pid, const Particle& p, const FaceID& fid);
     void form_domain_3D(const ParticleID& pid, const Particle& p);
+
+    void form_tight_domain_2D(const ParticleID& pid, const Particle& p, const FaceID& fid);
+    void form_tight_domain_3D(const ParticleID& pid, const Particle& p);
+
+    // -----------------------------------------------------------------------
+    // fire_event
+    // - it checks if domain knows its event
+    // - it moves out the domain from domain container
 
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
     fire_event(const NGFRDEvent& ev)
@@ -270,17 +296,26 @@ private:
         // pop domain from domains_ container
         auto didp_iter = domains_.find(ev.domain_id());
         assert(ev.domain_id() == didp_iter->first);
+
         auto dom = std::move(didp_iter->second);
         domains_.erase(didp_iter);
         return fire_domain(ev.domain_id(), std::move(dom.second));
     }
 
+    // fire_domain
+    // - propagates the particle
+    // - it removes shells if appropreate
+
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
     fire_domain(const DomainID& did, Domain dom)
     {
+        assert(domains_.count(did) == 0); // the domain is moved out from container
         switch(dom.kind())
         {
-            // TODO: add more
+            case Domain::DomainKind::SingleSpherical:
+            {
+                return this->fire_single_spherical(did, std::move(dom.as_single_spherical()));
+            }
             case Domain::DomainKind::Multi:
             {
                 return this->fire_multi(did, std::move(dom.as_multi()));
@@ -294,11 +329,22 @@ private:
     }
 
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
+    fire_single_spherical(const DomainID& did, SingleSphericalDomain dom);
+
+    boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
     fire_multi(const DomainID& did, MultiDomain dom);
+
+    // -----------------------------------------------------------------------
+    // burst_domain
+    // - It propagates domains until world_->t(), regardless of the original dt.
+    // - It returns the particles after propagation.
+    //   - We will keep it if this simulator is finalized.
+    //   - We need to add a new domain otherwise.
 
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
     burst_domain(const DomainID& did, Domain dom)
     {
+        assert(domains_.count(did) == 0); // the domain is moved out from container
         switch(dom.kind())
         {
             case Domain::DomainKind::Multi:
@@ -322,7 +368,7 @@ private:
 
         // step until this->t()
         const auto dt = this->t() - dom.begin_time();
-        dom.step(*(this->model_), *this, *(this->world_), dt);
+        dom.step(did, *(this->model_), *this, *(this->world_), dt);
 
         assert(shells_.diagnosis()); // XXX
 
@@ -445,6 +491,9 @@ private:
 
     std::size_t rejected_moves_;
     std::size_t zero_step_count_;
+
+    std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions_;
+
 //     std::array<std::size_t, SingleDomain::EventKinds> single_step_count_;
 //     std::array<std::size_t, PairDomain::EventKinds>   pair_step_count_;
 //     std::array<std::size_t, MultiDomain::EventKinds>  multi_step_count_;

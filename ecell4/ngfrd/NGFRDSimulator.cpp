@@ -1,4 +1,5 @@
 #include <ecell4/ngfrd/NGFRDSimulator.hpp>
+#include <ecell4/ngfrd/SingleSphericalPropagator.hpp>
 
 namespace ecell4
 {
@@ -301,6 +302,68 @@ void NGFRDSimulator::form_domain_3D(const ParticleID& pid, const Particle& p)
 
     return;
 }
+void NGFRDSimulator::form_tight_domain_2D(
+        const ParticleID& pid, const Particle& p, const FaceID& fid)
+{
+    throw_exception<NotImplemented>("TODO: ", ECELL4_NGFRD_LOG_FUNCTION_NAME);
+}
+
+void NGFRDSimulator::form_tight_domain_3D(const ParticleID& pid, const Particle& p)
+{
+    const auto did = didgen_();
+    const auto sid = sidgen_();
+
+    // construct shell and assign it to shell container
+    SphericalShell sh(Sphere(p.position(), p.radius()));
+
+    this->shells_.update_shell(sid, Shell(sh, did));
+
+    SingleSphericalDomain dom(SingleSphericalDomain::EventKind::Escape,
+        /*dt = */ 0.0, world_->t(), sid, sh, pid, p.D(), /*radius = */ 0.0);
+
+    // add event with the same domain ID
+    const auto evid = this->scheduler_.add(
+            std::make_shared<event_type>(this->t(), did));
+
+    // update begin_time and re-insert domain into domains_ container
+    this->domains_[did] = std::make_pair(evid, Domain(std::move(dom)));
+    return;
+}
+
+boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
+NGFRDSimulator::fire_single_spherical(const DomainID& did, SingleSphericalDomain dom)
+{
+    ECELL4_NGFRD_LOG_FUNCTION();
+    ECELL4_NGFRD_LOG("firing single spherical: ", did);
+    ECELL4_NGFRD_LOG("included shell: ", dom.shell_id());
+
+    if(dom.dt() == 0.0) // means it is a tight domain
+    {
+        this->shells_.remove_shell(dom.shell_id());
+        return boost::container::small_vector<std::pair<ParticleID, Particle>, 4>{
+                world_->get_particle(dom.particle_id())
+            };
+    }
+
+    std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
+    SingleSphericalPropagator prop(
+            did, *(this->model_), *(this->world_), *this,
+            *(this->world_->rng()), SINGLE_3D_MAX_RETRY, last_reactions);
+
+    boost::container::small_vector<std::pair<ParticleID, Particle>, 4> results;
+    for(const auto& pid : prop(dom))
+    {
+        results.push_back(world_->get_particle(pid));
+    }
+
+    if( ! last_reactions.empty())
+    {
+        std::copy(last_reactions.begin(), last_reactions.end(),
+                  std::back_inserter(last_reactions_));
+    }
+
+    return results;
+}
 
 boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
 NGFRDSimulator::fire_multi(const DomainID& did, MultiDomain dom)
@@ -309,7 +372,7 @@ NGFRDSimulator::fire_multi(const DomainID& did, MultiDomain dom)
     ECELL4_NGFRD_LOG("firing multi: ", did);
     ECELL4_NGFRD_LOG("included shells: ", dom.shells());
 
-    dom.step(*(this->model_), *this, *(this->world_));
+    dom.step(did, *(this->model_), *this, *(this->world_));
 
     // XXX: If no (reaction, escapement) happens, we don't need to break it
     //      down into independent domains. For the efficiency, it re-inserts
@@ -331,6 +394,13 @@ NGFRDSimulator::fire_multi(const DomainID& did, MultiDomain dom)
     }
     // something happens. remove multi and return resulting particles
     // to re-wrap the particles by new domain
+
+    const auto& last_reactions = dom.last_reactions();
+    if( ! last_reactions.empty())
+    {
+        std::copy(last_reactions.begin(), last_reactions.end(),
+                  std::back_inserter(last_reactions_));
+    }
 
     // remove shells
     for(const auto& sidp : dom.shells())
