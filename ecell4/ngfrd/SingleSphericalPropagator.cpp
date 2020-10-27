@@ -93,7 +93,7 @@ SingleSphericalPropagator::attempt_1to1_reaction(const SingleSphericalDomain& do
             return boost::container::static_vector<ParticleID, 2>{pid};
         }
         // determine positions of particles in overlapping domains
-        sim_.determine_positions_3D(newp.position(), radius_new);
+        sim_.determine_positions_3D(newp.position(), radius_new, self_id_);
 
         // then check if there is any particle that overlaps
         if(world_.has_overlapping_particles_3D(
@@ -168,11 +168,11 @@ SingleSphericalPropagator::attempt_1to2_reaction(const SingleSphericalDomain& do
         // burst domains around the reactants.
         if(this->is_inside_of_shell(dom, pos1_new, r1))
         {
-            sim_.determine_positions_3D(pos1_new, r1);
+            sim_.determine_positions_3D(pos1_new, r1, self_id_);
         }
         if(this->is_inside_of_shell(dom, pos2_new, r2))
         {
-            sim_.determine_positions_3D(pos2_new, r2);
+            sim_.determine_positions_3D(pos2_new, r2, self_id_);
         }
 
         if(world_.has_overlapping_faces(pos1_new, r1) ||

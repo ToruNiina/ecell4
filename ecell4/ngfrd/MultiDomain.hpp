@@ -74,13 +74,15 @@ class MultiDomain
         return true;
     }
 
-    void step(const Model& model, NGFRDSimulator& sim, NGFRDWorld& world)
+    void step(const DomainID& self, const Model& model,
+              NGFRDSimulator& sim, NGFRDWorld& world)
     {
-        this->step(model, sim, world, this->dt_);
+        this->step(self, model, sim, world, this->dt_);
         return ;
     }
 
-    void step(const Model& model, NGFRDSimulator& sim, NGFRDWorld& world, const Real dt);
+    void step(const DomainID& self, const Model& model,
+              NGFRDSimulator& sim, NGFRDWorld& world, const Real dt);
 
     EventKind& eventkind()       noexcept {return this->kind_;}
     EventKind  eventkind() const noexcept {return this->kind_;}
@@ -150,7 +152,7 @@ class MultiDomain
         std::vector<ParticleID> p3D;
         for(const auto& pid : this->particle_ids())
         {
-            if(!world.on_which_face(pid).has_value())
+            if(!world.on_which_face(pid))
             {
                 p3D.push_back(pid);
             }
@@ -203,7 +205,7 @@ class MultiDomain
         std::vector<ParticleID> p2D;
         for(const auto& pid : this->particle_ids())
         {
-            if(world.on_which_face(pid).has_value())
+            if(world.on_which_face(pid))
             {
                 p2D.push_back(pid);
             }

@@ -39,7 +39,7 @@ void BDPropagator::propagate_2D_particle(
         ECELL4_NGFRD_LOG("new position is not inside of the domain.");
         ECELL4_NGFRD_LOG("bursting other domains that overlaps with this.");
         // determine positions of particles in overlapping shells.
-        sim_.determine_positions_2D(new_pos, p.radius());
+        sim_.determine_positions_2D(new_pos, p.radius(), self_id_);
     }
 
     // collect particles within reactive range
@@ -157,7 +157,7 @@ bool BDPropagator::attempt_1to1_reaction_2D(
 
     if(not is_inside_of_shells_2D(pos_fid, radius_new))
     {
-        sim_.determine_positions_2D(pos_fid, radius_new);
+        sim_.determine_positions_2D(pos_fid, radius_new, self_id_);
     }
 
     if(world_.has_overlapping_particles_2D(pos_fid, radius_new, pid))
@@ -245,11 +245,11 @@ bool BDPropagator::attempt_1to2_reaction_2D(
 
     if(not is_inside_of_shells_2D(pos1_new, r1))
     {
-        sim_.determine_positions_2D(pos1_new, r1);
+        sim_.determine_positions_2D(pos1_new, r1, self_id_);
     }
     if(not is_inside_of_shells_2D(pos2_new, r2))
     {
-        sim_.determine_positions_2D(pos2_new, r2);
+        sim_.determine_positions_2D(pos2_new, r2, self_id_);
     }
 
     if(world_.has_overlapping_particles_2D(pos1_new, r1, /*ignore = */ pid) ||
@@ -288,7 +288,7 @@ bool BDPropagator::attempt_1to2_reaction_2D(
 
             if(not is_inside_of_shells_2D(new_pos, p_.radius()))
             {
-                sim_.determine_positions_2D(new_pos, p_.radius());
+                sim_.determine_positions_2D(new_pos, p_.radius(), self_id_);
             }
             if(not world_.has_overlapping_particles_2D(new_pos, p_.radius(), pid_))
             {
@@ -437,7 +437,7 @@ bool BDPropagator::attempt_2to1_reaction_2D(
 
     if(not is_inside_of_shells_2D(new_pos, radius_new))
     {
-        sim_.determine_positions_2D(new_pos, radius_new);
+        sim_.determine_positions_2D(new_pos, radius_new, self_id_);
     }
     if(world_.has_overlapping_particles_2D(new_pos, radius_new, pid1, pid2))
     {
@@ -499,7 +499,7 @@ void BDPropagator::propagate_3D_particle(const ParticleID& pid, Particle p)
     {
         ECELL4_NGFRD_LOG("Particle sticks out of the domain.");
         // determine positions of particles in overlapping shells.
-        sim_.determine_positions_3D(new_pos, p.radius());
+        sim_.determine_positions_3D(new_pos, p.radius(), self_id_);
     }
     ECELL4_NGFRD_LOG("collecting overlapping particles");
     const auto overlapped = world_.list_particles_within_radius_3D(
@@ -599,7 +599,7 @@ bool BDPropagator::attempt_1to1_reaction_3D(
 
     if(not is_inside_of_shells_3D(p.position(), radius_new))
     {
-        sim_.determine_positions_3D(p.position(), radius_new);
+        sim_.determine_positions_3D(p.position(), radius_new, self_id_);
     }
     if(world_.has_overlapping_particles_3D(p.position(), radius_new, /*ignore = */ pid))
     {
@@ -687,11 +687,11 @@ bool BDPropagator::attempt_1to2_reaction_3D(
     // clear volume (if needed)
     if(not is_inside_of_shells_3D(pos1_new, r1))
     {
-        sim_.determine_positions_3D(pos1_new, r1);
+        sim_.determine_positions_3D(pos1_new, r1, self_id_);
     }
     if(not is_inside_of_shells_3D(pos2_new, r2))
     {
-        sim_.determine_positions_3D(pos2_new, r2);
+        sim_.determine_positions_3D(pos2_new, r2, self_id_);
     }
 
     if(world_.has_overlapping_particles_3D(pos1_new, r1, pid) ||
@@ -825,7 +825,7 @@ bool BDPropagator::attempt_2to1_reaction_3D(
 
     if(not is_inside_of_shells_3D(new_pos, radius_new))
     {
-        sim_.determine_positions_3D(new_pos, radius_new);
+        sim_.determine_positions_3D(new_pos, radius_new, self_id_);
     }
     if(world_.has_overlapping_particles_3D(new_pos, radius_new, pid1, pid2))
     {

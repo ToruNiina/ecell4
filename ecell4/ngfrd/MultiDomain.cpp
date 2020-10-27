@@ -6,7 +6,7 @@ namespace ecell4
 namespace ngfrd
 {
 
-void MultiDomain::step(
+void MultiDomain::step(const DomainID& self,
     const Model& model, NGFRDSimulator& sim, NGFRDWorld& world, const Real dt)
 {
     assert(this->dt_              > 0.0);
@@ -15,7 +15,7 @@ void MultiDomain::step(
     this->last_reactions_.clear();
     this->kind_ = EventKind::None;
 
-    BDPropagator propagator(
+    BDPropagator propagator(self,
         model, world, sim, *(world.rng()), this->dt_, this->max_retry_,
         std::vector<ParticleID>(particle_ids_.begin(), particle_ids_.end()),
         std::vector<std::pair<ShellID, Shell>>(shells_.begin(), shells_.end()),

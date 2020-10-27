@@ -17,11 +17,12 @@ class NGFRDSimulator; // forward decl
 
 class SingleSphericalPropagator
 {
-    SingleSphericalPropagator(
+  public:
+    SingleSphericalPropagator(const DomainID& self,
         const Model& model, NGFRDWorld& world, NGFRDSimulator& sim,
         RandomNumberGenerator& rng, const std::size_t max_retry,
         std::vector<std::pair<ReactionRule, ReactionInfo>>& last_reactions)
-        : model_(model), world_(world), sim_(sim), rng_(rng),
+        : model_(model), world_(world), sim_(sim), rng_(rng), self_id_(self),
           max_retry_count_(max_retry), last_reactions_(last_reactions)
     {}
 
@@ -90,6 +91,7 @@ class SingleSphericalPropagator
     NGFRDWorld&            world_;
     NGFRDSimulator&        sim_;
     RandomNumberGenerator& rng_;
+    DomainID               self_id_;
     std::size_t            max_retry_count_;
     std::size_t            rejected_move_count_;
     std::vector<std::pair<ReactionRule, ReactionInfo>>& last_reactions_;
