@@ -320,7 +320,8 @@ void NGFRDSimulator::form_tight_domain_3D(const ParticleID& pid, const Particle&
     this->shells_.update_shell(sid, Shell(sh, did));
 
     SingleSphericalDomain dom(SingleSphericalDomain::EventKind::Escape,
-        /*dt = */ 0.0, world_->t(), sid, sh, pid, p.D(), /*radius = */ 0.0);
+        /*dt = */ 0.0, world_->t(), sid, sh, pid, p.D(), /*radius = */ 0.0,
+        greens_functions::GreensFunction3DAbsSym(p.D(), 0.0));
 
     // add event with the same domain ID
     const auto evid = this->scheduler_.add(

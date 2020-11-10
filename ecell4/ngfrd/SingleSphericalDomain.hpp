@@ -32,9 +32,10 @@ class SingleSphericalDomain
     SingleSphericalDomain(
             const EventKind kind, const Real dt, const Real begin,
             const ShellID&  shid, const SphericalShell& sh,
-            const ParticleID& pid, const Real D, const Real effective_radius)
+            const ParticleID& pid, const Real D, const Real effective_radius,
+            greens_functions::GreensFunction3DAbsSym gf)
         : kind_(kind), dt_(dt), begin_time_(begin), shell_id_(shid), shell_(sh),
-          particle_id_(pid), gf_(D, effective_radius)
+          particle_id_(pid), gf_(std::move(gf))
     {}
     ~SingleSphericalDomain() = default;
 
