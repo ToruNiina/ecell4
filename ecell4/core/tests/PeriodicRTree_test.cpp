@@ -314,3 +314,175 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(PeriodicRTree_query, AABBGetter, aabb_getters)
         query_results.clear();
     }
 }
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(PeriodicRTree_nearest, AABBGetter, aabb_getters)
+{
+    constexpr std::size_t N = 500;
+    constexpr Real        L = 1.0;
+    const Real3 edge_lengths(L, 2*L, 3*L);
+    const PeriodicBoundary pbc(edge_lengths);
+    std::mt19937 mt(123456789);
+    std::uniform_real_distribution<Real> uni(0.0, L);
+
+    const Species sp("A");
+    const Real radius = 0.005;
+    const Real D      = 1.0;
+
+    PeriodicRTree<ParticleID, Particle, AABBGetter> tree(edge_lengths, 0.01);
+    BOOST_TEST_MESSAGE("tree constructed");
+
+    std::vector<std::pair<ParticleID, Particle>> full_list;
+    SerialIDGenerator<ParticleID> pidgen;
+    for(std::size_t i=0; i<N; ++i)
+    {
+        const Real3 pos(uni(mt), 2 * uni(mt), 3 * uni(mt));
+        const auto  pid = pidgen();
+        const auto  p   = Particle(sp, pos, radius, D);
+        full_list.emplace_back(pid, p);
+
+        tree.insert(pid, p);
+
+        BOOST_REQUIRE(tree.diagnosis());
+    }
+    BOOST_TEST_MESSAGE("objects are inserted");
+
+    // ----------------------------------------------------------------------
+    // send a query and check particle can be found
+
+    for(const auto& pidp : full_list)
+    {
+        const auto self = pidp.first;
+        const auto nearest = tree.nearest_neighbor(pidp.second.position(),
+            [self](const Real3& pos, const std::pair<ParticleID, Particle>& val,
+                   const PeriodicBoundary& b) -> boost::optional<Real>
+            {
+                if(val.first == self)
+                {
+                    return boost::none;
+                }
+                const auto nearest_image = b.periodic_transpose(
+                        pos, val.second.position());
+
+                return length(nearest_image - val.second.position());
+            });
+
+        BOOST_TEST(nearest.size() == 1);
+        BOOST_TEST(nearest.front().first.first != self);
+
+        ParticleID bruteforce_id;
+        Real       bruteforce_dist = std::numeric_limits<Real>::infinity();
+        for(const auto& other : full_list)
+        {
+            if(other.first == self)
+            {
+                continue;
+            }
+
+            const auto nearest_image = pbc.periodic_transpose(
+                    pidp.second.position(), other.second.position());
+            const auto dist = length(nearest_image - other.second.position());
+            if(dist <= bruteforce_dist)
+            {
+                bruteforce_id   = other.first;
+                bruteforce_dist = dist;
+            }
+        }
+        BOOST_TEST(nearest.front().first.first == bruteforce_id);
+        BOOST_TEST(nearest.front().second      == bruteforce_dist,
+                   boost::test_tools::tolerance(Real(1e-7)));
+    }
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(PeriodicRTree_nearest2, AABBGetter, aabb_getters)
+{
+    constexpr std::size_t N = 500;
+    constexpr Real        L = 1.0;
+    const Real3 edge_lengths(L, 2*L, 3*L);
+    const PeriodicBoundary pbc(edge_lengths);
+    std::mt19937 mt(123456789);
+    std::uniform_real_distribution<Real> uni(0.0, L);
+
+    const Species sp("A");
+    const Real radius = 0.005;
+    const Real D      = 1.0;
+
+    PeriodicRTree<ParticleID, Particle, AABBGetter> tree(edge_lengths, 0.01);
+    BOOST_TEST_MESSAGE("tree constructed");
+
+    std::vector<std::pair<ParticleID, Particle>> full_list;
+    SerialIDGenerator<ParticleID> pidgen;
+    for(std::size_t i=0; i<N; ++i)
+    {
+        const Real3 pos(uni(mt), 2 * uni(mt), 3 * uni(mt));
+        const auto  pid = pidgen();
+        const auto  p   = Particle(sp, pos, radius, D);
+        full_list.emplace_back(pid, p);
+
+        tree.insert(pid, p);
+
+        BOOST_REQUIRE(tree.diagnosis());
+    }
+    BOOST_TEST_MESSAGE("objects are inserted");
+
+    // ----------------------------------------------------------------------
+    // send a query and check particle can be found
+
+    for(const auto& pidp : full_list)
+    {
+        const auto self = pidp.first;
+        const auto nearest = tree.template nearest_neighbor<2>(pidp.second.position(),
+            [self](const Real3& pos, const std::pair<ParticleID, Particle>& val,
+                   const PeriodicBoundary& b) -> boost::optional<Real>
+            {
+                if(val.first == self)
+                {
+                    return boost::none;
+                }
+                const auto nearest_image = b.periodic_transpose(
+                        pos, val.second.position());
+
+                return length(nearest_image - val.second.position());
+            });
+
+        BOOST_TEST(nearest.size() == 2);
+        BOOST_TEST(nearest.at(0).first.first != self);
+        BOOST_TEST(nearest.at(1).first.first != self);
+
+        ParticleID bruteforce1_id;
+        ParticleID bruteforce2_id;
+        Real       bruteforce1_dist = std::numeric_limits<Real>::infinity();
+        Real       bruteforce2_dist = std::numeric_limits<Real>::infinity();
+        for(const auto& other : full_list)
+        {
+            if(other.first == self)
+            {
+                continue;
+            }
+
+            const auto nearest_image = pbc.periodic_transpose(
+                    pidp.second.position(), other.second.position());
+
+            const auto dist = length(nearest_image - other.second.position());
+            if(dist <= bruteforce1_dist)
+            {
+                bruteforce2_id   = bruteforce1_id;
+                bruteforce2_dist = bruteforce1_dist;
+                bruteforce1_id   = other.first;
+                bruteforce1_dist = dist;
+            }
+            else if(dist <= bruteforce2_dist)
+            {
+                bruteforce2_id   = other.first;
+                bruteforce2_dist = dist;
+            }
+        }
+
+        BOOST_TEST(nearest.at(0).first.first == bruteforce1_id);
+        BOOST_TEST(nearest.at(0).second      == bruteforce1_dist,
+                   boost::test_tools::tolerance(Real(1e-7)));
+
+        BOOST_TEST(nearest.at(1).first.first == bruteforce2_id);
+        BOOST_TEST(nearest.at(1).second      == bruteforce2_dist,
+                   boost::test_tools::tolerance(Real(1e-7)));
+    }
+}

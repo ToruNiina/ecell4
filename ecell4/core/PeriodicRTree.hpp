@@ -189,6 +189,28 @@ public:
         return query_recursive(root_, matches, out);
     }
 
+    // k-nearest neighbor query, with a filtering/distance function.
+    // Distance function between target/object should be
+    // provided by user.
+    // class NearestNeighborQuery
+    // {
+    //     boost::optional<Real> // distance
+    //     operator()(const value_type&, const PeriodicBoundary&);
+    // };
+    //
+    template<std::size_t N = 1, typename F>
+    boost::container::static_vector<std::pair<value_type, Real>, N>
+    nearest_neighbor(const Real3& pos, const F& matches) const
+    {
+        boost::container::static_vector<std::pair<value_type, Real>, N> retval;
+        if(this->empty())
+        {
+            return retval;
+        }
+        this->template nearest_neighbor_impl<N>(root_, pos, matches, retval);
+        return retval;
+    }
+
     // update an object. If the object corresponds to id already exists,
     // it reshapes the tree structure.
     //
@@ -555,6 +577,84 @@ private:
         }
         return out;
     }
+
+    template<std::size_t N, typename F>
+    void nearest_neighbor_impl(
+        const std::size_t node_idx, const Real3& pos, const F& filter,
+        boost::container::static_vector<std::pair<value_type, Real>, N>& retval) const
+    {
+        const node_type& node = this->node_at(node_idx);
+        if(node.is_leaf())
+        {
+            for(const auto& entry : node.leaf_entry())
+            {
+                const auto& value = container_.at(rmap_.at(entry));
+                if(const auto dist = filter(pos, value, this->pbc_))
+                {
+                    if(retval.capacity() == retval.size())
+                    {
+                        if(*dist < retval.back().second)
+                        {
+                            retval.pop_back(); // discard the most distant one
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                    assert(retval.size() < retval.capacity());
+                    auto elem = std::make_pair(value, *dist);
+                    auto loc  = std::lower_bound(retval.begin(), retval.end(),
+                            elem, [](const std::pair<value_type, Real>& lhs,
+                                     const std::pair<value_type, Real>& rhs) {
+                                return lhs.second < rhs.second;
+                            });
+                    retval.insert(loc, std::move(elem));
+                }
+            }
+            return ;
+        }
+        // internal node. search recursively...
+
+        // the possible nearest distance in an aabb
+        const auto mindist_sq = [](const Real3& pos, const AABB& box) -> Real {
+                const Real dx = std::min(box.upper()[0], std::max(box.lower()[0], pos[0])) - pos[0];
+                const Real dy = std::min(box.upper()[1], std::max(box.lower()[1], pos[1])) - pos[1];
+                const Real dz = std::min(box.upper()[2], std::max(box.lower()[2], pos[2])) - pos[2];
+                return dx * dx + dy * dy + dz * dz;
+            };
+
+        // determine traversal order using minmaxdist
+        boost::container::static_vector<std::pair<std::size_t, Real>, MaxEntry> order;
+        for(const std::size_t entry : node.inode_entry())
+        {
+            const auto& node_aabb = node_at(entry).box;
+            const auto nearest_image = pbc_.periodic_transpose(
+                    pos, (node_aabb.upper() + node_aabb.lower()) * 0.5);
+
+            const auto min_d2 = mindist_sq(nearest_image, node_aabb);
+            if( ! retval.empty() && retval.back().second < min_d2)
+            {
+                continue;
+            }
+            const auto elem = std::make_pair(entry, min_d2);
+            const auto loc = std::lower_bound(order.begin(), order.end(), elem,
+                [](const std::pair<std::size_t, Real>& lhs,
+                   const std::pair<std::size_t, Real>& rhs)
+                {
+                    return lhs.second < rhs.second;
+                });
+            order.insert(loc, elem);
+        }
+
+        for(const auto& entry : order)
+        {
+            this->template nearest_neighbor_impl<N>(entry.first, pos, filter, retval);
+        }
+        return;
+    }
+
 
 private:
 
