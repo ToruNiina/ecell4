@@ -357,7 +357,7 @@ public:
 
     template<std::size_t N = 1>
     boost::container::static_vector<std::pair<std::pair<FaceID, Triangle>, Real>, N>
-    nearest_neighbor(const Real3& pos) const
+    nearest_face(const Real3& pos) const
     {
         return this->polygon_->template nearest_neighbor<N>(pos);
     }
