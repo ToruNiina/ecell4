@@ -337,6 +337,34 @@ public:
                 });
     }
 
+    // ------------------------------------------------------------------------
+    // list_faces_within_radius
+
+    std::vector<std::pair<std::pair<FaceID, Triangle>, Real>>
+    list_faces_within_radius(const Real3& center, const Real radius) const
+    {
+        return polygon_->list_faces_within_radius(center, radius);
+    }
+    std::vector<std::pair<std::pair<FaceID, Triangle>, Real>>
+    list_faces_within_radius(const Real3& center, const Real radius,
+                             const FaceID& ignore) const
+    {
+        return polygon_->list_faces_within_radius(center, radius, ignore);
+    }
+
+    // ------------------------------------------------------------------------
+    // nearest face
+
+    template<std::size_t N = 1>
+    boost::container::static_vector<std::pair<std::pair<FaceID, Triangle>, Real>, N>
+    nearest_neighbor(const Real3& pos) const
+    {
+        return this->polygon_->template nearest_neighbor<N>(pos);
+    }
+
+    // ------------------------------------------------------------------------
+    // accessors
+
     Polygon&       polygon()       noexcept {return *polygon_;}
     Polygon const& polygon() const noexcept {return *polygon_;}
 
@@ -751,7 +779,6 @@ private:
         this->estimated_possible_largest_particle_radius_ = min_altitude * 0.5;
         return;
     }
-
 
 private:
 
