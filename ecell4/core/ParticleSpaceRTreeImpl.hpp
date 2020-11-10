@@ -190,6 +190,51 @@ public:
     list_particles_within_radius(const Real3& pos, const Real& radius,
             const ParticleID& ignore1, const ParticleID& ignore2) const override;
 
+
+    template<std::size_t N = 1>
+    boost::container::static_vector<std::pair<std::pair<ParticleID, Particle>, Real>, N>
+    nearest_neighbor(const Real3& pos) const
+    {
+        return this->rtree_.template nearest_neighbor<N>(pos,
+            [](const Real3& pos, const std::pair<ParticleID, Particle>& val,
+               const PeriodicBoundary& pbc) -> boost::optional<Real>
+            {
+                const auto image = pbc.periodic_transpose(pos, val.second.position());
+                return length(image - val.second.position());
+            });
+    }
+    template<std::size_t N = 1>
+    boost::container::static_vector<std::pair<std::pair<ParticleID, Particle>, Real>, N>
+    nearest_neighbor(const Real3& pos, const ParticleID& ignore) const
+    {
+        return this->rtree_.template nearest_neighbor<N>(pos,
+            [&ignore](const Real3& pos, const std::pair<ParticleID, Particle>& val,
+               const PeriodicBoundary& pbc) -> boost::optional<Real>
+            {
+                if(ignore == val.first) {return boost::none;}
+                const auto image = pbc.periodic_transpose(pos, val.second.position());
+                return length(image - val.second.position());
+            });
+    }
+    template<std::size_t N = 1>
+    boost::container::static_vector<std::pair<std::pair<ParticleID, Particle>, Real>, N>
+    nearest_neighbor(const Real3& pos, const ParticleID& ignore1,
+                                       const ParticleID& ignore2) const
+    {
+        return this->rtree_.template nearest_neighbor<N>(pos,
+            [&ignore1, &ignore2](const Real3& pos,
+                    const std::pair<ParticleID, Particle>& val,
+                    const PeriodicBoundary& pbc) -> boost::optional<Real>
+            {
+                if(ignore1 == val.first || ignore2 == val.first)
+                {
+                    return boost::none;
+                }
+                const auto image = pbc.periodic_transpose(pos, val.second.position());
+                return length(image - val.second.position());
+            });
+    }
+
     bool diagnosis() const
     {
         bool is_ok = true;
