@@ -524,6 +524,83 @@ class Polygon : public Shape
                 });
     }
 
+    template<std::size_t N = 1>
+    boost::container::static_vector<std::pair<std::pair<FaceID, Triangle>, Real>, N>
+    nearest_neighbor(const Real3& pos) const
+    {
+        boost::container::static_vector<std::pair<std::pair<FaceID, Triangle>, Real>, N>
+            retval;
+
+        const auto neighbors = this->faces_.template nearest_neighbor<N>(pos,
+                [](const Real3& pos, const std::pair<FaceID, face_data>& fidp,
+                   const PeriodicBoundary& pbc) -> boost::optional<Real>
+                {
+                    return std::sqrt(distance_sq_point_Triangle(
+                            pos, fidp.second.triangle, pbc));
+                });
+
+        // rip the internal data off
+        for(const auto& neighbor : neighbors)
+        {
+            retval.emplace_back(std::make_pair(neighbor.first.first,
+                        neighbor.first.triangle, neighbor.second);
+        }
+        return retval;
+    }
+    template<std::size_t N = 1>
+    boost::container::static_vector<std::pair<std::pair<FaceID, Triangle>, Real>, N>
+    nearest_neighbor(const Real3& pos, const FaceID& ignore1) const
+    {
+        boost::container::static_vector<std::pair<std::pair<FaceID, Triangle>, Real>, N>
+            retval;
+
+        const auto neighbors = this->faces_.template nearest_neighbor<N>(pos,
+                [](const Real3& pos, const std::pair<FaceID, face_data>& val,
+                   const PeriodicBoundary& pbc) -> boost::optional<Real>
+                {
+                    if(val.first == ignore)
+                    {
+                        return boost::none;
+                    }
+                    return std::sqrt(distance_sq_point_Triangle(
+                            pos, fidp.second.triangle, pbc));
+                });
+
+        // rip the internal data off
+        for(const auto& neighbor : neighbors)
+        {
+            retval.emplace_back(std::make_pair(neighbor.first.first,
+                        neighbor.first.triangle, neighbor.second);
+        }
+        return retval;
+    }
+    template<std::size_t N = 1>
+    boost::container::static_vector<std::pair<std::pair<FaceID, Triangle>, Real>, N>
+    nearest_neighbor(const Real3& pos, const FaceID& ignore1, const FaceID& ignore2) const
+    {
+        boost::container::static_vector<std::pair<std::pair<FaceID, Triangle>, Real>, N>
+            retval;
+
+        const auto neighbors = this->faces_.template nearest_neighbor<N>(pos,
+                [](const Real3& pos, const std::pair<FaceID, face_data>& val,
+                   const PeriodicBoundary& pbc) -> boost::optional<Real>
+                {
+                    if(val.first == ignore1 || val.first == ignore2)
+                    {
+                        return boost::none;
+                    }
+                    return std::sqrt(distance_sq_point_Triangle(
+                            pos, fidp.second.triangle, pbc));
+                });
+
+        // rip the internal data off
+        for(const auto& neighbor : neighbors)
+        {
+            retval.emplace_back(std::make_pair(neighbor.first.first,
+                        neighbor.first.triangle, neighbor.second);
+        }
+        return retval;
+    }
 
     /* inherited from shape --------------------------------------------------*/
     dimension_kind dimension() const {return THREE;} // TWO?
