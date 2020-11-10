@@ -51,7 +51,7 @@ public:
 
     DomainKind kind() const noexcept {return DomainKind(storage_.which());}
 
-    bool is_single_sphecal() const noexcept
+    bool is_single_spherical() const noexcept
     {
         return this->kind() == DomainKind::SingleSpherical;
     }
