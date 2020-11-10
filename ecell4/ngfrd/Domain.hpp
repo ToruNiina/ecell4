@@ -59,6 +59,8 @@ public:
     {
         return this->kind() == DomainKind::Multi;
     }
+    bool is_2D() const noexcept {return false;}
+    bool is_3D() const noexcept {return is_single_spherical();}
 
     SingleSphericalDomain const& as_single_spherical() const
     {
