@@ -6,6 +6,7 @@
 
 // to output those
 #include <boost/container/small_vector.hpp>
+#include <boost/container/static_vector.hpp>
 
 #include <unordered_map>
 #include <ostream>
@@ -46,6 +47,19 @@ std::ostream& operator<<(std::ostream& os,
            const boost::container::small_vector<T, N, Alloc, Options...>& v)
 {
     os << "\"boost::small_vector<" << utils::type_name_of<T>::value() << ", " << N << ">\":[";
+    for(std::size_t i=0; i<v.size(); ++i)
+    {
+        if(i != 0) {os << ", ";}
+        os << v.at(i);
+    }
+    os << "]";
+    return os;
+}
+template<typename T, std::size_t N, typename Alloc, typename ... Options>
+std::ostream& operator<<(std::ostream& os,
+           const boost::container::static_vector<T, N, Alloc, Options...>& v)
+{
+    os << "\"boost::static_vector<" << utils::type_name_of<T>::value() << ", " << N << ">\":[";
     for(std::size_t i=0; i<v.size(); ++i)
     {
         if(i != 0) {os << ", ";}
