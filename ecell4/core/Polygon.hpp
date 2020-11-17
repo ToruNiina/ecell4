@@ -540,10 +540,12 @@ class Polygon : public Shape
                 });
 
         // rip the internal data off
-        for(const auto& neighbor : neighbors)
+        for(const auto& neighbor : neighbors) // {{id, value}, dist}
         {
-            retval.emplace_back(std::make_pair(neighbor.first.first,
-                        neighbor.first.triangle, neighbor.second);
+            const auto& fidp = neighbor.first;
+            retval.emplace_back(std::make_pair(
+                    std::make_pair(fidp.first, fidp.second.triangle),
+                    neighbor.second));
         }
         return retval;
     }
@@ -555,22 +557,25 @@ class Polygon : public Shape
             retval;
 
         const auto neighbors = this->faces_.template nearest_neighbor<N>(pos,
-                [](const Real3& pos, const std::pair<FaceID, face_data>& val,
-                   const PeriodicBoundary& pbc) -> boost::optional<Real>
+                [&ignore1](const Real3& pos,
+                    const std::pair<FaceID, face_data>& val,
+                    const PeriodicBoundary& pbc) -> boost::optional<Real>
                 {
-                    if(val.first == ignore)
+                    if(val.first == ignore1)
                     {
                         return boost::none;
                     }
                     return std::sqrt(distance_sq_point_Triangle(
-                            pos, fidp.second.triangle, pbc));
+                            pos, val.second.triangle, pbc));
                 });
 
         // rip the internal data off
         for(const auto& neighbor : neighbors)
         {
-            retval.emplace_back(std::make_pair(neighbor.first.first,
-                        neighbor.first.triangle, neighbor.second);
+            const auto& fidp = neighbor.first;
+            retval.emplace_back(std::make_pair(
+                    std::make_pair(fidp.first, fidp.second.triangle),
+                    neighbor.second));
         }
         return retval;
     }
@@ -582,22 +587,25 @@ class Polygon : public Shape
             retval;
 
         const auto neighbors = this->faces_.template nearest_neighbor<N>(pos,
-                [](const Real3& pos, const std::pair<FaceID, face_data>& val,
-                   const PeriodicBoundary& pbc) -> boost::optional<Real>
+                [&ignore1, &ignore2](const Real3& pos,
+                    const std::pair<FaceID, face_data>& val,
+                    const PeriodicBoundary& pbc) -> boost::optional<Real>
                 {
                     if(val.first == ignore1 || val.first == ignore2)
                     {
                         return boost::none;
                     }
                     return std::sqrt(distance_sq_point_Triangle(
-                            pos, fidp.second.triangle, pbc));
+                            pos, val.second.triangle, pbc));
                 });
 
         // rip the internal data off
         for(const auto& neighbor : neighbors)
         {
-            retval.emplace_back(std::make_pair(neighbor.first.first,
-                        neighbor.first.triangle, neighbor.second);
+            const auto& fidp = neighbor.first;
+            retval.emplace_back(std::make_pair(
+                    std::make_pair(fidp.first, fidp.second.triangle),
+                    neighbor.second));
         }
         return retval;
     }
