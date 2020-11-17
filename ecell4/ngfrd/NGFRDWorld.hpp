@@ -338,6 +338,28 @@ public:
     }
 
     // ------------------------------------------------------------------------
+    // nearest particle
+
+    template<std::size_t N = 1>
+    boost::container::static_vector<std::pair<std::pair<ParticleID, Particle>, Real>, N>
+    nearest_particle(const Real3& pos) const
+    {
+        return this->ps_->template nearest_neighbor<N>(pos);
+    }
+    template<std::size_t N = 1>
+    boost::container::static_vector<std::pair<std::pair<ParticleID, Particle>, Real>, N>
+    nearest_particle(const Real3& pos, const ParticleID& ignore1) const
+    {
+        return this->ps_->template nearest_neighbor<N>(pos, ignore1);
+    }
+    template<std::size_t N = 1>
+    boost::container::static_vector<std::pair<std::pair<ParticleID, Particle>, Real>, N>
+    nearest_particle(const Real3& pos, const ParticleID& ignore1, const ParticleID& ignore2) const
+    {
+        return this->ps_->template nearest_neighbor<N>(pos, ignore1, ignore2);
+    }
+
+    // ------------------------------------------------------------------------
     // list_faces_within_radius
 
     std::vector<std::pair<std::pair<FaceID, Triangle>, Real>>
