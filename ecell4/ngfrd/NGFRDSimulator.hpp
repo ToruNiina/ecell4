@@ -40,7 +40,6 @@ public:
     static constexpr Real SAFETY_EXPAND       = 1.0 + 1e-5;
     static constexpr Real SAFETY_SHRINK       = 1.0 - 1e-5;
     static constexpr Real SINGLE_SHELL_FACTOR = 1.0 + 0.1;
-    static constexpr Real MULTI_SHELL_FACTOR  = 1.0 + 0.05;
     static constexpr Real DEFAULT_DT_FACTOR   = 1e-5;
     static constexpr Real CUTOFF_FACTOR       = 5.6;
 
@@ -139,14 +138,15 @@ public:
 
         // Single does not stick out from shell when it is bursted.
         // So burst single first.
-        // Events are cleared later, so we don't need to pop it in the loop
+        // Events are cleared later (and also we need to avoid iterator invalidation),
+        // so we don't pop the event from scheduler in the loop.
         for(const auto& eidp: scheduler_.events())
         {
             const auto& eid = eidp.first;
             const auto& ev  = eidp.second;
             const auto& did = ev->domain_id();
 
-            if(!this->domains_.at(did).second.is_single_sphecal())
+            if(!this->domains_.at(did).second.is_single_spherical())
             {
                 non_singles.push_back(ev->domain_id());
                 continue;
@@ -239,12 +239,14 @@ private:
         if(scheduler_.size() == 0)
         {
             ECELL4_NGFRD_LOG("no event found");
+            ECELL4_NGFRD_LOG("next_time = ", scheduler_.next_time());
             this->set_t(scheduler_.next_time());
             return;
         }
 
         const auto eidp = scheduler_.pop();
         this->set_t(eidp.second->time());
+        ECELL4_NGFRD_LOG("next_time = ", eidp.second->time());
 
         const auto fired = fire_event(*eidp.second);
 
@@ -278,6 +280,9 @@ private:
             this->form_domain_3D(pid, p);
         }
     }
+    boost::optional<std::pair<boost::container::small_vector<DomainID, 4>,
+                              boost::container::small_vector<FaceID, 4>  > >
+    form_single_domain_3D(const ParticleID& pid, const Particle& p);
 
     void form_domain_2D(const ParticleID& pid, const Particle& p, const FaceID& fid);
     void form_domain_3D(const ParticleID& pid, const Particle& p);
@@ -297,8 +302,10 @@ private:
         auto didp_iter = domains_.find(ev.domain_id());
         assert(ev.domain_id() == didp_iter->first);
 
+        // note that the shell has not been removed yet, while domain is removed
         auto dom = std::move(didp_iter->second);
         domains_.erase(didp_iter);
+
         return fire_domain(ev.domain_id(), std::move(dom.second));
     }
 
@@ -312,6 +319,10 @@ private:
         assert(domains_.count(did) == 0); // the domain is moved out from container
         switch(dom.kind())
         {
+            case Domain::DomainKind::SingleCircular:
+            {
+                return this->fire_single_circular(did, std::move(dom.as_single_circular()));
+            }
             case Domain::DomainKind::SingleSpherical:
             {
                 return this->fire_single_spherical(did, std::move(dom.as_single_spherical()));
@@ -329,6 +340,9 @@ private:
     }
 
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
+    fire_single_circular(const DomainID& did, SingleCircularDomain dom);
+
+    boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
     fire_single_spherical(const DomainID& did, SingleSphericalDomain dom);
 
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
@@ -340,13 +354,40 @@ private:
     // - It returns the particles after propagation.
     //   - We will keep it if this simulator is finalized.
     //   - We need to add a new domain otherwise.
+    // - The domain and corresponding event will be removed.
 
+    boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
+    burst_domain(const DomainID& did)
+    {
+        using std::swap; // zero clear the element in the map to avoid bugs
+        std::pair<event_id_type, Domain> evid_dom;
+        swap(evid_dom, domains_.at(did));
+
+        // remove domain and event from container
+        this->domains_.erase(did);
+        this->scheduler_.remove(evid_dom.first);
+
+        return burst_domain(did, std::move(evid_dom.second));
+    }
+
+    // this will not remove domain nor event. The caller should remove domain and
+    // event correctly.
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
     burst_domain(const DomainID& did, Domain dom)
     {
         assert(domains_.count(did) == 0); // the domain is moved out from container
         switch(dom.kind())
         {
+            case Domain::DomainKind::SingleSpherical:
+            {
+                return this->burst_single_spherical(did,
+                        std::move(dom.as_single_spherical()));
+            }
+            case Domain::DomainKind::SingleCircular:
+            {
+                return this->burst_single_circular(did,
+                        std::move(dom.as_single_circular()));
+            }
             case Domain::DomainKind::Multi:
             {
                 return this->burst_multi(did, std::move(dom.as_multi()));
@@ -360,35 +401,19 @@ private:
     }
 
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
-    burst_multi(const DomainID& did, MultiDomain dom)
-    {
-        ECELL4_NGFRD_LOG_FUNCTION();
-        ECELL4_NGFRD_LOG("bursting multi: ", did);
-        ECELL4_NGFRD_LOG("included shells: ", dom.shells());
+    burst_single_circular(const DomainID& did, SingleCircularDomain dom);
 
-        // step until this->t()
-        const auto dt = this->t() - dom.begin_time();
-        dom.step(did, *(this->model_), *this, *(this->world_), dt);
+    boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
+    burst_single_spherical(const DomainID& did, SingleSphericalDomain dom);
 
-        assert(shells_.diagnosis()); // XXX
+    boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
+    burst_multi(const DomainID& did, MultiDomain dom);
 
-        // The multi is going to be bursted, so we don't need to check if
-        // any reaction or escape happened.
+    // ------------------------------------------------------------------------
+    // draw reaction time
 
-        // remove shells
-        for(const auto& sidp : dom.shells())
-        {
-            ECELL4_NGFRD_LOG("removing shell: ", sidp);
-            this->shells_.remove_shell(sidp.first);
-        }
+    Real draw_single_reaction_time(const Species&) const;
 
-        boost::container::small_vector<std::pair<ParticleID, Particle>, 4> retval;
-        for(const auto& pid : dom.particle_ids())
-        {
-            retval.push_back(world_->get_particle(pid));
-        }
-        return retval;
-    }
 
     Polygon const& polygon() const noexcept {return this->world_->polygon();}
 

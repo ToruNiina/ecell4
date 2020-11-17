@@ -1,6 +1,7 @@
 #ifndef ECELL4_NGFRD_DOMAIN_HPP
 #define ECELL4_NGFRD_DOMAIN_HPP
 #include <ecell4/ngfrd/SingleSphericalDomain.hpp>
+#include <ecell4/ngfrd/SingleCircularDomain.hpp>
 #include <ecell4/ngfrd/MultiDomain.hpp>
 
 namespace ecell4
@@ -15,12 +16,14 @@ public:
     {
         Uninitialized   = 0,
         SingleSpherical = 1,
-        Multi           = 2,
+        SingleCircular  = 2,
+        Multi           = 3,
     };
 
     using storage_type = boost::variant<
             boost::blank,
             SingleSphericalDomain,
+            SingleCircularDomain,
             MultiDomain
         >;
 
@@ -33,6 +36,10 @@ private:
             throw_exception<IllegalState>("Domain is not initialized");
         }
         std::size_t operator()(const SingleSphericalDomain& dom) const noexcept
+        {
+            return dom.multiplicity();
+        }
+        std::size_t operator()(const SingleCircularDomain& dom) const noexcept
         {
             return dom.multiplicity();
         }
@@ -55,11 +62,16 @@ public:
     {
         return this->kind() == DomainKind::SingleSpherical;
     }
+    bool is_single_circular() const noexcept
+    {
+        return this->kind() == DomainKind::SingleCircular;
+    }
     bool is_multi() const noexcept
     {
         return this->kind() == DomainKind::Multi;
     }
-    bool is_2D() const noexcept {return false;}
+
+    bool is_2D() const noexcept {return is_single_circular();}
     bool is_3D() const noexcept {return is_single_spherical();}
 
     SingleSphericalDomain const& as_single_spherical() const
@@ -69,6 +81,15 @@ public:
     SingleSphericalDomain&       as_single_spherical()
     {
         return boost::get<SingleSphericalDomain>(storage_);
+    }
+
+    SingleCircularDomain const& as_single_circular() const
+    {
+        return boost::get<SingleCircularDomain>(storage_);
+    }
+    SingleCircularDomain&       as_single_circular()
+    {
+        return boost::get<SingleCircularDomain>(storage_);
     }
 
     MultiDomain const& as_multi() const
