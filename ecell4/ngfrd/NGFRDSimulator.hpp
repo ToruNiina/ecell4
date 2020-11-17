@@ -37,7 +37,8 @@ namespace ngfrd
 class NGFRDSimulator final: public SimulatorBase<NGFRDWorld>
 {
 public:
-    static constexpr Real SAFETY              = 1.0 + 1e-5;
+    static constexpr Real SAFETY_EXPAND       = 1.0 + 1e-5;
+    static constexpr Real SAFETY_SHRINK       = 1.0 - 1e-5;
     static constexpr Real SINGLE_SHELL_FACTOR = 1.0 + 0.1;
     static constexpr Real MULTI_SHELL_FACTOR  = 1.0 + 0.05;
     static constexpr Real DEFAULT_DT_FACTOR   = 1e-5;

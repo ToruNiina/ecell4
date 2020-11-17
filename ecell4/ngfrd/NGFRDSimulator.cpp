@@ -5,7 +5,8 @@ namespace ecell4
 {
 namespace ngfrd
 {
-constexpr Real NGFRDSimulator::SAFETY;
+constexpr Real NGFRDSimulator::SAFETY_EXPAND;
+constexpr Real NGFRDSimulator::SAFETY_SHRINK;
 constexpr Real NGFRDSimulator::SINGLE_SHELL_FACTOR;
 constexpr Real NGFRDSimulator::MULTI_SHELL_FACTOR;
 constexpr Real NGFRDSimulator::DEFAULT_DT_FACTOR;

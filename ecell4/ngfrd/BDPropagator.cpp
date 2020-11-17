@@ -206,7 +206,7 @@ bool BDPropagator::attempt_1to2_reaction_2D(
 
     const Polygon& polygon = world_.polygon();
 
-    const Real separation_length = r12 * NGFRDSimulator::SAFETY; // (1 + 1e-5)
+    const Real separation_length = r12 * NGFRDSimulator::SAFETY_EXPAND;
     std::size_t separation_count = 1 + max_retry_count_;
     while(separation_count != 0)
     {
@@ -644,7 +644,7 @@ bool BDPropagator::attempt_1to2_reaction_3D(
     Real3 pos1_new(p.position());
     Real3 pos2_new(p.position());
 
-    const Real separation_length = r12 * NGFRDSimulator::SAFETY; // (1 + 1e-5)
+    const Real separation_length = r12 * NGFRDSimulator::SAFETY_EXPAND;
     std::size_t separation_count = 1 + max_retry_count_;
     while(separation_count != 0)
     {
