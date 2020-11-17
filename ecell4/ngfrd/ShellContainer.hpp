@@ -195,16 +195,16 @@ public:
     boost::container::static_vector<std::pair<std::pair<ShellID, Shell>, Real>, N>
     nearest_neighbor(const Real3& pos) const
     {
-        return this->rtree_->template nearest_neighbor<N>(pos,
+        return this->rtree_.template nearest_neighbor<N>(pos,
             [this](const Real3& pos, const std::pair<ShellID, Shell>& sidp,
                    const PeriodicBoundary& pbc) -> boost::optional<Real>
             {
                 if(this->poly_con_.on_face(sidp.first) ||
-                   this->poly_con_.on_vertex(sdip.first))
+                   this->poly_con_.on_vertex(sidp.first))
                 {
                     return boost::none;
                 }
-                return visit(ShellDistanceCalculator(this->center, pbc),
+                return visit(ShellDistanceCalculator(pos, pbc),
                              sidp.second);
             });
     }
@@ -212,38 +212,36 @@ public:
     boost::container::static_vector<std::pair<std::pair<ShellID, Shell>, Real>, N>
     nearest_neighbor(const Real3& pos, const ShellID& ignore1) const
     {
-        return this->rtree_->template nearest_neighbor<N>(pos,
-            [this, ignore1](
+        return this->rtree_.template nearest_neighbor<N>(pos,
+            [this, &ignore1](
                 const Real3& pos, const std::pair<ShellID, Shell>& sidp,
                 const PeriodicBoundary& pbc) -> boost::optional<Real>
             {
-                if(sidp.second == ignore1              ||
+                if(sidp.first == ignore1               ||
                    this->poly_con_.on_face(sidp.first) ||
-                   this->poly_con_.on_vertex(sdip.first))
+                   this->poly_con_.on_vertex(sidp.first))
                 {
                     return boost::none;
                 }
-                return visit(ShellDistanceCalculator(this->center, pbc),
-                             sidp.second);
+                return visit(ShellDistanceCalculator(pos, pbc), sidp.second);
             });
     }
     template<std::size_t N = 1>
     boost::container::static_vector<std::pair<std::pair<ShellID, Shell>, Real>, N>
     nearest_neighbor(const Real3& pos, const ShellID& ignore1, const ShellID& ignore2) const
     {
-        return this->rtree_->template nearest_neighbor<N>(pos,
+        return this->rtree_.template nearest_neighbor<N>(pos,
             [this, ignore1, ignore2](
                 const Real3& pos, const std::pair<ShellID, Shell>& sidp,
                 const PeriodicBoundary& pbc) -> boost::optional<Real>
             {
-                if(sidp.second == ignore1 || sidp.second == ignore2 ||
-                   this->poly_con_.on_face(sidp.first)              ||
-                   this->poly_con_.on_vertex(sdip.first))
+                if(sidp.first == ignore1 || sidp.first == ignore2 ||
+                   this->poly_con_.on_face(sidp.first)            ||
+                   this->poly_con_.on_vertex(sidp.first))
                 {
                     return boost::none;
                 }
-                return visit(ShellDistanceCalculator(this->center, pbc),
-                             sidp.second);
+                return visit(ShellDistanceCalculator(pos, pbc), sidp.second);
             });
     }
 
