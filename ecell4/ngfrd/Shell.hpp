@@ -128,11 +128,31 @@ public:
 
 public:
 
-    template<typename S>
-    explicit Shell(S&& s): did_(boost::none), storage_(std::forward<S>(s)) {}
+    explicit Shell(SphericalShell s)
+        : did_(boost::none), storage_(std::move(s))
+    {}
+    explicit Shell(CylindricalShell s)
+        : did_(boost::none), storage_(std::move(s))
+    {}
+    explicit Shell(CircularShell s)
+        : did_(boost::none), storage_(std::move(s))
+    {}
+    explicit Shell(ConicalShell s)
+        : did_(boost::none), storage_(std::move(s))
+    {}
 
-    template<typename S>
-    Shell(S&& s, const DomainID& did): did_(did), storage_(std::forward<S>(s)) {}
+    explicit Shell(SphericalShell s, const DomainID& did)
+        : did_(did), storage_(std::move(s))
+    {}
+    explicit Shell(CylindricalShell s, const DomainID& did)
+        : did_(did), storage_(std::move(s))
+    {}
+    explicit Shell(CircularShell s, const DomainID& did)
+        : did_(did), storage_(std::move(s))
+    {}
+    explicit Shell(ConicalShell s, const DomainID& did)
+        : did_(did), storage_(std::move(s))
+    {}
 
     Shell(const Shell& other) = default;
     Shell(Shell&& other)      = default;
