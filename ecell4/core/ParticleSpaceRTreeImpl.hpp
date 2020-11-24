@@ -235,6 +235,28 @@ public:
             });
     }
 
+    // Ignores := bool(const std::pair<ParticleID, Particle>&);
+    // Ignores returns true if the particle must be skipped.
+    template<std::size_t N, typename Ignores, typename std::enable_if<std::is_same<
+        typename std::remove_cv<typename std::remove_reference<Ignores>::type>::type,
+        ParticleID>::value, std::nullptr_t>::type = nullptr>
+    boost::container::static_vector<std::pair<std::pair<ParticleID, Particle>, Real>, N>
+    nearest_neighbor(const Real3& pos, Ignores ignores) const
+    {
+        return this->rtree_.template nearest_neighbor<N>(pos,
+            [&filter](const Real3& pos,
+                      const std::pair<ParticleID, Particle>& val,
+                      const PeriodicBoundary& pbc) -> boost::optional<Real>
+            {
+                if(ignores(val))
+                {
+                    return boost::none;
+                }
+                const auto image = pbc.periodic_transpose(pos, val.second.position());
+                return length(image - val.second.position());
+            });
+    }
+
     bool diagnosis() const
     {
         bool is_ok = true;
