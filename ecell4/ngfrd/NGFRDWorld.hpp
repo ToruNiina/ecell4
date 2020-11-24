@@ -48,7 +48,8 @@ public:
                const Integer3& matrix_sizes = Integer3(3, 3, 3),
                const Real      margin       = 0.1)
         : ps_(new particle_space_type(edge_lengths, margin)),
-          polygon_(std::make_shared<Polygon>(edge_lengths, matrix_sizes))
+          polygon_(std::make_shared<Polygon>(edge_lengths, matrix_sizes)),
+          largest_particle_radius_2D_(0.0)
     {
         rng_ = std::shared_ptr<RandomNumberGenerator>(
             new GSLRandomNumberGenerator());
@@ -62,7 +63,8 @@ public:
                std::shared_ptr<RandomNumberGenerator> rng,
                std::shared_ptr<Polygon>               poly)
         : ps_(new particle_space_type(edge_lengths, margin)),
-          rng_(std::move(rng)), polygon_(std::move(poly))
+          rng_(std::move(rng)), polygon_(std::move(poly)),
+          largest_particle_radius_2D_(0.0)
     {
         this->prepare_restrictions();
     }
@@ -161,6 +163,10 @@ public:
         {
             this->ps_->update_particle(pid, p);
             this->poly_con_.update(pid, fid);
+
+            this->largest_particle_radius_2D_ = std::max(p.radius(),
+                    this->largest_particle_radius_2D_);
+
             return std::make_pair(std::make_pair(pid, p), true);
         }
         else
@@ -195,6 +201,8 @@ public:
                     std::make_pair(p.position(), fid), p.radius(), pid).empty())
         {
             this->poly_con_.update(pid, fid);
+            this->largest_particle_radius_2D_ = std::max(p.radius(),
+                    this->largest_particle_radius_2D_);
             return this->ps_->update_particle(pid, p);
         }
         else
@@ -208,6 +216,8 @@ public:
     {
         if(const auto fid = poly_con_.on_which_face(pid))
         {
+            // this might change the actual value of largest_particle_radius_2D_
+            // but here we don't re-scan particles, at least for now.
             poly_con_.remove(pid, *fid);
         }
         ps_->remove_particle(pid);
@@ -396,6 +406,8 @@ public:
     {
         return PeriodicBoundary(this->edge_lengths());
     }
+
+    Real largest_particle_radius_2D() const noexcept {return largest_particle_radius_2D_;}
 
     molecule_info_type get_molecule_info(const Species& sp) const
     {
@@ -812,6 +824,7 @@ private:
     polygon_container_type                 poly_con_; // PID <-> FaceID
 
     // 2D gfrd specific cache
+    Real largest_particle_radius_2D_;
     Real estimated_possible_largest_particle_radius_;
     std::unordered_map<FaceID, std::array<ecell4::Segment, 6>> barriers_;
 
