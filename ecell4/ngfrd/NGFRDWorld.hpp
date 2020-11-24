@@ -373,7 +373,40 @@ public:
     }
 
     // ------------------------------------------------------------------------
-    // nearest particle
+    // nearest particle 3D
+
+    template<std::size_t N = 1>
+    boost::container::static_vector<std::pair<std::pair<ParticleID, Particle>, Real>, N>
+    nearest_particle_3D(const Real3& pos) const
+    {
+        return this->ps_->template nearest_neighbor<N>(pos,
+            [this](const std::pair<ParticleID, Particle>& pidp) -> bool {
+                // If the particle is on a face, return true (ignore it)
+                return this->poly_con_.on_face(pidp.first);
+            });
+    }
+    template<std::size_t N = 1>
+    boost::container::static_vector<std::pair<std::pair<ParticleID, Particle>, Real>, N>
+    nearest_particle_3D(const Real3& pos, const ParticleID& ignore1) const
+    {
+        return this->ps_->template nearest_neighbor<N>(pos,
+            [this, &ignore1](const std::pair<ParticleID, Particle>& pidp) -> bool {
+                return pidp.first == ignore1 || this->poly_con_.on_face(pidp.first);
+            });
+    }
+    template<std::size_t N = 1>
+    boost::container::static_vector<std::pair<std::pair<ParticleID, Particle>, Real>, N>
+    nearest_particle_3D(const Real3& pos, const ParticleID& ignore1, const ParticleID& ignore2) const
+    {
+        return this->ps_->template nearest_neighbor<N>(pos,
+            [this, &ignore1, &ignore2](const std::pair<ParticleID, Particle>& pidp) -> bool {
+                return pidp.first == ignore1 || pidp.first == ignore2 ||
+                       this->poly_con_.on_face(pidp.first);
+            });
+    }
+
+    // ------------------------------------------------------------------------
+    // nearest particle XD
 
     template<std::size_t N = 1>
     boost::container::static_vector<std::pair<std::pair<ParticleID, Particle>, Real>, N>
