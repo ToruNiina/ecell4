@@ -191,7 +191,7 @@ NGFRDSimulator::form_single_domain_3D(const ParticleID& pid, const Particle& p)
     // account. To maximizes the efficiency, it makes the shell radius
     // proportional to the particles' diffusion coefficient.
 
-    const auto nearest_particle = world_->nearest_particle(p.position(), pid);
+    const auto nearest_particle = world_->nearest_particle_3D(p.position(), pid);
     const auto nearest_face     = world_->nearest_face(p.position());
 
     ECELL4_NGFRD_LOG("nearest particles = ", nearest_particle);
