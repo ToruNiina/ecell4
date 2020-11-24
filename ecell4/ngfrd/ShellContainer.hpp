@@ -157,7 +157,9 @@ public:
     }
 
     // ------------------------------------------------------------------------
-    // list_shells 3D
+    // list_shells/nearest_neighbor for 3D shells
+    //
+    // XXX Note: this skips all the 2D shells. It returns only 3D shells.
 
     std::vector<std::pair<std::pair<ShellID, Shell>, Real>>
     list_shells_within_radius_3D(const Real3& pos, const Real& radius) const
@@ -193,7 +195,7 @@ public:
 
     template<std::size_t N = 1>
     boost::container::static_vector<std::pair<std::pair<ShellID, Shell>, Real>, N>
-    nearest_neighbor(const Real3& pos) const
+    nearest_neighbor_3D(const Real3& pos) const
     {
         return this->rtree_.template nearest_neighbor<N>(pos,
             [this](const Real3& pos, const std::pair<ShellID, Shell>& sidp,
@@ -210,7 +212,7 @@ public:
     }
     template<std::size_t N = 1>
     boost::container::static_vector<std::pair<std::pair<ShellID, Shell>, Real>, N>
-    nearest_neighbor(const Real3& pos, const ShellID& ignore1) const
+    nearest_neighbor_3D(const Real3& pos, const ShellID& ignore1) const
     {
         return this->rtree_.template nearest_neighbor<N>(pos,
             [this, &ignore1](
@@ -228,7 +230,7 @@ public:
     }
     template<std::size_t N = 1>
     boost::container::static_vector<std::pair<std::pair<ShellID, Shell>, Real>, N>
-    nearest_neighbor(const Real3& pos, const ShellID& ignore1, const ShellID& ignore2) const
+    nearest_neighbor_3D(const Real3& pos, const ShellID& ignore1, const ShellID& ignore2) const
     {
         return this->rtree_.template nearest_neighbor<N>(pos,
             [this, ignore1, ignore2](
@@ -246,7 +248,9 @@ public:
     }
 
     // ------------------------------------------------------------------------
-    // 2D
+    // list_shells/nearest_neighbor for 2D shells
+    //
+    // XXX Note: this skips all the 3D shells. It returns only 2D shells.
 
     std::vector<std::pair<std::pair<ShellID, Shell>, Real>>
     list_shells_within_radius_2D(const std::pair<Real3, FaceID>& pos,
@@ -267,6 +271,28 @@ public:
             const Real& radius, const ShellID& ignore1, const ShellID& ignore2) const
     {
         return list_shells_within_radius_2D_impl(pos, radius,
+            [&](const ShellID& sid) {return sid == ignore1 || sid == ignore2;});
+    }
+
+    template<std::size_t N = 1>
+    boost::container::static_vector<std::pair<std::pair<ShellID, Shell>, Real>, N>
+    nearest_neighbor_2D(const Real3& pos) const
+    {
+        return this->template nearest_neighbor_2D<N>(pos, radius,
+            [](const ShellID&) {return false;});
+    }
+    template<std::size_t N = 1>
+    boost::container::static_vector<std::pair<std::pair<ShellID, Shell>, Real>, N>
+    nearest_neighbor_2D(const Real3& pos, const ShellID& ignore1) const
+    {
+        return this->template nearest_neighbor_2D<N>(pos, radius,
+            [&](const ShellID& sid) {return sid == ignore;});
+    }
+    template<std::size_t N = 1>
+    boost::container::static_vector<std::pair<std::pair<ShellID, Shell>, Real>, N>
+    nearest_neighbor_2D(const Real3& pos, const ShellID& ignore1, const ShellID& ignore2) const
+    {
+        return this->template nearest_neighbor_2D<N>(pos, radius,
             [&](const ShellID& sid) {return sid == ignore1 || sid == ignore2;});
     }
 
@@ -469,6 +495,136 @@ private:
         }
         std::sort(retval.begin(), retval.end(), utils::pair_second_element_comparator<
                   std::pair<ShellID, Shell>, Real>());
+        return retval;
+    }
+
+    template<std::size_t N, typename Filter>
+    boost::container::static_vector<std::pair<std::pair<ShellID, Shell>, Real>, N>
+    nearest_neighbor_2D(const std::pair<Real3, FaceID>& pos, const Real radius,
+                        Filter filter) const
+    {
+        boost::container::static_vector<
+            std::pair<std::pair<ShellID, Shell>, Real>, N> retval;
+
+        const auto& pos = pos.first;
+        const auto& fid = pos.second;
+
+        // check shells on the same face
+        if(const auto& shells = this->poly_con_.objects_on(fid))
+        {
+            // XXX: Here, on a Face, only circular faces exist.
+            for(const ShellID& sid : *shells)
+            {
+                if(filter(sid)) {continue;}
+
+                auto sidp = this->get_shell(sid);
+                const auto& sh = sidp.second.as_circular();
+                // it is okay to use 3D distance because both are on the same face
+                const Real dist = length(pos - sh.position()) - sh.shape().radius();
+
+                if(retval.capacity() == retval.size()) // retval is full
+                {
+                    if(dist < retval.back().second)
+                    {
+                        retval.pop_back(); // discard the most distant one
+                    }
+                    else // the shell is more distant than the
+                    {    // currently-most-distant one. skip this shell.
+                        continue;
+                    }
+                }
+
+                assert(retval.size() < retval.capacity());
+                auto elem = std::make_pair(sidp, dist);
+                auto loc  = std::lower_bound(retval.begin(), retval.end(), elem,
+                    [](const std::pair<std::pair<ShellID, Shell>, Real>& lhs,
+                       const std::pair<std::pair<ShellID, Shell>, Real>& rhs) {
+                        return lhs.second < rhs.second;
+                    });
+                retval.insert(loc, std::move(elem));
+            }
+        }
+
+        // check shells on the neighborling faces
+        for(const auto& nfid : polygon_->neighbor_faces_of(fid))
+        {
+            if(const auto& shells = this->poly_con_.objects_on(nfid))
+            {
+                // XXX: Here, on a Face, only circular faces exist.
+                for(const ShellID& sid : *shells)
+                {
+                    if(filter(sid)) {continue;}
+
+                    auto sidp = this->get_shell(sid);
+                    const auto& sh = sidp.second.as_circular();
+
+                    const Real dist = ecell4::polygon::distance(*polygon_,
+                        center, std::make_pair(sh.position(), sh.fid())
+                        ) - sh.shape().radius();
+
+                    if(retval.capacity() == retval.size()) // retval is full
+                    {
+                        if(dist < retval.back().second)
+                        {
+                            retval.pop_back(); // discard the most distant one
+                        }
+                        else // the shell is more distant than the
+                        {    // currently-most-distant one. skip this shell.
+                            continue;
+                        }
+                    }
+
+                    assert(retval.size() < retval.capacity());
+                    auto elem = std::make_pair(sidp, dist);
+                    auto loc  = std::lower_bound(retval.begin(), retval.end(), elem,
+                        [](const std::pair<std::pair<ShellID, Shell>, Real>& lhs,
+                           const std::pair<std::pair<ShellID, Shell>, Real>& rhs) {
+                            return lhs.second < rhs.second;
+                        });
+                    retval.insert(loc, std::move(elem));
+                }
+            }
+        }
+        // check shells on the neighborling vertices
+        for(const auto& vid : polygon_->neighbor_vertices_of(fid))
+        {
+            if(const auto& shells = this->poly_con_.objects_on(vid))
+            {
+                // XXX: Here, on a Vertex, only conical faces exist.
+                for(const ShellID& sid : *shells)
+                {
+                    if(filter(sid)) {continue;}
+
+                    auto sidp = this->get_shell(sid);
+                    const auto& sh = sidp.second.as_circular();
+
+                    const Real dist = ecell4::polygon::distance(*polygon_,
+                        center, std::make_pair(sh.position(), sh.vid())
+                        ) - sh.shape().slant_height();
+
+                    if(retval.capacity() == retval.size()) // retval is full
+                    {
+                        if(dist < retval.back().second)
+                        {
+                            retval.pop_back(); // discard the most distant one
+                        }
+                        else // the shell is more distant than the
+                        {    // currently-most-distant one. skip this shell.
+                            continue;
+                        }
+                    }
+
+                    assert(retval.size() < retval.capacity());
+                    auto elem = std::make_pair(sidp, dist);
+                    auto loc  = std::lower_bound(retval.begin(), retval.end(), elem,
+                        [](const std::pair<std::pair<ShellID, Shell>, Real>& lhs,
+                           const std::pair<std::pair<ShellID, Shell>, Real>& rhs) {
+                            return lhs.second < rhs.second;
+                        });
+                    retval.insert(loc, std::move(elem));
+                }
+            }
+        }
         return retval;
     }
 

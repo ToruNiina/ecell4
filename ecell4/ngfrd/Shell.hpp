@@ -311,6 +311,7 @@ struct ShellDistanceCalculator
         }
         return dist;
     }
+
     Real operator()(const CircularShell& sh) const noexcept
     {
         // sometimes circle wraps two triangles. it is difficult to calculate
@@ -321,6 +322,7 @@ struct ShellDistanceCalculator
         return length(pos - boundary->periodic_transpose(sh.position(), pos)) -
                sh.shape().radius();
     }
+
     Real operator()(const ConicalShell& sh) const noexcept
     {
         // sometimes circle wraps two triangles. it is difficult to calculate
