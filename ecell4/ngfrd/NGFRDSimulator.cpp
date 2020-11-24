@@ -148,6 +148,7 @@ boost::optional<std::pair<boost::container::small_vector<DomainID, 4>,
 NGFRDSimulator::form_single_domain_3D(const ParticleID& pid, const Particle& p)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
+    const Real largest_2D_particle = world_->largest_particle_radius_2D();
     const Real min_shell_radius = p.radius() * SINGLE_SHELL_FACTOR;
 
     boost::container::small_vector<DomainID, 4> intrusive_domains;
@@ -167,7 +168,7 @@ NGFRDSimulator::form_single_domain_3D(const ParticleID& pid, const Particle& p)
         }
     }
     for(const auto& item : this->world_->list_faces_within_radius(
-                p.position(), min_shell_radius))
+                p.position(), min_shell_radius + largest_2D_particle))
     {
         const auto fid = item.first.first;
         if(std::find(intrusive_faces.begin(), intrusive_faces.end(), fid) ==
@@ -188,7 +189,7 @@ NGFRDSimulator::form_single_domain_3D(const ParticleID& pid, const Particle& p)
 
     // Here, it draws a modest sized shell that takes the other particles into
     // account. To maximizes the efficiency, it makes the shell radius
-    // proportional to particles' diffusion coefficient
+    // proportional to the particles' diffusion coefficient.
 
     const auto nearest_particle = world_->nearest_particle(p.position(), pid);
     const auto nearest_face     = world_->nearest_face(p.position());
@@ -212,10 +213,14 @@ NGFRDSimulator::form_single_domain_3D(const ParticleID& pid, const Particle& p)
     }
     if( ! nearest_face.empty())
     {
-        max_radius = std::min(max_radius, nearest_face.front().second);
+        max_radius = std::min(nearest_face.front().second - largest_2D_particle,
+                              max_radius);
     }
 
-    // check other shells that might interrupt it
+    // check other 3D shells within max_radius.
+    // Note: Here, we already subtract largest_2D_particle that is effective
+    //       thickness of the 2D shells. So we just ignore 2D shells here, and
+    //       only check 3D shells.
     for(const auto& item : this->shells_.list_shells_within_radius_3D(
                 p.position(), max_radius))
     {
