@@ -165,12 +165,12 @@ SingleSphericalPropagator::attempt_1to2_reaction(const SingleSphericalDomain& do
             continue;
         }
 
-        // burst domains around the reactants.
-        if(this->is_inside_of_shell(dom, pos1_new, r1))
+        // burst domains around the reactants, if needed.
+        if( ! this->is_inside_of_shell(dom, pos1_new, r1))
         {
             sim_.determine_positions_3D(pos1_new, r1, self_id_);
         }
-        if(this->is_inside_of_shell(dom, pos2_new, r2))
+        if( ! this->is_inside_of_shell(dom, pos2_new, r2))
         {
             sim_.determine_positions_3D(pos2_new, r2, self_id_);
         }
