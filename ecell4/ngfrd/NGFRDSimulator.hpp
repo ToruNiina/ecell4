@@ -224,6 +224,18 @@ public:
         return;
     }
 
+    void determine_positions_XD(const std::pair<Real3, FaceID>& pos,
+                                const Real radius)
+    {
+        // TODO
+        return;
+    }
+    void determine_positions_XD(const std::pair<Real3, FaceID>& pos,
+                                const Real radius, const DomainID& ignored)
+    {
+        // TODO
+        return;
+    }
 
     // health check
     bool diagnosis() const
