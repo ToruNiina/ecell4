@@ -283,6 +283,11 @@ void NGFRDSimulator::form_domain_3D(const ParticleID& pid, const Particle& p)
     }
 
     // -----------------------------------------------------------------------
+    // form_pair (if size of intrusive particles == 2 && no intrusive faces)
+    //
+    // TODO
+
+    // -----------------------------------------------------------------------
     // form_multi
     const Real multi_radius = p.radius() * SINGLE_SHELL_FACTOR;
 
