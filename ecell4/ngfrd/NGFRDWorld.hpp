@@ -348,23 +348,48 @@ public:
     }
 
     // ------------------------------------------------------------------------
+    // list_particles_within_radius_XD
+    // It collects all the particles, whichever 2D or 3D, considering all the
+    // particles have a spherical shape.
+
+    std::vector<std::pair<std::pair<ParticleID, Particle>, Real>>
+    list_particles_within_radius_XD(const Real3& center, const Real radius) const
+    {
+        // ParticleSpaceRTreeImpl considers all the particles are sphere.
+        // It does not remove 2D particles from the result.
+        return this->ps_->list_particles_within_radius(center, radius);
+    }
+    std::vector<std::pair<std::pair<ParticleID, Particle>, Real>>
+    list_particles_within_radius_XD(const Real3& center, const Real radius,
+            const ParticleID& ignore) const
+    {
+        return this->ps_->list_particles_within_radius(center, radius, ignore);
+    }
+    std::vector<std::pair<std::pair<ParticleID, Particle>, Real>>
+    list_particles_within_radius_XD(const Real3& center, const Real radius,
+            const ParticleID& ignore1, const ParticleID& ignore2) const
+    {
+        return this->ps_->list_particles_within_radius(center, radius, ignore1, ignore2);
+    }
+
+    // ------------------------------------------------------------------------
     // nearest particle
 
     template<std::size_t N = 1>
     boost::container::static_vector<std::pair<std::pair<ParticleID, Particle>, Real>, N>
-    nearest_particle(const Real3& pos) const
+    nearest_particle_XD(const Real3& pos) const
     {
         return this->ps_->template nearest_neighbor<N>(pos);
     }
     template<std::size_t N = 1>
     boost::container::static_vector<std::pair<std::pair<ParticleID, Particle>, Real>, N>
-    nearest_particle(const Real3& pos, const ParticleID& ignore1) const
+    nearest_particle_XD(const Real3& pos, const ParticleID& ignore1) const
     {
         return this->ps_->template nearest_neighbor<N>(pos, ignore1);
     }
     template<std::size_t N = 1>
     boost::container::static_vector<std::pair<std::pair<ParticleID, Particle>, Real>, N>
-    nearest_particle(const Real3& pos, const ParticleID& ignore1, const ParticleID& ignore2) const
+    nearest_particle_XD(const Real3& pos, const ParticleID& ignore1, const ParticleID& ignore2) const
     {
         return this->ps_->template nearest_neighbor<N>(pos, ignore1, ignore2);
     }
@@ -619,60 +644,6 @@ public:
     }
 
 private:
-
-    template<typename ... Ts>
-    std::vector<std::pair<std::pair<ParticleID, Particle>, Real>>
-    list_particles_within_radius_impl(const Real3& center, const Real radius,
-                                      Ts&& ... ignores) const
-    {
-        const auto faces = polygon_->list_faces_within_radius(center, radius);
-        auto list = this->ps_->list_particles_within_radius(
-                center, radius, std::forward<Ts>(ignores)...);
-
-        // FIXME
-        // In case of a particle straddles faces, the calculation becomes
-        // incorrect (overestimate the number of particles). We need to remove
-        // them to make it perfect.
-        //
-        // To correctly find the overlap, we first need to check if a particle
-        // overlaps with a face. If
-        // - the range overlaps with a face and
-        // - a particle overlaps with the face and
-        // - the distance between the center of the particle and the center of
-        //   the region is less than the radius and the range radius on the face
-        // then they overlaps each other.
-        //
-        // If particle does not straddle faces, it may not overlap with the
-        // region even if the distance between region and the particle is less
-        // than the radius.
-
-        // 3D particle collides with 2D particle only if it is within radius
-        // AND 3D particle collides with the face on which the 2D particle is.
-
-        const auto removed = std::remove_if(list.begin(), list.end(), [this, &faces]
-            (const std::pair<std::pair<ParticleID, Particle>, Real>& elem) -> bool
-            {
-                const auto pid = elem.first.first;
-                if(const auto fidopt = poly_con_.on_which_face(elem.first.first))
-                {
-                    // 2D particle! If the face is not found in the overlapping
-                    // face, remove it.
-                    const auto fid = *fidopt;
-
-                    return std::find_if(faces.begin(), faces.end(), [&fid]
-                        (const std::pair<std::pair<FaceID, Triangle>, Real>& f) {
-                            return fid == f.first.first;
-                        }) == faces.end();
-                }
-                // it is not on a face. it is 3D. do not remove this.
-                return false;
-            });
-
-        // erase all the 2D particles that do not collide actually.
-        list.erase(removed, list.end());
-        return list;
-    }
-
 
     template<typename ... Ts>
     std::vector<std::pair<std::pair<ParticleID, Particle>, Real>>
