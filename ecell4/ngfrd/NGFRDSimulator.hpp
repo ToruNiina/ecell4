@@ -205,20 +205,22 @@ public:
                                 const DomainID& ignored)
     {
         this->determine_positions_3D_impl(pos, radius,
-                [&](const DomainID& did){return did == ignored;});
+                [&ignored](const DomainID& did){return did == ignored;});
         return;
     }
 
     void determine_positions_2D(const std::pair<Real3, FaceID>& pos,
                                 const Real radius)
     {
-        // XXX: currently, all the domains are multi.
+        this->determine_positions_2D_impl(pos, radius,
+                [](const DomainID&){return false;});
         return;
     }
     void determine_positions_2D(const std::pair<Real3, FaceID>& pos,
                                 const Real radius, const DomainID& ignored)
     {
-        // XXX: currently, all the domains are multi.
+        this->determine_positions_2D_impl(pos, radius,
+                [&ignored](const DomainID& did){return did == ignored;});
         return;
     }
 
