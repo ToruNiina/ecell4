@@ -237,7 +237,7 @@ public:
 
     // Ignores := bool(const std::pair<ParticleID, Particle>&);
     // Ignores returns true if the particle must be skipped.
-    template<std::size_t N, typename Ignores, typename std::enable_if<std::is_same<
+    template<std::size_t N, typename Ignores, typename std::enable_if<!std::is_same<
         typename std::remove_cv<typename std::remove_reference<Ignores>::type>::type,
         ParticleID>::value, std::nullptr_t>::type = nullptr>
     boost::container::static_vector<std::pair<std::pair<ParticleID, Particle>, Real>, N>
