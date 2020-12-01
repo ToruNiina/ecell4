@@ -61,13 +61,18 @@ struct CircularShell
 {
     using shape_type = Circle;
 
-    CircularShell(shape_type crc, const FaceID& fid): fid_(fid), shape_(crc) {}
+    CircularShell(Real thickness, shape_type crc, const FaceID& fid)
+        : fid_(fid), shape_(crc), thickness_(thickness)
+    {}
 
     Real3& position()       noexcept {return shape_.position();}
     Real3  position() const noexcept {return shape_.position();}
 
     shape_type&       shape()       noexcept {return shape_;}
     shape_type const& shape() const noexcept {return shape_;}
+
+    Real&       thickness()       noexcept {return thickness_;}
+    Real const& thickness() const noexcept {return thickness_;}
 
     FaceID&       fid()       noexcept {return fid_;}
     FaceID const& fid() const noexcept {return fid_;}
@@ -81,6 +86,7 @@ struct CircularShell
 
     FaceID     fid_;
     shape_type shape_;
+    Real       thickness_; // particle radius
 };
 
 // 2D shell on a vertex
@@ -88,13 +94,18 @@ struct ConicalShell
 {
     using shape_type = ConicalSurface;
 
-    ConicalShell(shape_type con, const VertexID& vid): vid_(vid), shape_(con) {}
+    ConicalShell(Real thickness, shape_type con, const VertexID& vid)
+        : vid_(vid), shape_(con), thickness_(thickness)
+    {}
 
     Real3& position()       noexcept {return shape_.position();}
     Real3  position() const noexcept {return shape_.position();}
 
     shape_type&       shape()       noexcept {return shape_;}
     shape_type const& shape() const noexcept {return shape_;}
+
+    Real&       thickness()       noexcept {return thickness_;}
+    Real const& thickness() const noexcept {return thickness_;}
 
     VertexID&       vid()       noexcept {return vid_;}
     VertexID const& vid() const noexcept {return vid_;}
@@ -108,6 +119,7 @@ struct ConicalShell
 
     VertexID   vid_;
     shape_type shape_;
+    Real       thickness_; // particle radius
 };
 
 enum class ShellKind : int // boost::variant::which returns an int.
