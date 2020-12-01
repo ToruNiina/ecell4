@@ -140,8 +140,10 @@ public:
     {
         ParticleID pid(this->pidgen_());
 
+        // use _XD functions to consider both 3D-3D and 3D-2D overlap assuming
+        // all the particles are in the spherical shape.
         if( ! has_overlapping_faces(p.position(), p.radius()) &&
-           list_particles_within_radius_3D(p.position(), p.radius()).empty())
+           list_particles_within_radius_XD(p.position(), p.radius()).empty())
         {
             // XXX: do NOT call this->update_particle to avoid redundant check
             this->ps_->update_particle(pid, p);
@@ -158,8 +160,9 @@ public:
     {
         ParticleID pid(this->pidgen_());
 
-        if(this->list_particles_within_radius_2D(
-                    std::make_pair(p.position(), fid), p.radius()).empty())
+        // use _3D for 2D-3D overlap and _2D for 2D-2D overlap.
+        if(this->list_particles_within_radius_3D(p.position(), p.radius()).empty() &&
+           this->list_particles_within_radius_2D(std::make_pair(p.position(), fid), p.radius()).empty())
         {
             this->ps_->update_particle(pid, p);
             this->poly_con_.update(pid, fid);
@@ -178,7 +181,7 @@ public:
     bool update_particle_3D(const ParticleID& pid, const Particle& p)
     {
         if( ! has_overlapping_faces(p.position(), p.radius()) &&
-            ! has_overlapping_particles_3D(p.position(), p.radius(), pid))
+            ! has_overlapping_particles_XD(p.position(), p.radius(), pid))
         {
             // if `pid` already exists and was a 2D particle, we need to reset
             // the relationship.
@@ -197,8 +200,8 @@ public:
     bool update_particle_2D(const ParticleID& pid, const Particle& p,
                             const FaceID& fid)
     {
-        if(this->list_particles_within_radius_2D(
-                    std::make_pair(p.position(), fid), p.radius(), pid).empty())
+        if(this->list_particles_within_radius_3D(p.position(), p.radius(), pid).empty() &&
+           this->list_particles_within_radius_2D(std::make_pair(p.position(), fid), p.radius(), pid).empty())
         {
             this->poly_con_.update(pid, fid);
             this->largest_particle_radius_2D_ = std::max(p.radius(),
