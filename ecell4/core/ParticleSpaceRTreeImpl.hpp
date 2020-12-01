@@ -244,9 +244,9 @@ public:
     nearest_neighbor(const Real3& pos, Ignores ignores) const
     {
         return this->rtree_.template nearest_neighbor<N>(pos,
-            [&filter](const Real3& pos,
-                      const std::pair<ParticleID, Particle>& val,
-                      const PeriodicBoundary& pbc) -> boost::optional<Real>
+            [&ignores](const Real3& pos,
+                       const std::pair<ParticleID, Particle>& val,
+                       const PeriodicBoundary& pbc) -> boost::optional<Real>
             {
                 if(ignores(val))
                 {
