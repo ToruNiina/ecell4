@@ -28,7 +28,7 @@ class SingleCircularDomain
 
     SingleCircularDomain()
         : kind_(EventKind::Unknown), dt_(0.0), begin_time_(0.0),
-          shell_(Circle(0.0, Real3(0.0, 0.0, 0.0), Real3(0.0, 0.0, 0.0)), FaceID{}),
+          shell_(0.0, Circle(0.0, Real3(0.0, 0.0, 0.0), Real3(0.0, 0.0, 0.0)), FaceID{}),
           gf_(0.0, 0.0)
     {}
     SingleCircularDomain(

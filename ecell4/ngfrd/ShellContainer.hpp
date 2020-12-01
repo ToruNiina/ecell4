@@ -278,21 +278,21 @@ public:
     boost::container::static_vector<std::pair<std::pair<ShellID, Shell>, Real>, N>
     nearest_neighbor_2D(const Real3& pos) const
     {
-        return this->template nearest_neighbor_2D<N>(pos, radius,
+        return this->template nearest_neighbor_2D<N>(pos,
             [](const ShellID&) {return false;});
     }
     template<std::size_t N = 1>
     boost::container::static_vector<std::pair<std::pair<ShellID, Shell>, Real>, N>
     nearest_neighbor_2D(const Real3& pos, const ShellID& ignore1) const
     {
-        return this->template nearest_neighbor_2D<N>(pos, radius,
-            [&](const ShellID& sid) {return sid == ignore;});
+        return this->template nearest_neighbor_2D<N>(pos,
+            [&](const ShellID& sid) {return sid == ignore1;});
     }
     template<std::size_t N = 1>
     boost::container::static_vector<std::pair<std::pair<ShellID, Shell>, Real>, N>
     nearest_neighbor_2D(const Real3& pos, const ShellID& ignore1, const ShellID& ignore2) const
     {
-        return this->template nearest_neighbor_2D<N>(pos, radius,
+        return this->template nearest_neighbor_2D<N>(pos,
             [&](const ShellID& sid) {return sid == ignore1 || sid == ignore2;});
     }
 
@@ -500,14 +500,13 @@ private:
 
     template<std::size_t N, typename Filter>
     boost::container::static_vector<std::pair<std::pair<ShellID, Shell>, Real>, N>
-    nearest_neighbor_2D(const std::pair<Real3, FaceID>& pos, const Real radius,
-                        Filter filter) const
+    nearest_neighbor_2D(const std::pair<Real3, FaceID>& center, Filter filter) const
     {
         boost::container::static_vector<
             std::pair<std::pair<ShellID, Shell>, Real>, N> retval;
 
-        const auto& pos = pos.first;
-        const auto& fid = pos.second;
+        const auto& pos = center.first;
+        const auto& fid = center.second;
 
         // check shells on the same face
         if(const auto& shells = this->poly_con_.objects_on(fid))
@@ -596,7 +595,7 @@ private:
                     if(filter(sid)) {continue;}
 
                     auto sidp = this->get_shell(sid);
-                    const auto& sh = sidp.second.as_circular();
+                    const auto& sh = sidp.second.as_conical();
 
                     const Real dist = ecell4::polygon::distance(*polygon_,
                         center, std::make_pair(sh.position(), sh.vid())

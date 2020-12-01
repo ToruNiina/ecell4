@@ -372,20 +372,17 @@ public:
         return this->ps_->list_particles_within_radius(center, radius, ignore1, ignore2);
     }
 
-    std::vector<std::pair<std::pair<ParticleID, Particle>, Real>>
-    has_overlapping_particles_XD(const Real3& center, const Real radius) const
+    bool has_overlapping_particles_XD(const Real3& center, const Real radius) const
     {
         // TODO speedup
         return ! this->ps_->list_particles_within_radius(center, radius).empty();
     }
-    std::vector<std::pair<std::pair<ParticleID, Particle>, Real>>
-    has_overlapping_particles_XD(const Real3& center, const Real radius,
+    bool has_overlapping_particles_XD(const Real3& center, const Real radius,
             const ParticleID& ignore) const
     {
         return ! this->ps_->list_particles_within_radius(center, radius, ignore).empty();
     }
-    std::vector<std::pair<std::pair<ParticleID, Particle>, Real>>
-    has_overlapping_particles_XD(const Real3& center, const Real radius,
+    bool has_overlapping_particles_XD(const Real3& center, const Real radius,
             const ParticleID& ignore1, const ParticleID& ignore2) const
     {
         return ! this->ps_->list_particles_within_radius(center, radius, ignore1, ignore2).empty();

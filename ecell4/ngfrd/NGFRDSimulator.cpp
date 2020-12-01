@@ -74,7 +74,7 @@ void NGFRDSimulator::form_domain_2D(
         const auto did = didgen_();
         const auto sid = sidgen_();
 
-        Shell sh(CircularShell(Circle(multi_radius, p.position(),
+        Shell sh(CircularShell(p.radius(), Circle(multi_radius, p.position(),
                         this->polygon().triangle_at(fid).normal()), fid), did);
 
         ECELL4_NGFRD_LOG("shell created: ", sid);
@@ -108,7 +108,7 @@ void NGFRDSimulator::form_domain_2D(
     intruders.pop_back();
 
     const auto sid = sidgen_();
-    Shell sh(CircularShell(Circle(multi_radius, p.position(),
+    Shell sh(CircularShell(p.radius(), Circle(multi_radius, p.position(),
                     this->polygon().triangle_at(fid).normal()), fid), host_id);
     ECELL4_NGFRD_LOG("shell created ", sid);
     this->shells_.update_shell(sid, sh);
@@ -445,7 +445,7 @@ void NGFRDSimulator::form_domain_3D(const ParticleID& pid, const Particle& p)
                     // form a (2D) multi shell
                     const auto sid = sidgen_();
 
-                    Shell sh(CircularShell(Circle(multi_radius, p.position(),
+                    Shell sh(CircularShell(p.radius(), Circle(multi_radius, p.position(),
                         this->polygon().triangle_at(fid).normal()), fid), host_id);
 
                     this->shells_.update_shell(sid, sh);
@@ -522,7 +522,7 @@ void NGFRDSimulator::form_tight_domain_2D(
     const auto did = didgen_();
     const auto sid = sidgen_();
 
-    CircularShell sh(Circle(p.radius(), p.position(),
+    CircularShell sh(p.radius(), Circle(p.radius(), p.position(),
                     this->polygon().triangle_at(fid).normal()), fid);
 
     this->shells_.update_shell(sid, Shell(sh, did));

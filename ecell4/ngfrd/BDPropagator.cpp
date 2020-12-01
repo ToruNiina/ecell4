@@ -70,7 +70,8 @@ void BDPropagator::propagate_2D_particle(
             // {{ParticleID, Particle}, Real(distance)}
             if(pidpd.second < p.radius() + pidpd.first.second.radius())
             {
-                should_be_rejected = true;
+                // core overlap found.
+                rejected = true;
                 break;
             }
         }
@@ -100,8 +101,9 @@ void BDPropagator::propagate_2D_particle(
     {
         return; // No reactive partner, we don't need to attempt pair reaction.
     }
+    assert(overlapped_3D.empty()); // XXX later we may remove this requirement
 
-    attempt_pair_reaction_2D(pid, p, fid, overlapped);
+    attempt_pair_reaction_2D(pid, p, fid, overlapped_2D);
     return ;
 }
 
@@ -265,13 +267,13 @@ bool BDPropagator::attempt_1to2_reaction_2D(
 
     if(not is_inside_of_shells_2D(pos1_new, r1))
     {
-        sim_.determine_positions_2D(pos1_new, r1, self_id_);
-        sim_.determine_positions_3D(pos1_new, r1, self_id_);
+        sim_.determine_positions_2D(pos1_new,       r1, self_id_);
+        sim_.determine_positions_3D(pos1_new.first, r1, self_id_);
     }
     if(not is_inside_of_shells_2D(pos2_new, r2))
     {
-        sim_.determine_positions_2D(pos2_new, r2, self_id_);
-        sim_.determine_positions_3D(pos2_new, r2, self_id_);
+        sim_.determine_positions_2D(pos2_new,       r2, self_id_);
+        sim_.determine_positions_3D(pos2_new.first, r2, self_id_);
     }
 
     if(world_.has_overlapping_particles_2D(pos1_new,       r1, pid) ||
@@ -315,8 +317,8 @@ bool BDPropagator::attempt_1to2_reaction_2D(
                 sim_.determine_positions_2D(new_pos,       p_.radius(), self_id_);
                 sim_.determine_positions_3D(new_pos.first, p_.radius(), self_id_);
             }
-            if(not world_.has_overlapping_particles_2D(new_pos, p_.radius(), pid_) &&
-               not world_.has_overlapping_particles_3D(new_pos, p_.radius(), pid_))
+            if(not world_.has_overlapping_particles_2D(new_pos,       p_.radius(), pid_) &&
+               not world_.has_overlapping_particles_3D(new_pos.first, p_.radius(), pid_))
             {
                 p_.position() = new_pos.first;
                 world_.update_particle_2D(pid_, p_, new_pos.second);

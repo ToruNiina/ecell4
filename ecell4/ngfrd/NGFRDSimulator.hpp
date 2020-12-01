@@ -528,7 +528,15 @@ private:
             // re-wrap the particles by tight domains
             for(const auto& pidp : results)
             {
-                this->form_tight_domain_2D(pidp.first, pidp.second);
+                if(const auto fid = world_->on_which_face(pidp.first))
+                {
+                    this->form_tight_domain_2D(pidp.first, pidp.second, *fid);
+                }
+                else // not on the face (currently not implemented)
+                {
+                    throw_exception<NotImplemented>("NGFRDSimulator::determine_positions_2D: ",
+                            pidp.first, " dissociates from a polygon");
+                }
             }
         }
         return;
@@ -556,44 +564,18 @@ private:
         for(const auto& fidp : world_->list_faces_within_radius(
                     pos, radius + max_radius_2D))
         {
-            const auto& fid = fidp.first;
+            const auto& fid = fidp.first.first;
 
             // Here, to avoid overlooking, we use 3D distance to check 3D-2D
             // overlap. 2D shell may be folded, but it cannot stick out of
             // bounding sphere that is centered at the center of shell.
-            for(const auto& shid : shells_.shells_on(fid))
+            if(const auto shs = shells_.shells_on(fid))
             {
-                const auto& sh = shells_.at(shid);
-                const auto bsph = sh.bounding_sphere();
-
-                if(r2 < length_sq(pbc.periodic_transpose(bsph.position(), pos) - pos));
+                for(const auto& shid : *shs)
                 {
-                    continue;
-                }
-
-                if(const auto did = sh.domain_id())
-                {
-                    if(filter(*did)) {continue;}
-
-                    if(std::find(dids.begin(), dids.end(), *did) != dids.end())
-                    {
-                        continue; // already assigned. It may be Multi.
-                    }
-                    dids.push_back(*did);
-                }
-                else
-                {
-                    throw_exception<IllegalState>("shell ", shd.first.first, ": ",
-                            shd.first.second, " does not know its own DomainID.");
-                }
-            }
-            for(const auto& nfid : world_->polygon().neighbor_faces_of(fid))
-            {
-                for(const auto& shid : shells_.shells_on(fid))
-                {
-                    const auto& sh = shells_.at(shid);
-
+                    const auto& sh = shells_.at(shid).second;
                     const auto bsph = sh.bounding_sphere();
+
                     if(r2 < length_sq(pbc.periodic_transpose(bsph.position(), pos) - pos));
                     {
                         continue;
@@ -611,8 +593,40 @@ private:
                     }
                     else
                     {
-                        throw_exception<IllegalState>("shell ", shd.first.first, ": ",
-                                shd.first.second, " does not know its own DomainID.");
+                        throw_exception<IllegalState>("shell ", shid,
+                                " does not know its own DomainID.");
+                    }
+                }
+            }
+            for(const auto& nfid : world_->polygon().neighbor_faces_of(fid))
+            {
+                if(const auto shs = shells_.shells_on(fid))
+                {
+                    for(const auto& shid : *shs)
+                    {
+                        const auto& sh = shells_.at(shid).second;
+
+                        const auto bsph = sh.bounding_sphere();
+                        if(r2 < length_sq(pbc.periodic_transpose(bsph.position(), pos) - pos));
+                        {
+                            continue;
+                        }
+
+                        if(const auto did = sh.domain_id())
+                        {
+                            if(filter(*did)) {continue;}
+
+                            if(std::find(dids.begin(), dids.end(), *did) != dids.end())
+                            {
+                                continue; // already assigned. It may be Multi.
+                            }
+                            dids.push_back(*did);
+                        }
+                        else
+                        {
+                            throw_exception<IllegalState>("shell ", shid,
+                                    " does not know its own DomainID.");
+                        }
                     }
                 }
             }
@@ -631,7 +645,15 @@ private:
             // re-wrap the particles by tight domains
             for(const auto& pidp : results)
             {
-                this->form_tight_domain_2D(pidp.first, pidp.second);
+                if(const auto fid = world_->on_which_face(pidp.first))
+                {
+                    this->form_tight_domain_2D(pidp.first, pidp.second, *fid);
+                }
+                else
+                {
+                    throw_exception<NotImplemented>("Particle dissociates from"
+                            "polygon surface.");
+                }
             }
         }
 
