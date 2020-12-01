@@ -224,16 +224,17 @@ public:
         return;
     }
 
-    void determine_positions_XD(const std::pair<Real3, FaceID>& pos,
-                                const Real radius)
+    void determine_positions_XD(const Real3& pos, const Real radius)
     {
-        // TODO
+        this->determine_positions_XD_impl(pos, radius,
+                [](const DomainID&){return false;});
         return;
     }
-    void determine_positions_XD(const std::pair<Real3, FaceID>& pos,
-                                const Real radius, const DomainID& ignored)
+    void determine_positions_XD(const Real3& pos, const Real radius,
+                                const DomainID& ignored)
     {
-        // TODO
+        this->determine_positions_XD_impl(pos, radius,
+                [&ignored](const DomainID& did){return did == ignored;});
         return;
     }
 
@@ -384,8 +385,8 @@ private:
         return burst_domain(did, std::move(evid_dom.second));
     }
 
-    // this will not remove domain nor event. The caller should remove domain and
-    // event correctly.
+    // this will not remove domain nor event, but it removes corresponding shells.
+    // The caller should remove domain and event correctly.
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
     burst_domain(const DomainID& did, Domain dom)
     {
@@ -445,7 +446,8 @@ private:
     {
         ECELL4_NGFRD_LOG_FUNCTION();
 
-        // fetch shells that overlaps with this region
+        // fetch shells that overlaps with this spherical region and
+        // collect corresponding domain ids.
         boost::container::small_vector<DomainID, 8> dids;
         for(const auto& shd : shells_.list_shells_within_radius_3D(pos, radius))
         {
@@ -466,26 +468,15 @@ private:
             }
         }
 
-        // shrink all the domains that have listed
+        // shrink all the domains that are listed
         for(const auto& did : dids)
         {
             if(domains_.at(did).second.is_multi())
             {
+                // skip multis. Stepping multi here may cause infinite recursion.
                 continue;
             }
-            // burst the domain
-            // - propagate particle             via burst_domain()
-            // - remove shell  from shells_     via burst_domain()
-            // - remove domain from domains_    by myself
-            // - remove event  from scheduler_  by myself
-
-            const auto evid = this->domains_.at(did).first;
-            this->scheduler_.remove(evid);
-
-            auto dom = std::move(this->domains_.at(did).second);
-            this->domains_.erase(did);
-
-            const auto results = burst_domain(did, std::move(dom));
+            const auto results = burst_domain(did);
 
             // re-wrap the particles by tight domains
             for(const auto& pidp : results)
@@ -496,6 +487,156 @@ private:
         return;
     }
 
+    template<typename Filter>
+    void determine_positions_2D_impl(const std::pair<Real3, FaceID>& pos,
+            const Real radius, Filter filter)
+    {
+        ECELL4_NGFRD_LOG_FUNCTION();
+
+        // fetch shells that overlaps with this spherical region and
+        // collect corresponding domain ids.
+        boost::container::small_vector<DomainID, 8> dids;
+        for(const auto& shd : shells_.list_shells_within_radius_2D(pos, radius))
+        {
+            if(const auto did = shd.first.second.domain_id())
+            {
+                if(filter(*did)) {continue;}
+
+                if(std::find(dids.begin(), dids.end(), *did) != dids.end())
+                {
+                    continue; // already assigned. It may be Multi.
+                }
+                dids.push_back(*did);
+            }
+            else
+            {
+                throw_exception<IllegalState>("shell ", shd.first.first, ": ",
+                        shd.first.second, " does not know its own DomainID.");
+            }
+        }
+
+        // shrink all the domains that are listed
+        for(const auto& did : dids)
+        {
+            if(domains_.at(did).second.is_multi())
+            {
+                // skip multis. Stepping multi here may cause infinite recursion.
+                continue;
+            }
+            const auto results = burst_domain(did);
+
+            // re-wrap the particles by tight domains
+            for(const auto& pidp : results)
+            {
+                this->form_tight_domain_2D(pidp.first, pidp.second);
+            }
+        }
+        return;
+    }
+
+    // It bursts both 2D and 3D domains. To collect all the overlapping 2D
+    // domains that might deform around edges and vertices, it collects 2D
+    // domains that may not actually overlapping. But it only affects only on
+    // the runtime efficiency, not the resulting statistical features.
+    template<typename Filter>
+    void determine_positions_XD_impl(
+            const Real3& pos, const Real radius, Filter filter)
+    {
+        ECELL4_NGFRD_LOG_FUNCTION();
+
+        // burst 3D first. It does not require any difficult things.
+        this->determine_positions_3D_impl(pos, radius, filter);
+
+        boost::container::small_vector<DomainID, 8> dids;
+
+        const auto pbc = world_->boundary();
+        const auto r2  = radius * radius;
+
+        const auto max_radius_2D = world_->largest_particle_radius_2D();
+        for(const auto& fidp : world_->list_faces_within_radius(
+                    pos, radius + max_radius_2D))
+        {
+            const auto& fid = fidp.first;
+
+            // Here, to avoid overlooking, we use 3D distance to check 3D-2D
+            // overlap. 2D shell may be folded, but it cannot stick out of
+            // bounding sphere that is centered at the center of shell.
+            for(const auto& shid : shells_.shells_on(fid))
+            {
+                const auto& sh = shells_.at(shid);
+                const auto bsph = sh.bounding_sphere();
+
+                if(r2 < length_sq(pbc.periodic_transpose(bsph.position(), pos) - pos));
+                {
+                    continue;
+                }
+
+                if(const auto did = sh.domain_id())
+                {
+                    if(filter(*did)) {continue;}
+
+                    if(std::find(dids.begin(), dids.end(), *did) != dids.end())
+                    {
+                        continue; // already assigned. It may be Multi.
+                    }
+                    dids.push_back(*did);
+                }
+                else
+                {
+                    throw_exception<IllegalState>("shell ", shd.first.first, ": ",
+                            shd.first.second, " does not know its own DomainID.");
+                }
+            }
+            for(const auto& nfid : world_->polygon().neighbor_faces_of(fid))
+            {
+                for(const auto& shid : shells_.shells_on(fid))
+                {
+                    const auto& sh = shells_.at(shid);
+
+                    const auto bsph = sh.bounding_sphere();
+                    if(r2 < length_sq(pbc.periodic_transpose(bsph.position(), pos) - pos));
+                    {
+                        continue;
+                    }
+
+                    if(const auto did = sh.domain_id())
+                    {
+                        if(filter(*did)) {continue;}
+
+                        if(std::find(dids.begin(), dids.end(), *did) != dids.end())
+                        {
+                            continue; // already assigned. It may be Multi.
+                        }
+                        dids.push_back(*did);
+                    }
+                    else
+                    {
+                        throw_exception<IllegalState>("shell ", shd.first.first, ": ",
+                                shd.first.second, " does not know its own DomainID.");
+                    }
+                }
+            }
+        }
+
+        // shrink all the domains that are listed
+        for(const auto& did : dids)
+        {
+            if(domains_.at(did).second.is_multi())
+            {
+                // skip multis. Stepping multi here may cause infinite recursion.
+                continue;
+            }
+            const auto results = burst_domain(did);
+
+            // re-wrap the particles by tight domains
+            for(const auto& pidp : results)
+            {
+                this->form_tight_domain_2D(pidp.first, pidp.second);
+            }
+        }
+
+        return;
+    }
 private:
 
     // ------------------------------------------------------------------------
