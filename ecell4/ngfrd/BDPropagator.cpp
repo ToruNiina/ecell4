@@ -885,22 +885,33 @@ bool BDPropagator::is_inside_of_shells_2D(
         if(sh.is_circular())
         {
             const auto& circular = sh.as_circular();
+            if(circular.thickness() < radius)
+            {
+                continue; // Particle sticks out in the normal vector direction
+            }
+
             const Real dist = ecell4::polygon::distance(polygon,
                     pos, std::make_pair(circular.position(), circular.fid()));
             if(dist + radius < circular.shape().radius())
             {
-                return true; // particle is inside of this shell.
+                return true; // found. the particle is in this shell. return.
             }
         }
         else if(sh.is_conical())
         {
             // maybe we don't need this because its multi...
             const auto& conical = sh.as_conical();
+            if(conical.thickness() < radius)
+            {
+                continue; // Particle sticks out in the normal vector direction
+            }
+
             const Real dist = ecell4::polygon::distance(polygon,
                     pos, std::make_pair(conical.position(), conical.vid()));
+
             if(dist + radius < conical.shape().slant_height())
             {
-                return true; // particle is inside of this shell.
+                return true; // found. the particle is in this shell. return.
             }
         }
     }
