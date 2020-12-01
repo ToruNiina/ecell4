@@ -98,10 +98,12 @@ SingleCircularPropagator::attempt_1to1_reaction(const SingleCircularDomain& dom,
     if( ! this->is_inside_of_shell(dom, pos, newp.radius()))
     {
         // determine positions of particles in overlapping domains
-        sim_.determine_positions_2D(pos, radius_new, self_id_);
+        sim_.determine_positions_2D(pos,       radius_new, self_id_);
+        sim_.determine_positions_3D(pos.first, radius_new, self_id_);
 
         // then check if there is any particle that overlaps
-        if(world_.has_overlapping_particles_2D(pos, radius_new, pid))
+        if(world_.has_overlapping_particles_2D(pos,       radius_new, pid) ||
+           world_.has_overlapping_particles_3D(pos.first, radius_new, pid))
         {
             this->rejected_move_count_ += 1;
             return boost::container::static_vector<ParticleID, 2>{pid};
@@ -175,10 +177,12 @@ SingleCircularPropagator::attempt_1to2_reaction(const SingleCircularDomain& dom,
         if(this->is_inside_of_shell(dom, pos1_new, r1))
         {
             sim_.determine_positions_2D(pos1_new, r1, self_id_);
+            sim_.determine_positions_3D(pos1_new, r1, self_id_);
         }
         if(this->is_inside_of_shell(dom, pos2_new, r2))
         {
             sim_.determine_positions_2D(pos2_new, r2, self_id_);
+            sim_.determine_positions_3D(pos2_new, r2, self_id_);
         }
 
         if(world_.has_overlapping_particles_2D(pos1_new, r1, pid) ||
@@ -190,6 +194,32 @@ SingleCircularPropagator::attempt_1to2_reaction(const SingleCircularDomain& dom,
     if(separation_count == 0)
     {
         // could not find an appropreate configuration in max_retry_count_.
+        this->rejected_move_count_ += 1;
+        return boost::container::static_vector<ParticleID, 2>{pid};
+    }
+
+    // burst domains around the reactants.
+    if(this->is_inside_of_shell(dom, pos1_new, r1))
+    {
+        sim_.determine_positions_2D(pos1_new, r1, self_id_);
+        sim_.determine_positions_3D(pos1_new, r1, self_id_);
+    }
+    if(this->is_inside_of_shell(dom, pos2_new, r2))
+    {
+        sim_.determine_positions_2D(pos2_new, r2, self_id_);
+        sim_.determine_positions_3D(pos2_new, r2, self_id_);
+    }
+
+    // The reason why we use 2D and 3D, not XD is the following.
+    // - 2D particles only interacts along the polygon surface.
+    // - 3D distance between 2D particles does not affects.
+    // - XD function checks overlap considering particles are spherical, so it
+    //   counts 2D-2D 3D overlap.
+    if(world_.has_overlapping_particles_2D(pos1_new, r1, pid) ||
+       world_.has_overlapping_particles_2D(pos2_new, r2, pid) ||
+       world_.has_overlapping_particles_3D(pos1_new.first, r1, pid) ||
+       world_.has_overlapping_particles_3D(pos2_new.first, r2, pid))
+    {
         this->rejected_move_count_ += 1;
         return boost::container::static_vector<ParticleID, 2>{pid};
     }
@@ -273,6 +303,10 @@ ReactionRule const& SingleCircularPropagator::determine_reaction_rule(
 bool SingleCircularPropagator::is_inside_of_shell(const SingleCircularDomain& dom,
         const std::pair<Real3, FaceID>& pos, const Real radius)
 {
+    if(dom.shell().thickness() < radius)
+    {
+        return false;
+    }
     const Real dist = ecell4::polygon::distance(world_.polygon(), pos,
             std::make_pair(dom.shell().position(), dom.shell().fid()));
 
