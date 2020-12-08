@@ -324,7 +324,7 @@ private:
     template<typename Container>
     void collect_possibly_overlapping_2D_domains(
             const Real3& pos, const Real radius, const FaceID& overlapping_face,
-            Container out)
+            const DomainID& ignore_id, Container out)
     {
         const auto pbc = this->world_->boundary();
         // shells on this triangle
@@ -343,7 +343,7 @@ private:
                 if(dist <= radius + bs.radius())
                 {
                     const auto intruder_did = *(sh.domain_id());
-                    if(intruder_did == host_id) {continue;}
+                    if(intruder_did == ignore_id) {continue;}
                     unique_push_back(out, intruder_did);
                 }
             }
@@ -366,7 +366,7 @@ private:
                     if(dist <= radius + bs.radius())
                     {
                         const auto intruder_did = *(sh.domain_id());
-                        if(intruder_did == host_id) {continue;}
+                        if(intruder_did == ignore_id) {continue;}
                         unique_push_back(out, intruder_did);
                     }
                 }
@@ -390,7 +390,7 @@ private:
                     if(dist <= radius + bs.radius())
                     {
                         const auto intruder_did = *(sh.domain_id());
-                        if(intruder_did == host_id) {continue;}
+                        if(intruder_did == ignore_id) {continue;}
                         unique_push_back(out, intruder_did);
                     }
                 }
