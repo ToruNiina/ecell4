@@ -12,6 +12,7 @@
 #include <ecell4/core/SerialIDGenerator.hpp>
 #include <ecell4/core/SimulatorBase.hpp>
 
+#include <ecell4/ngfrd/utility.hpp>
 #include <ecell4/ngfrd/ShellID.hpp>
 #include <ecell4/ngfrd/Shell.hpp>
 #include <ecell4/ngfrd/DomainID.hpp>
@@ -299,11 +300,99 @@ private:
                               boost::container::small_vector<FaceID, 4>  > >
     form_single_domain_3D(const ParticleID& pid, const Particle& p);
 
+    bool form_pair_domain_3D(const ParticleID& pid, const Particle& p,
+                             const DomainID& partner);
+
     void form_domain_2D(const ParticleID& pid, const Particle& p, const FaceID& fid);
     void form_domain_3D(const ParticleID& pid, const Particle& p);
 
     DomainID form_tight_domain_2D(const ParticleID& pid, const Particle& p, const FaceID& fid);
     DomainID form_tight_domain_3D(const ParticleID& pid, const Particle& p);
+
+    void recursively_merge_multis(const DomainID&, MultiDomain& dom);
+
+    void merge_into_multi_or_form_tight_domain_3D(const DomainID&, MultiDomain&,
+            const ParticleID&, const Particle&);
+    void merge_into_multi_or_form_tight_domain_2D(const DomainID&, MultiDomain&,
+            const ParticleID&, const Particle&, const FaceID&);
+
+    template<typename Container>
+    void collect_possibly_overlapping_2D_domains(
+            const Real3& pos, const Real radius, const FaceID& overlapping_face,
+            Container out)
+    {
+        const auto pbc = this->world_->boundary();
+        // shells on this triangle
+        if(const auto shids = shells_.shells_on(overlapping_face))
+        {
+            for(const auto shid : *shids)
+            {
+                // XXX: check overlap with the bounding sphere of 2D shell as an
+                // approximation. It is too difficult to check the exact overlap
+                // if the 2D shell is bent.
+                const auto sh = this->shells_.get_shell(shid).second;
+                const auto bs = sh.bounding_sphere();
+                const auto dist = length(
+                        pbc.periodic_transpose(pos, bs.position()) -
+                        bs.position());
+                if(dist <= radius + bs.radius())
+                {
+                    const auto intruder_did = *(sh.domain_id());
+                    if(intruder_did == host_id) {continue;}
+                    unique_push_back(out, intruder_did);
+                }
+            }
+        }
+        // shells on the vertices of the triangle
+        for(const auto vid : this->polygon().vertices_of(overlapping_face))
+        {
+            if(const auto shids = shells_.shells_on(vid))
+            {
+                for(const auto shid : *shids)
+                {
+                    // XXX: check overlap with the bounding sphere of 2D shell
+                    // as an approximation. It is too difficult to check the
+                    // exact overlap if the 2D shell is bent.
+                    const auto sh = this->shells_.get_shell(shid).second;
+                    const auto bs = sh.bounding_sphere();
+                    const auto dist = length(
+                        pbc.periodic_transpose(pos, bs.position()) -
+                        bs.position());
+                    if(dist <= radius + bs.radius())
+                    {
+                        const auto intruder_did = *(sh.domain_id());
+                        if(intruder_did == host_id) {continue;}
+                        unique_push_back(out, intruder_did);
+                    }
+                }
+            }
+        }
+        // shells on the neighboring triangles
+        for(const auto nfid : this->polygon().neighbor_faces_of(overlapping_face))
+        {
+            if(const auto shids = shells_.shells_on(nfid))
+            {
+                for(const auto shid : *shids)
+                {
+                    // XXX: check overlap with the bounding sphere of 2D shell
+                    // as an approximation. It is too difficult to check the
+                    // exact overlap if the 2D shell is bent.
+                    const auto sh = this->shells_.get_shell(shid).second;
+                    const auto bs = sh.bounding_sphere();
+                    const auto dist = length(
+                        pbc.periodic_transpose(pos, bs.position()) -
+                        bs.position());
+                    if(dist <= radius + bs.radius())
+                    {
+                        const auto intruder_did = *(sh.domain_id());
+                        if(intruder_did == host_id) {continue;}
+                        unique_push_back(out, intruder_did);
+                    }
+                }
+            }
+        }
+        return;
+    }
 
     // -----------------------------------------------------------------------
     // fire_event
