@@ -516,7 +516,7 @@ void NGFRDSimulator::form_domain_3D(const ParticleID& pid, const Particle& p)
     return;
 }
 
-void NGFRDSimulator::form_tight_domain_2D(
+DomainID NGFRDSimulator::form_tight_domain_2D(
         const ParticleID& pid, const Particle& p, const FaceID& fid)
 {
     const auto did = didgen_();
@@ -537,10 +537,10 @@ void NGFRDSimulator::form_tight_domain_2D(
 
     // update begin_time and re-insert domain into domains_ container
     this->domains_[did] = std::make_pair(evid, Domain(std::move(dom)));
-    return;
+    return did;
 }
 
-void NGFRDSimulator::form_tight_domain_3D(const ParticleID& pid, const Particle& p)
+DomainID NGFRDSimulator::form_tight_domain_3D(const ParticleID& pid, const Particle& p)
 {
     const auto did = didgen_();
     const auto sid = sidgen_();
@@ -560,7 +560,7 @@ void NGFRDSimulator::form_tight_domain_3D(const ParticleID& pid, const Particle&
 
     // update begin_time and re-insert domain into domains_ container
     this->domains_[did] = std::make_pair(evid, Domain(std::move(dom)));
-    return;
+    return did;
 }
 
 boost::container::small_vector<std::pair<ParticleID, Particle>, 4>

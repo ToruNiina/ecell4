@@ -302,8 +302,8 @@ private:
     void form_domain_2D(const ParticleID& pid, const Particle& p, const FaceID& fid);
     void form_domain_3D(const ParticleID& pid, const Particle& p);
 
-    void form_tight_domain_2D(const ParticleID& pid, const Particle& p, const FaceID& fid);
-    void form_tight_domain_3D(const ParticleID& pid, const Particle& p);
+    DomainID form_tight_domain_2D(const ParticleID& pid, const Particle& p, const FaceID& fid);
+    DomainID form_tight_domain_3D(const ParticleID& pid, const Particle& p);
 
     // -----------------------------------------------------------------------
     // fire_event
