@@ -296,12 +296,17 @@ private:
             this->form_domain_3D(pid, p);
         }
     }
+
     boost::optional<std::pair<boost::container::small_vector<DomainID, 4>,
                               boost::container::small_vector<FaceID, 4>  > >
     form_single_domain_3D(const ParticleID& pid, const Particle& p);
+    boost::optional<boost::container::small_vector<DomainID, 4>>
+    form_single_domain_2D(const ParticleID& pid, const Particle& p, const FaceID&);
 
     bool form_pair_domain_3D(const ParticleID& pid, const Particle& p,
                              const DomainID& partner);
+    bool form_pair_domain_2D(const ParticleID& pid, const Particle& p,
+                             const FaceID& fid, const DomainID& partner);
 
     void form_domain_2D(const ParticleID& pid, const Particle& p, const FaceID& fid);
     void form_domain_3D(const ParticleID& pid, const Particle& p);

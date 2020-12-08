@@ -13,136 +13,174 @@ constexpr Real NGFRDSimulator::CUTOFF_FACTOR;
 
 constexpr std::size_t NGFRDSimulator::SINGLE_SPHERICAL_MAX_RETRY;
 
+boost::optional<boost::container::small_vector<DomainID, 4>>
+NGFRDSimulator::form_single_domain_2D(
+        const ParticleID& pid, const Particle& p, const FaceID& fid)
+{
+    const auto min_shell_radius = p.radius() * SINGLE_SHELL_FACTOR;
+
+    boost::container::small_vector<DomainID, 4> intruders_2D;
+
+    for(const auto& sidp : shells_.list_shells_within_radius_2D(
+            std::make_pair(p.position(), fid), min_shell_radius))
+    {
+        const auto did = *sidp.first.second.domain_id();
+        unique_push_back(intruders_2D, did);
+    }
+
+    // burst 2D intruders
+
+    boost::container::small_vector<DomainID, 4> intruders;
+    for(const auto& did : intruders_2D)
+    {
+        if(domains_.at(did).is_multi())
+        {
+            unique_push_back(intruders, did);
+        }
+        else
+        {
+            for(const auto& result : burst_domain(did))
+            {
+                const auto& pid2 = result.first;
+                const auto& p2   = result.second;
+                const auto& fid2 = *(this->world_.on_which_face(pid2));
+
+                const auto dist = ecell4::polygon::distance(this->world_->polygon(),
+                    std::make_pair(p.position(),  fid),
+                    std::make_pair(p2.position(), fid2));
+
+                const auto did2 = form_tight_domain_2D(pid2, p2, fid2);
+
+                if(dist < (p.radius() + p2.radius()) * SINGLE_SHELL_FACTOR)
+                {
+                    unique_push_back(intruders, did2);
+                }
+            }
+        }
+    }
+
+    // Here it calculates distance between bounding sphere of 2D shell and
+    // 3D shell for simplicity.
+    for(const auto& sidp: shells_.list_shells_within_radius_3D(
+            p.position(), min_shell_radius))
+    {
+        const auto did = *sidp.first.second.domain_id();
+        if(domains_.at(did).is_multi())
+        {
+            unique_push_back(intruders, did);
+        }
+        // 3D domains other than multi never intersects with 2D shells.
+    }
+
+    // TODO form single domain if there is no intruders
+
+    return intruders;
+}
+
+bool NGFRDSimulator::form_pair_domain_2D(
+        const ParticleID&, const Particle&, const FaceID&, const DomainID&)
+{
+    // TODO
+    return false;
+}
+
 void NGFRDSimulator::form_domain_2D(
         const ParticleID& pid, const Particle& p, const FaceID& fid)
 {
     // TODO: consider thickness of 2D Domains
 
-//     ECELL4_NGFRD_LOG_FUNCTION();
-//     // TODO: Currently we always form a multi domain.
-//     ECELL4_NGFRD_LOG("form_domain_2D: forming domain for particle ", pid);
-//
-//     // -----------------------------------------------------------------------
-//     // form_multi
-//     const Real multi_radius = p.radius() * SINGLE_SHELL_FACTOR;
-//
-//     // list 2D domains within the multi shell
-//     std::vector<DomainID> intruders;
-//     for(const auto& item : shells_.list_shells_within_radius_2D(
-//                 std::make_pair(p.position(), fid), multi_radius))
-//     {
-//         const auto& shell = item.first.second;
-//         const auto  did   = shell.domain_id().get();
-//         if(std::find(intruders.begin(), intruders.end(), did) == intruders.end())
-//         {
-//             ECELL4_NGFRD_LOG("intruder found: 2DShell ", item.first.first, " in ", did);
-//             intruders.push_back(did);
-//         }
-//     }
-//     ECELL4_NGFRD_LOG("form_domain_2D: ", intruders.size(), " intrusive shells found");
-//
-//     // list 3D multi domains that overlap with the shell.
-//     // Here, we list 3D shells that are within the bounding sphere and overlap
-//     // with the polygon.
-//     for(const auto& item : shells_.list_shells_within_radius_3D(
-//                 p.position(), multi_radius))
-//     {
-//         const auto& shell = item.first.second;
-//         const auto  did   = shell.domain_id().get();
-//
-//         if(!this->domains_.at(did).second.is_multi())
-//         {
-//             // non-Multi domain never overlaps with the polygon (?)
-//             continue;
-//         }
-//         // Multi 3D Shell is always spherical.
-//         const auto& sh = shell.as_spherical();
-//         if(this->polygon().has_overlapping_faces(sh.shape().position(), sh.shape().radius()))
-//         {
-//             // This shell is within the bounding sphere of 2D shell and overlaps
-//             // with Polygon. Insert it to multi (that does not always mean that
-//             // the domain overlaps with 2D shell, but a nice approximation (sort of))
-//             if(std::find(intruders.begin(), intruders.end(), did) == intruders.end())
-//             {
-//                 ECELL4_NGFRD_LOG("intruder found: 3DShell ", item.first.first, " in ", did);
-//                 intruders.push_back(did);
-//             }
-//         }
-//     }
-//
-//     if(intruders.empty())
-//     {
-//         // form a new multi!
-//         const auto did = didgen_();
-//         const auto sid = sidgen_();
-//
-//         Shell sh(CircularShell(p.radius(), Circle(multi_radius, p.position(),
-//                         this->polygon().triangle_at(fid).normal()), fid), did);
-//
-//         ECELL4_NGFRD_LOG("shell created: ", sid);
-//         this->shells_.update_shell(sid, sh);
-//         ECELL4_NGFRD_LOG("shell container updated");
-//
-//         MultiDomain dom(this->t());
-//         dom.add_particle(pid);
-//         dom.add_shell(shells_.get_shell(sid));
-//         dom.determine_parameters(*(this->model()), *(this->world()));
-//
-//         ECELL4_NGFRD_LOG("multi domain created ", did);
-//
-//         // add event with the same domain ID
-//         const auto evid = this->scheduler_.add(
-//                 std::make_shared<event_type>(this->t() + dom.dt(), did));
-//
-//         ECELL4_NGFRD_LOG("event added");
-//
-//         // update begin_time and re-insert domain into domains_ container
-//         this->domains_[did] = std::make_pair(evid, Domain(std::move(dom)));
-//         return;
-//     }
-//
-//     ECELL4_NGFRD_LOG("intruder found. merge all domains");
-//     // XXX Currently all the domains are multi domains. merge all those multi domains.
-//     // Later we need to burst domains and check if the resulting particle should
-//     // be in Multi or form Single
-//
-//     const auto host_id = intruders.back();
-//     intruders.pop_back();
-//
-//     const auto sid = sidgen_();
-//     Shell sh(CircularShell(p.radius(), Circle(multi_radius, p.position(),
-//                     this->polygon().triangle_at(fid).normal()), fid), host_id);
-//     ECELL4_NGFRD_LOG("shell created ", sid);
-//     this->shells_.update_shell(sid, sh);
-//     ECELL4_NGFRD_LOG("shell inserted");
-//
-//     assert(domains_.at(host_id).second.is_multi());
-//     auto& host = domains_.at(host_id).second.as_multi();
-//     host.add_particle(pid);
-//     host.add_shell(shells_.get_shell(sid));
-//     for(const auto& did : intruders)
-//     {
-//         const auto dom_iter = domains_.find(did);
-//
-//         const auto evid = dom_iter->second.first;
-//         scheduler_.remove(evid);
-//
-//         assert(dom_iter->second.second.is_multi());
-//         const auto& dom = dom_iter->second.second.as_multi();
-//         for(const auto& pid : dom.particle_ids())
-//         {
-//             host.add_particle(pid);
-//         }
-//         for(const auto& sidp : dom.shells())
-//         {
-//             this->shells_.at(sidp.first).second.domain_id() = host_id;
-//             host.add_shell(sidp);
-//         }
-//         domains_.erase(dom_iter);
-//     }
-//     host.determine_parameters(*(this->model()), *(this->world()));
-//
-//     return ;
+    ECELL4_NGFRD_LOG_FUNCTION();
+    ECELL4_NGFRD_LOG("form_domain_2D: forming domain for particle ", pid);
+
+    const auto intruders = this->form_single_domain_2D(pid, p, fid);
+    if( ! intruders)
+    {
+        return; // No intruders. Single succeeded.
+    }
+
+    // -----------------------------------------------------------------------
+    // form_pair
+
+    if(intruders->size() == 1)
+    {
+        if(form_pair_domain_2D(pid, p, intruders->front()))
+        {
+            return; // pair is formed.
+        }
+    }
+
+    // -----------------------------------------------------------------------
+    // form_multi
+
+    const auto pbc = this->world_->boundary();
+    const Real multi_radius = p.radius() * SINGLE_SHELL_FACTOR;
+
+    const auto host_id = didgen_();
+    MultiDomain host(this->t());
+
+    {
+        const auto sid = sidgen_();
+
+        // construct shell and assign it to shell container
+        CircularShell sh(p.radius(), Circle(min_radius, p.position(),
+                        this->polygon().triangle_at(fid).normal()), fid);
+        this->shells_.update_shell(sid, Shell(std::move(sh), host_id));
+
+        host.add_particle(pid);
+        host.add_shell(this->shells_.get_shell(sid));
+    }
+
+    // merge intruders that are already bursted or multis.
+    for(const auto& did : *intruders)
+    {
+        if(domains_.at(did).is_multi())
+        {
+            // move all the particles and shells to the current host
+            for(const auto& pid2 : dom.as_multi().particle_ids())
+            {
+                host.add_particle(pid2);
+            }
+            for(const auto& shidp : dom.as_multi().shells())
+            {
+                host.add_shell(shidp);
+            }
+            auto evid_dom = domains_.at(did);
+            this->domains_.erase(did);
+            this->scheduler_.remove(evid_dom.first);
+        }
+        else // 2D domain (non-multi 3D domain never overlap with 2D shell)
+        {
+            const auto result = this->burst_domain(did);
+            assert(result.size() == 1);
+
+            const auto  sid  = sidgen_();
+            const auto& pid2 = result.front().first;
+            const auto& p2   = result.front().second;
+            const auto  fid2 = this->world_.on_which_face(pid2).value();
+
+            const auto  new_shell_radius = p2.radius() * SINGLE_SHELL_FACTOR;
+
+            // construct shell and assign it to shell container
+            CircularShell sh(p.radius(), Circle(new_shell_radius, p.position(),
+                            this->polygon().triangle_at(fid).normal()), fid);
+            this->shells_.update_shell(sid, Shell(std::move(sh), host_id));
+
+            host.add_particle(pid2);
+            host.add_shell(this->shells_.get_shell(sid));
+        }
+    }
+
+    this->recursively_merge_multis(host_id, host);
+
+    host.determine_parameters(*(this->model()), *(this->world()));
+
+    // add event with the same domain ID
+    const auto evid = this->scheduler_.add(
+            std::make_shared<event_type>(this->t() + host.dt(), host_id));
+    ECELL4_NGFRD_LOG("event ", evid," added");
+
+    this->domains_[host_id] = std::make_pair(evid, Domain(std::move(host)));
+    return ;
 }
 
 boost::optional<std::pair<boost::container::small_vector<DomainID, 4>,
