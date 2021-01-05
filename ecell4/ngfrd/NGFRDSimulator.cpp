@@ -856,8 +856,21 @@ NGFRDSimulator::burst_single_circular(const DomainID& did, SingleCircularDomain 
             };
     }
 
-    // TODO
-    throw_exception<NotImplemented>("TODO: ", ECELL4_NGFRD_LOG_FUNCTION_NAME);
+    std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
+    SingleCircularPropagator prop(did,
+            *(this->model_), *(this->world_), *this, *(this->world_->rng()),
+            SINGLE_CONICAL_MAX_RETRY, last_reactions);
+
+    // While bursting single domain, it never dissociates (becuase the time when
+    // it dissociates is already calculated and considered in the domain dt).
+    boost::container::small_vector<std::pair<ParticleID, Particle>, 4> results;
+    results.push_back(world_->get_particle(prop.burst(dom, this->t())));
+
+    // remove shell from shell container
+    this->shells_.remove_shell(dom.shell_id());
+
+    assert(last_reactions.empty());
+    return results;
 }
 
 boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
