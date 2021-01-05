@@ -79,6 +79,11 @@ NGFRDSimulator::form_single_domain_2D(
     if(min_shell_intruders.empty())
     {
         max_distance = max_circular_shell_size_at(p.position(), fid);
+        if(max_distance < min_shell_radius)
+        {
+            // TODO: form conical shell
+            return intruders;
+        }
     }
 
     // No intruders here. draw single shell.
@@ -117,6 +122,8 @@ NGFRDSimulator::form_single_domain_2D(
     // update begin_time and re-insert domain into domains_ container
     this->domains_[did] = std::make_pair(evid, Domain(std::move(dom)));
 
+    ECELL4_NGFRD_LOG("2D single circular domain formed!");
+
     return boost::none;
 }
 
@@ -152,6 +159,8 @@ void NGFRDSimulator::form_domain_2D(
 
     // -----------------------------------------------------------------------
     // form_multi
+
+    ECELL4_NGFRD_LOG("forming Multi domain for 2D particle ", pid);
 
     const auto pbc = this->world_->boundary();
     const Real multi_radius = p.radius() * SINGLE_SHELL_FACTOR;
