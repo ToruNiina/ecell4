@@ -55,9 +55,9 @@ std::ostream& operator<<(std::ostream& os,
     os << "]";
     return os;
 }
-template<typename T, std::size_t N, typename Alloc, typename ... Options>
+template<typename T, std::size_t N, typename ... Options>
 std::ostream& operator<<(std::ostream& os,
-           const boost::container::static_vector<T, N, Alloc, Options...>& v)
+           const boost::container::static_vector<T, N, Options...>& v)
 {
     os << "\"boost::static_vector<" << utils::type_name_of<T>::value() << ", " << N << ">\":[";
     for(std::size_t i=0; i<v.size(); ++i)
