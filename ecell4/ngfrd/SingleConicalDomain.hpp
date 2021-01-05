@@ -27,7 +27,7 @@ class SingleConicalDomain
   public:
 
     SingleConicalDomain()
-        : kind_(EventKind::Unknown), dt_(0.0), begin_time_(0.0),
+        : kind_(EventKind::Unknown), dt_(0.0), begin_time_(0.0), effective_radius_(0.0),
           shell_(0.0, Circle(0.0, Real3(0.0, 0.0, 0.0), Real3(0.0, 0.0, 0.0)), FaceID{}),
           gf_(0.0, 0.0)
     {}
@@ -36,8 +36,8 @@ class SingleConicalDomain
             const ShellID&  shid, const ConicalShell& sh,
             const ParticleID& pid, const Real D, const Real effective_radius,
             greens_functions::GreensFunction2DAbsSym gf)
-        : kind_(kind), dt_(dt), begin_time_(begin), shell_id_(shid), shell_(sh),
-          particle_id_(pid), gf_(std::move(gf))
+        : kind_(kind), dt_(dt), begin_time_(begin), effective_radius_(effective_radius),
+          shell_id_(shid), shell_(sh), particle_id_(pid), gf_(std::move(gf))
     {}
     ~SingleConicalDomain() = default;
 
@@ -58,6 +58,8 @@ class SingleConicalDomain
     EventKind  eventkind() const {return kind_;}
     EventKind& eventkind()       {return kind_;}
 
+    Real effective_radius() const noexcept {return effective_radius_;}
+
     greens_functions::GreensFunction2DRefWedgeAbs const& gf() const noexcept {return gf_;}
     greens_functions::GreensFunction2DRefWedgeAbs&       gf()       noexcept {return gf_;}
 
@@ -69,6 +71,7 @@ class SingleConicalDomain
     EventKind      kind_;
     Real           dt_;
     Real           begin_time_;
+    Real           effective_radius_;
     ShellID        shell_id_;
     ConicalShell   shell_;
     ParticleID     particle_id_;
