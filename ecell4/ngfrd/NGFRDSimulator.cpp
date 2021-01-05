@@ -1,5 +1,6 @@
 #include <ecell4/ngfrd/NGFRDSimulator.hpp>
 #include <ecell4/ngfrd/SingleSphericalPropagator.hpp>
+#include <ecell4/ngfrd/SingleCircularPropagator.hpp>
 
 namespace ecell4
 {
@@ -12,6 +13,7 @@ constexpr Real NGFRDSimulator::DEFAULT_DT_FACTOR;
 constexpr Real NGFRDSimulator::CUTOFF_FACTOR;
 
 constexpr std::size_t NGFRDSimulator::SINGLE_SPHERICAL_MAX_RETRY;
+constexpr std::size_t NGFRDSimulator::SINGLE_CONICAL_MAX_RETRY;
 
 boost::optional<boost::container::small_vector<DomainID, 4>>
 NGFRDSimulator::form_single_domain_2D(
@@ -713,7 +715,26 @@ NGFRDSimulator::fire_single_circular(const DomainID& did, SingleCircularDomain d
             };
     }
 
-    throw_exception<NotImplemented>("TODO: ", ECELL4_NGFRD_LOG_FUNCTION_NAME);
+    std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
+    SingleCircularPropagator prop(did,
+            *(this->model_), *(this->world_), *this, *(this->world_->rng()),
+            SINGLE_CONICAL_MAX_RETRY, last_reactions);
+
+    boost::container::small_vector<std::pair<ParticleID, Particle>, 4> results;
+    for(const auto& pid : prop(dom))
+    {
+        results.push_back(world_->get_particle(pid));
+    }
+
+    // remove shell from shell container
+    this->shells_.remove_shell(dom.shell_id());
+
+    if( ! last_reactions.empty())
+    {
+        std::copy(last_reactions.begin(), last_reactions.end(),
+                  std::back_inserter(last_reactions_));
+    }
+    return results;
 }
 
 boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
