@@ -73,19 +73,72 @@ NGFRDSimulator::form_single_domain_2D(
 
     if( ! intruders.empty())
     {
+        // form pair or multi
         return intruders;
     }
 
-    // if there are no min_shell_intruders, we need to calculate the max distance.
-    if(min_shell_intruders.empty())
+    if(max_distance < min_shell_radius)
     {
-        max_distance = max_circular_shell_size_at(p.position(), fid);
-        if(max_distance < min_shell_radius)
+        // there are no intruders, but max_distance (came from the geometric
+        // constraint) is too small. It means that there is a vertex too close
+        // to the particle. Try forming a conical shell.
+
+        const auto& poly = world_->polygon();
+
+        // 1. detect the nearest vertex.
+        Real dist_to_vtx = std::numeric_limits<Real>::infinity();
+        VertexID vtxid;
+        for(const auto& vid : poly.vertices_of(fid))
         {
-            // TODO: form conical shell
+            const auto dist2 = ecell4::polygon::distance_sq(poly,
+                    std::make_pair(p.position(), fid),
+                    std::make_pair(poly.position_at(vid), vid));
+            if(dist2 < dist_to_vtx)
+            {
+                dist_to_vtx = dist2;
+                vtxid = vid;
+            }
+        }
+        dist_to_vtx = std::sqrt(dist_to_vtx);
+
+        // TODO: consider changing this factor by the shell kind
+        const Real min_conical_shell_size = dist_to_vtx * SINGLE_SHELL_FACTOR + p.radius();
+
+        // 2. determine the shell size
+        //   - find the shortest edge extending from the vertex.
+        //   - check the intruders
+
+        Real max_shell_size = std::numeric_limits<Real>::infinity();
+        for(const auto& eid : poly.outgoing_edges(vtxid))
+        {
+            max_shell_size = std::min(max_shell_size, poly.length_of(eid));
+
+            const auto& neighbor_fid = this->face_of(eid);
+            if(const auto possible_intruders : world_->particles_on(neighbor_fid))
+            {
+                for(const auto& possible_intruder_id : *possible_intruders)
+                {
+                    const auto possible_intruder =
+                        world_->get_particle(possible_intruder_id).second;
+
+                    max_shell_size = std::min(max_shell_size,
+                        ecell4::polygon::distance_sq(poly,
+                            std::make_pair(possible_intruder.position(), neighbor_fid),
+                            std::make_pair(poly.position_at(vtxid), vtxid));
+                }
+            }
+        }
+        if(max_shell_size < min_conical_shell_size)
+        {
             return intruders;
         }
+
+        // 3. form shell if possible.
+
+        // TODO
+        return intruders;
     }
+
 
     // No intruders here. draw single shell.
 
