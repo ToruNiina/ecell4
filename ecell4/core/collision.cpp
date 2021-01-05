@@ -97,6 +97,20 @@ Real distance_point_capsule(const Real3& pos, const Rod& r)
     return length(vec - Real3(vec[0], 0, 0)) - radius;
 }
 
+Real distance_sq_point_segment(const Real3& pos, const Segment& seg)
+{
+    const Real3 ab = seg.stop() - seg.start();
+    const Real3 ac = pos - seg.start();
+    const Real3 bc = pos - seg.stop();
+    const Real dot = dot_product(ac, ab);
+    if(dot <= 0.0){return length_sq(ac);}
+    const Real len = length_sq(ab);
+    if(dot >= len){return length_sq(bc);}
+    const Real ans = length_sq(ac) - (dot * dot) / len;
+    // for numerical robustness, distance never be negative
+    return std::max(ans, 0.0);
+}
+
 Real closest_point_segment_segment(
     const Real3& p1, const Real3& q1,
     const Real3& p2, const Real3& q2,

@@ -13,6 +13,7 @@
 #include "Triangle.hpp"
 #include "Cone.hpp"
 #include "Barycentric.hpp"
+#include "Segment.hpp"
 
 
 namespace ecell4
@@ -44,6 +45,8 @@ inline Real distance_sq_point_cylinder(const Real3& pos, const Cylinder& c)
     const Real L(distance_point_cylinder(pos, c));
     return L * L;
 }
+
+Real distance_sq_point_segment(const Real3& pos, const Segment& seg);
 
 Real closest_point_segment_segment(
     const Real3& p1, const Real3& q1,
