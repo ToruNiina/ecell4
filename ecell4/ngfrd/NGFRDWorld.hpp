@@ -58,6 +58,18 @@ public:
         this->prepare_restrictions();
     }
 
+    NGFRDWorld(const Real3&    edge_lengths,
+               const Integer3& matrix_sizes,
+               const Real      margin,
+               std::shared_ptr<RandomNumberGenerator> rng)
+        : ps_(new particle_space_type(edge_lengths, margin)),
+            rng_(std::move(rng)),
+          polygon_(std::make_shared<Polygon>(edge_lengths, matrix_sizes)),
+          largest_particle_radius_2D_(0.0)
+    {
+        this->prepare_restrictions();
+    }
+
     NGFRDWorld(const Real3& edge_lengths, const Integer3& matrix_sizes,
                const Real margin, // bounding box margin
                std::shared_ptr<RandomNumberGenerator> rng,
