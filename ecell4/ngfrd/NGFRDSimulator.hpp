@@ -754,6 +754,21 @@ private:
 
         return;
     }
+
+    // geometric restriction on the circular shell size
+    Real max_circular_shell_size_at(const Real3 pos, const FaceID& fid) const
+    {
+        Real lensq = std::numeric_limits<Real>::max();
+        for(const ecell4::Segment& barrier : world_->get_barrier_around(fid))
+        {
+            // distance between point and segment
+            const Real dist2 =
+                ecell4::collision::distance_sq_point_segment(pos, barrier);
+            lensq = std::min(dist2, lensq);
+        }
+        return std::sqrt(lensq);
+    }
+
 private:
 
     // ------------------------------------------------------------------------
