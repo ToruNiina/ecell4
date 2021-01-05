@@ -5,6 +5,7 @@ set(CPP_FILES
     MultiDomain.cpp
     NGFRDSimulator.cpp
     SingleSphericalPropagator.cpp
+    SingleCircularPropagator.cpp
 )
 
 add_definitions(-DECELL4_NGFRD_LOG_DEBUG)
