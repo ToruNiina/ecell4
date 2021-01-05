@@ -14,6 +14,7 @@ constexpr Real NGFRDSimulator::CUTOFF_FACTOR;
 
 constexpr std::size_t NGFRDSimulator::SINGLE_SPHERICAL_MAX_RETRY;
 constexpr std::size_t NGFRDSimulator::SINGLE_CONICAL_MAX_RETRY;
+constexpr std::size_t NGFRDSimulator::SINGLE_CIRCULAR_MAX_RETRY;
 
 boost::optional<boost::container::small_vector<DomainID, 4>>
 NGFRDSimulator::form_single_domain_2D(
@@ -740,7 +741,7 @@ NGFRDSimulator::fire_single_circular(const DomainID& did, SingleCircularDomain d
     std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
     SingleCircularPropagator prop(did,
             *(this->model_), *(this->world_), *this, *(this->world_->rng()),
-            SINGLE_CONICAL_MAX_RETRY, last_reactions);
+            SINGLE_CIRCULAR_MAX_RETRY, last_reactions);
 
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4> results;
     for(const auto& pid : prop(dom))
@@ -868,7 +869,7 @@ NGFRDSimulator::burst_single_circular(const DomainID& did, SingleCircularDomain 
     std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
     SingleCircularPropagator prop(did,
             *(this->model_), *(this->world_), *this, *(this->world_->rng()),
-            SINGLE_CONICAL_MAX_RETRY, last_reactions);
+            SINGLE_CIRCULAR_MAX_RETRY, last_reactions);
 
     // While bursting single domain, it never dissociates (becuase the time when
     // it dissociates is already calculated and considered in the domain dt).

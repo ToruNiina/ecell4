@@ -45,7 +45,8 @@ public:
     static constexpr Real CUTOFF_FACTOR       = 5.6;
 
     static constexpr std::size_t SINGLE_SPHERICAL_MAX_RETRY = 4;
-    static constexpr std::size_t SINGLE_CONICAL_MAX_RETRY = 4;
+    static constexpr std::size_t SINGLE_CIRCULAR_MAX_RETRY  = 4;
+    static constexpr std::size_t SINGLE_CONICAL_MAX_RETRY   = 4;
 
 public:
 
