@@ -85,7 +85,7 @@ class SingleCircularPropagator
     ReactionRule const& determine_reaction_rule(const Species& sp, const Real rnd);
 
     bool is_inside_of_shell(const SingleCircularDomain& dom,
-            const Real3& center, const FaceID& fid, const Real radius);
+            const std::pair<Real3, FaceID>& pos, const Real radius);
 
     Real3 draw_2D_displacement(const FaceID& fid, const Real len);
 

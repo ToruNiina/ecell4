@@ -159,7 +159,7 @@ SingleCircularPropagator::attempt_1to2_reaction(const SingleCircularDomain& dom,
         // So, unlike BD, we don't need to consider the reaction volume.
         // We can place the two particles in contact with each other.
 
-        const Real3 ipv(random_circular_uniform(separation_length, fid));
+        const Real3 ipv(draw_2D_displacement(fid, separation_length));
 
         Real3 disp1(ipv * ( r1 / r12));
         Real3 disp2(ipv * (-r2 / r12));
@@ -176,13 +176,13 @@ SingleCircularPropagator::attempt_1to2_reaction(const SingleCircularDomain& dom,
         // burst domains around the reactants.
         if(this->is_inside_of_shell(dom, pos1_new, r1))
         {
-            sim_.determine_positions_2D(pos1_new, r1, self_id_);
-            sim_.determine_positions_3D(pos1_new, r1, self_id_);
+            sim_.determine_positions_2D(pos1_new,       r1, self_id_);
+            sim_.determine_positions_3D(pos1_new.first, r1, self_id_);
         }
         if(this->is_inside_of_shell(dom, pos2_new, r2))
         {
-            sim_.determine_positions_2D(pos2_new, r2, self_id_);
-            sim_.determine_positions_3D(pos2_new, r2, self_id_);
+            sim_.determine_positions_2D(pos2_new,       r2, self_id_);
+            sim_.determine_positions_3D(pos2_new.first, r2, self_id_);
         }
 
         if(world_.has_overlapping_particles_2D(pos1_new, r1, pid) ||
@@ -201,13 +201,13 @@ SingleCircularPropagator::attempt_1to2_reaction(const SingleCircularDomain& dom,
     // burst domains around the reactants.
     if(this->is_inside_of_shell(dom, pos1_new, r1))
     {
-        sim_.determine_positions_2D(pos1_new, r1, self_id_);
-        sim_.determine_positions_3D(pos1_new, r1, self_id_);
+        sim_.determine_positions_2D(pos1_new,       r1, self_id_);
+        sim_.determine_positions_3D(pos1_new.first, r1, self_id_);
     }
     if(this->is_inside_of_shell(dom, pos2_new, r2))
     {
-        sim_.determine_positions_2D(pos2_new, r2, self_id_);
-        sim_.determine_positions_3D(pos2_new, r2, self_id_);
+        sim_.determine_positions_2D(pos2_new,       r2, self_id_);
+        sim_.determine_positions_3D(pos2_new.first, r2, self_id_);
     }
 
     // The reason why we use 2D and 3D, not XD is the following.
