@@ -17,64 +17,95 @@ boost::optional<boost::container::small_vector<DomainID, 4>>
 NGFRDSimulator::form_single_domain_2D(
         const ParticleID& pid, const Particle& p, const FaceID& fid)
 {
+    // It considers the largest radius of 2D particles when drawing 3D shell,
+    // so we don't need to consider the 2D-3D shell overlap here.
+
     const auto min_shell_radius = p.radius() * SINGLE_SHELL_FACTOR;
 
-    boost::container::small_vector<DomainID, 4> intruders_2D;
+    bool min_shell_intruders_contains_multi = false;
+    boost::container::small_vector<DomainID, 4> min_shell_intruders;
 
     for(const auto& sidp : shells_.list_shells_within_radius_2D(
             std::make_pair(p.position(), fid), min_shell_radius))
     {
         const auto did = *sidp.first.second.domain_id();
-        unique_push_back(intruders_2D, did);
-    }
-
-    // burst 2D intruders
-
-    boost::container::small_vector<DomainID, 4> intruders;
-    for(const auto& did : intruders_2D)
-    {
+        unique_push_back(min_shell_intruders, did);
         if(domains_.at(did).second.is_multi())
         {
-            unique_push_back(intruders, did);
+            min_shell_intruders_contains_multi = true;
         }
-        else
+    }
+    if(min_shell_intruders_contains_multi)
+    {
+        return min_shell_intruders;
+    }
+
+    // burst min shell intruders (if they are non-multi domains)
+
+    Real max_distance = 0.0;
+    boost::container::small_vector<DomainID, 4> intruders;
+    for(const auto& did : min_shell_intruders)
+    {
+        for(const auto& result : burst_domain(did))
         {
-            for(const auto& result : burst_domain(did))
+            const auto& pid2 = result.first;
+            const auto& p2   = result.second;
+            const auto& fid2 = *(this->world_->on_which_face(pid2));
+
+            const auto dist = ecell4::polygon::distance(this->world_->polygon(),
+                std::make_pair(p.position(),  fid),
+                std::make_pair(p2.position(), fid2));
+
+            max_distance = std::max(max_distance, dist);
+
+            const auto did2 = form_tight_domain_2D(pid2, p2, fid2);
+
+            if(dist < (p.radius() + p2.radius()) * SINGLE_SHELL_FACTOR)
             {
-                const auto& pid2 = result.first;
-                const auto& p2   = result.second;
-                const auto& fid2 = *(this->world_->on_which_face(pid2));
-
-                const auto dist = ecell4::polygon::distance(this->world_->polygon(),
-                    std::make_pair(p.position(),  fid),
-                    std::make_pair(p2.position(), fid2));
-
-                const auto did2 = form_tight_domain_2D(pid2, p2, fid2);
-
-                if(dist < (p.radius() + p2.radius()) * SINGLE_SHELL_FACTOR)
-                {
-                    unique_push_back(intruders, did2);
-                }
+                unique_push_back(intruders, did2);
             }
         }
     }
 
-    // Here it calculates distance between bounding sphere of 2D shell and
-    // 3D shell for simplicity.
-    for(const auto& sidp: shells_.list_shells_within_radius_3D(
-            p.position(), min_shell_radius))
+    if( ! intruders.empty())
     {
-        const auto did = *sidp.first.second.domain_id();
-        if(domains_.at(did).second.is_multi())
-        {
-            unique_push_back(intruders, did);
-        }
-        // 3D domains other than multi never intersects with 2D shells.
+        return intruders;
     }
 
-    // TODO form single domain if there is no intruders
+    // No intruders here. draw single shell.
 
-    return intruders;
+    const auto shell_size       = max_distance * SAFETY_SHRINK;
+    const auto effective_radius = shell_size - p.radius();
+    assert(0.0 < effective_radius);
+
+    greens_functions::GreensFunction2DAbsSym gf(p.D(), effective_radius);
+
+    const auto dt_escape   = gf.drawTime(this->world_->rng()->uniform(0.0, 1.0));
+    const auto dt_reaction = this->draw_single_reaction_time(p.species());
+
+    const auto dt = std::min(dt_escape,  dt_reaction);
+    const auto event_kind = (dt_escape < dt_reaction) ?
+            SingleCircularDomain::EventKind::Escape   :
+            SingleCircularDomain::EventKind::Reaction ;
+
+    const auto did = didgen_();
+    const auto sid = sidgen_();
+
+    CircularShell sh(p.radius(), Circle(shell_size, p.position(),
+                     this->polygon().triangle_at(fid).normal()), fid);
+    this->shells_.update_shell(sid, Shell(sh, did));
+
+    SingleCircularDomain dom(event_kind, dt, world_->t(), sid, sh, pid,
+            p.D(), effective_radius, std::move(gf));
+
+    // add event with the same domain ID
+    const auto evid = this->scheduler_.add(
+            std::make_shared<event_type>(this->t() + dt, did));
+
+    // update begin_time and re-insert domain into domains_ container
+    this->domains_[did] = std::make_pair(evid, Domain(std::move(dom)));
+
+    return boost::none;
 }
 
 bool NGFRDSimulator::form_pair_domain_2D(
@@ -87,8 +118,6 @@ bool NGFRDSimulator::form_pair_domain_2D(
 void NGFRDSimulator::form_domain_2D(
         const ParticleID& pid, const Particle& p, const FaceID& fid)
 {
-    // TODO: consider thickness of 2D Domains
-
     ECELL4_NGFRD_LOG_FUNCTION();
     ECELL4_NGFRD_LOG("form_domain_2D: forming domain for particle ", pid);
 
@@ -324,7 +353,7 @@ NGFRDSimulator::form_single_domain_3D(const ParticleID& pid, const Particle& p)
     this->shells_.update_shell(sid, Shell(sh, did));
 
     SingleSphericalDomain dom(event_kind, dt, world_->t(), sid, sh, pid,
-            p.D(), shell_size - p.radius(), std::move(gf));
+            p.D(), effective_radius, std::move(gf));
 
     // add event with the same domain ID
     const auto evid = this->scheduler_.add(
