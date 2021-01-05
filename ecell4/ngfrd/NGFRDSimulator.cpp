@@ -46,7 +46,7 @@ NGFRDSimulator::form_single_domain_2D(
 
     // burst min shell intruders (if they are non-multi domains)
 
-    Real max_distance = 0.0;
+    Real max_distance = max_circular_shell_size_at(p.position(), fid);
     boost::container::small_vector<DomainID, 4> intruders;
     for(const auto& did : min_shell_intruders)
     {
@@ -60,7 +60,7 @@ NGFRDSimulator::form_single_domain_2D(
                 std::make_pair(p.position(),  fid),
                 std::make_pair(p2.position(), fid2)) - p2.radius();
 
-            max_distance = std::max(max_distance, dist);
+            max_distance = std::min(max_distance, dist);
 
             const auto did2 = form_tight_domain_2D(pid2, p2, fid2);
 
