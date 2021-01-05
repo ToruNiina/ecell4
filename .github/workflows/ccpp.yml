@@ -68,7 +68,7 @@ jobs:
           brew upgrade
           rm '/usr/local/bin/2to3'
           brew unlink gcc@8
-          brew install boost gsl hdf5 cmake python
+          brew install boost gsl hdf5
 
     - name: Build and Install ecell4_base
       run: /usr/local/bin/python3 setup.py install
