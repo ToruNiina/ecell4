@@ -19,6 +19,7 @@ boost::optional<boost::container::small_vector<DomainID, 4>>
 NGFRDSimulator::form_single_domain_2D(
         const ParticleID& pid, const Particle& p, const FaceID& fid)
 {
+    ECELL4_NGFRD_LOG_FUNCTION();
     // It considers the largest radius of 2D particles when drawing 3D shell,
     // so we don't need to consider the 2D-3D shell overlap here.
 
@@ -56,13 +57,13 @@ NGFRDSimulator::form_single_domain_2D(
 
             const auto dist = ecell4::polygon::distance(this->world_->polygon(),
                 std::make_pair(p.position(),  fid),
-                std::make_pair(p2.position(), fid2));
+                std::make_pair(p2.position(), fid2)) - p2.radius();
 
             max_distance = std::max(max_distance, dist);
 
             const auto did2 = form_tight_domain_2D(pid2, p2, fid2);
 
-            if(dist < (p.radius() + p2.radius()) * SINGLE_SHELL_FACTOR)
+            if(dist < p.radius() * SINGLE_SHELL_FACTOR)
             {
                 unique_push_back(intruders, did2);
             }
@@ -72,6 +73,12 @@ NGFRDSimulator::form_single_domain_2D(
     if( ! intruders.empty())
     {
         return intruders;
+    }
+
+    // if there are no min_shell_intruders, we need to calculate the max distance.
+    if(min_shell_intruders.empty())
+    {
+        max_distance = max_circular_shell_size_at(p.position(), fid);
     }
 
     // No intruders here. draw single shell.
@@ -92,6 +99,9 @@ NGFRDSimulator::form_single_domain_2D(
 
     const auto did = didgen_();
     const auto sid = sidgen_();
+
+    ECELL4_NGFRD_LOG("2D domain did = ", did, ", dt_escape = ", dt_escape,
+                     ", dt_reaction = ", dt_reaction, ", dt = ",  dt);
 
     CircularShell sh(p.radius(), Circle(shell_size, p.position(),
                      this->polygon().triangle_at(fid).normal()), fid);
@@ -349,6 +359,9 @@ NGFRDSimulator::form_single_domain_3D(const ParticleID& pid, const Particle& p)
 
     const auto did = didgen_();
     const auto sid = sidgen_();
+
+    ECELL4_NGFRD_LOG("3D domain did = ", did, ", dt_escape = ", dt_escape,
+                     ", dt_reaction = ", dt_reaction, ", dt = ",  dt);
 
     // construct shell and assign it to shell container
     SphericalShell sh(Sphere(p.position(), shell_size));
