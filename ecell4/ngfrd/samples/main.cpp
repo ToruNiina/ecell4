@@ -36,7 +36,9 @@ int main()
         std::make_shared<ecell4::GSLRandomNumberGenerator>();
     rng->seed(123456ul);
 
-    std::shared_ptr<ecell4::ngfrd::NGFRDWorld> world = std::make_shared<ecell4::ngfrd::NGFRDWorld>(edge_lengths, matrix_sizes);
+    std::shared_ptr<ecell4::ngfrd::NGFRDWorld> world =
+        std::make_shared<ecell4::ngfrd::NGFRDWorld>(
+                edge_lengths, matrix_sizes, /*margin = */ 0.1, rng);
     world->add_molecules_3D(sp1, 10);
     world->add_molecules_2D(sp2, 10);
 
@@ -45,19 +47,22 @@ int main()
 
     ecell4::ngfrd::NGFRDSimulator sim(world, model);
 
-    const ecell4::Real dt(0.1);
+    const ecell4::Real dt(1.0);
     for(std::size_t i=1; i<100; ++i)
     {
-        sim.initialize();
-        while(sim.next_event_time() <= i * dt)
+        if(world->t() <= i * dt)
         {
-            sim.step();
+            sim.initialize();
+            while(sim.next_event_time() <= i * dt)
+            {
+                sim.step();
+            }
+            assert(sim.next_event_time() > i * dt);
+            sim.diagnosis();
+            sim.finalize();
         }
-        assert(sim.next_event_time() > i * dt);
-        sim.diagnosis();
-        sim.finalize();
         snapshot_output(traj, world);
-        std::cout << "t = " << world->t() << std::endl;
+        std::cout << "t = " << world->t() << " / " << i * dt << std::endl;
     }
 
     return 0;
