@@ -695,6 +695,12 @@ public:
         return rng_;
     }
 
+    // geometric constraint on circular shells
+    std::array<ecell4::Segment, 6> const& get_barrier_around(const FaceID& fid) const
+    {
+        return barriers_.at(fid);
+    }
+
 private:
 
     template<typename ... Ts>
