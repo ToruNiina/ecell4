@@ -33,7 +33,7 @@ class PairSphericalDomain
         : kind_(EventKind::Unknown), dt_(0.0), begin_time_(0.0),
           com_radius_(0.0), ipv_radius_(0.0),
           shell_id_(ShellID{}), shell_(Sphere(Real3(0.0, 0.0, 0.0), 0.0)),
-          particle_id_1_(ParticleID{}), particle_id_2_(ParticleID{}),
+          particle1_id_(ParticleID{}), particle2_id_(ParticleID{}),
           gf_ipv_(0.0, 0.0, 0.0, 0.0, 0.0), gf_com_(0.0, 0.0)
     {}
     PairSphericalDomain(
