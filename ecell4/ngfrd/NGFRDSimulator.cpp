@@ -1,6 +1,7 @@
 #include <ecell4/ngfrd/NGFRDSimulator.hpp>
 #include <ecell4/ngfrd/SingleSphericalPropagator.hpp>
 #include <ecell4/ngfrd/SingleCircularPropagator.hpp>
+#include <ecell4/ngfrd/SingleConicalPropagator.hpp>
 
 namespace ecell4
 {
@@ -47,7 +48,7 @@ NGFRDSimulator::form_single_domain_2D(
     // burst min shell intruders (if they are non-multi domains)
 
     Real max_distance = max_circular_shell_size_at(p.position(), fid);
-    boost::container::small_vector<DomainID, 4> min_shell_intruders;
+    boost::container::small_vector<DomainID, 4> intruders;
     for(const auto& did : min_shell_intruders)
     {
         for(const auto& result : burst_domain(did))
@@ -66,15 +67,15 @@ NGFRDSimulator::form_single_domain_2D(
 
             if(dist < p.radius() * SINGLE_SHELL_FACTOR)
             {
-                unique_push_back(min_shell_intruders, did2);
+                unique_push_back(intruders, did2);
             }
         }
     }
 
-    if( ! min_shell_intruders.empty())
+    if( ! intruders.empty())
     {
         // form pair or multi
-        return min_shell_intruders;
+        return intruders;
     }
 
     if(max_distance < min_shell_radius)
@@ -116,8 +117,8 @@ NGFRDSimulator::form_single_domain_2D(
             max_shell_size = std::min(max_shell_size, poly.length_of(eid) * 0.5);
 
             // check shells on faces which connect to the vertex
-            const auto& neighbor_fid = this->face_of(eid);
-            if(const auto possible_intruders : world_->particles_on(neighbor_fid))
+            const auto neighbor_fid = poly.face_of(eid);
+            if(const auto possible_intruders = world_->particles_on(neighbor_fid))
             {
                 for(const auto& possible_intruder_id : *possible_intruders)
                 {
@@ -127,21 +128,59 @@ NGFRDSimulator::form_single_domain_2D(
                     max_shell_size = std::min(max_shell_size,
                         ecell4::polygon::distance_sq(poly,
                             std::make_pair(possible_intruder.position(), neighbor_fid),
-                            std::make_pair(poly.position_at(vtxid), vtxid));
+                            std::make_pair(poly.position_at(vtxid), vtxid)));
                 }
             }
         }
-        if(max_shell_size < min_conical_shell_size)
+        if(max_shell_size < min_conical_shell_size ||
+           max_shell_size <= dist_to_vtx + p.radius())
         {
             // maximum possible shell size is smaller than the minimum conical.
             // Conical shell cannot be formed.
-            return min_shell_intruders;
+            return intruders;
         }
 
         // 3. form conical shell.
+        const auto shell_size       = max_shell_size * SAFETY_SHRINK;
+        const auto effective_radius = shell_size - p.radius();
+        const auto initial_position = dist_to_vtx;
+        const auto phi              = poly.apex_angle_at(vtxid);
+        assert(0.0 < effective_radius);
 
-        // TODO
-        return intruders;
+        greens_functions::GreensFunction2DRefWedgeAbs
+            gf(p.D(), initial_position, effective_radius, phi);
+
+        const auto dt_escape   = gf.drawTime(this->world_->rng()->uniform(0.0, 1.0));
+        const auto dt_reaction = this->draw_single_reaction_time(p.species());
+
+        const auto dt = std::min(dt_escape,  dt_reaction);
+        const auto event_kind = (dt_escape < dt_reaction) ?
+                SingleConicalDomain::EventKind::Escape   :
+                SingleConicalDomain::EventKind::Reaction ;
+
+        const auto did = didgen_();
+        const auto sid = sidgen_();
+
+        ECELL4_NGFRD_LOG("2D Conical domain: did = ", did,
+                ", dt_escape = ", dt_escape, ", dt_reaction = ", dt_reaction,
+                ", dt = ",  dt);
+
+        ConicalShell sh(p.radius(), ConicalSurface(p.position(), phi, shell_size), vtxid);
+        this->shells_.update_shell(sid, Shell(sh, did));
+
+        SingleConicalDomain dom(event_kind, dt, world_->t(), sid, sh,
+                pid, p.D(), effective_radius, std::move(gf));
+
+        // add event with the same domain ID
+        const auto evid = this->scheduler_.add(
+                std::make_shared<event_type>(this->t() + dt, did));
+
+        // update begin_time and re-insert domain into domains_ container
+        this->domains_[did] = std::make_pair(evid, Domain(std::move(dom)));
+
+        ECELL4_NGFRD_LOG("2D single circular domain formed!");
+
+        return boost::none;
     }
 
 
