@@ -3,6 +3,7 @@
 #include <ecell4/ngfrd/SingleSphericalDomain.hpp>
 #include <ecell4/ngfrd/SingleCircularDomain.hpp>
 #include <ecell4/ngfrd/SingleConicalDomain.hpp>
+#include <ecell4/ngfrd/PairSphericalDomain.hpp>
 #include <ecell4/ngfrd/MultiDomain.hpp>
 
 namespace ecell4
@@ -19,7 +20,8 @@ public:
         SingleSpherical = 1,
         SingleCircular  = 2,
         SingleConical   = 3,
-        Multi           = 4,
+        PairSpherical   = 4,
+        Multi           = 5,
     };
 
     using storage_type = boost::variant<
@@ -27,6 +29,7 @@ public:
             SingleSphericalDomain,
             SingleCircularDomain,
             SingleConicalDomain,
+            PairSphericalDomain,
             MultiDomain
         >;
 
@@ -47,6 +50,10 @@ private:
             return dom.multiplicity();
         }
         std::size_t operator()(const SingleConicalDomain& dom) const noexcept
+        {
+            return dom.multiplicity();
+        }
+        std::size_t operator()(const PairSphericalDomain& dom) const noexcept
         {
             return dom.multiplicity();
         }
@@ -77,13 +84,17 @@ public:
     {
         return this->kind() == DomainKind::SingleConical;
     }
+    bool is_pair_spherical() const noexcept
+    {
+        return this->kind() == DomainKind::PairSpherical;
+    }
     bool is_multi() const noexcept
     {
         return this->kind() == DomainKind::Multi;
     }
 
     bool is_2D() const noexcept {return is_single_circular() || is_single_conical();}
-    bool is_3D() const noexcept {return is_single_spherical();}
+    bool is_3D() const noexcept {return is_single_spherical() || is_pair_spherical();}
 
     SingleSphericalDomain const& as_single_spherical() const
     {
@@ -110,6 +121,15 @@ public:
     SingleConicalDomain&       as_single_conical()
     {
         return boost::get<SingleConicalDomain>(storage_);
+    }
+
+    PairSphericalDomain const& as_pair_spherical() const
+    {
+        return boost::get<PairSphericalDomain>(storage_);
+    }
+    PairSphericalDomain&       as_pair_spherical()
+    {
+        return boost::get<PairSphericalDomain>(storage_);
     }
 
     MultiDomain const& as_multi() const
