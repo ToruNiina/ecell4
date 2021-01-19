@@ -858,6 +858,37 @@ NGFRDSimulator::fire_single_circular(const DomainID& did, SingleCircularDomain d
 }
 
 boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
+NGFRDSimulator::fire_single_conical(const DomainID& did, SingleConicalDomain dom)
+{
+    ECELL4_NGFRD_LOG_FUNCTION();
+    ECELL4_NGFRD_LOG("firing single conical: ", did);
+    ECELL4_NGFRD_LOG("included shell: ", dom.shell_id());
+
+    // conical never be a tight domain.
+
+    std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
+    SingleConicalPropagator prop(did,
+            *(this->model_), *(this->world_), *this, *(this->world_->rng()),
+            SINGLE_CONICAL_MAX_RETRY, last_reactions);
+
+    boost::container::small_vector<std::pair<ParticleID, Particle>, 4> results;
+    for(const auto& pid : prop(dom))
+    {
+        results.push_back(world_->get_particle(pid));
+    }
+
+    // remove shell from shell container
+    this->shells_.remove_shell(dom.shell_id());
+
+    if( ! last_reactions.empty())
+    {
+        std::copy(last_reactions.begin(), last_reactions.end(),
+                  std::back_inserter(last_reactions_));
+    }
+    return results;
+}
+
+boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
 NGFRDSimulator::fire_single_spherical(const DomainID& did, SingleSphericalDomain dom)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
@@ -979,6 +1010,33 @@ NGFRDSimulator::burst_single_circular(const DomainID& did, SingleCircularDomain 
     assert(last_reactions.empty());
     return results;
 }
+
+boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
+NGFRDSimulator::burst_single_conical(const DomainID& did, SingleCircularDomain dom)
+{
+    ECELL4_NGFRD_LOG_FUNCTION();
+    ECELL4_NGFRD_LOG("bursting single conical: ", did);
+    ECELL4_NGFRD_LOG("included shell: ", dom.shell_id());
+
+    // conical shell never be a tight domain.
+
+    std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
+    SingleConicalPropagator prop(did,
+            *(this->model_), *(this->world_), *this, *(this->world_->rng()),
+            SINGLE_CONICAL_MAX_RETRY, last_reactions);
+
+    // While bursting single domain, it never reacts (becuase the time when
+    // it dissociates is already calculated and considered in the domain dt).
+    boost::container::small_vector<std::pair<ParticleID, Particle>, 4> results;
+    results.push_back(world_->get_particle(prop.burst(dom, this->t())));
+
+    // remove shell from shell container
+    this->shells_.remove_shell(dom.shell_id());
+
+    assert(last_reactions.empty());
+    return results;
+}
+
 
 boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
 NGFRDSimulator::burst_single_spherical(const DomainID& did, SingleSphericalDomain dom)
