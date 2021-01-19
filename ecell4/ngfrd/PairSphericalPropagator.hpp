@@ -41,11 +41,11 @@ class PairSphericalPropagator
             }
             case PairSphericalDomain::EventKind::SingleReaction1:
             {
-                return this->single_reaction_1(dom);
+                return this->single_reaction(dom, dom.particle1_id(), dom.particle2_id());
             }
             case PairSphericalDomain::EventKind::SingleReaction2:
             {
-                return this->single_reaction_2(dom);
+                return this->single_reaction(dom, dom.particle2_id(), dom.particle1_id());
             }
             case PairSphericalDomain::EventKind::PairReaction:
             {
@@ -85,9 +85,8 @@ class PairSphericalPropagator
     ipv_escape(const PairSphericalDomain& dom);
 
     boost::container::static_vector<ParticleID, 3>
-    single_reaction_1(const PairSphericalDomain& dom);
-    boost::container::static_vector<ParticleID, 3>
-    single_reaction_2(const PairSphericalDomain& dom);
+    single_reaction(const PairSphericalDomain& dom,
+                    const ParticleID& reactant, const ParticleID& other);
 
     boost::container::static_vector<ParticleID, 3>
     pair_reaction(const PairSphericalDomain& dom);
@@ -106,6 +105,8 @@ class PairSphericalPropagator
 
     bool is_inside_of_shell(const PairSphericalDomain& dom,
                             const Real3& center, const Real radius);
+
+    Real3 generate_ipv(const Real r, const Real theta, const Real phi);
 
   private:
 
