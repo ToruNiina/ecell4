@@ -28,14 +28,14 @@ class SingleConicalDomain
 
     SingleConicalDomain()
         : kind_(EventKind::Unknown), dt_(0.0), begin_time_(0.0), effective_radius_(0.0),
-          shell_(0.0, Circle(0.0, Real3(0.0, 0.0, 0.0), Real3(0.0, 0.0, 0.0)), FaceID{}),
-          gf_(0.0, 0.0)
+          shell_(0.0, ConicalSurface(Real3(0.0, 0.0, 0.0), 0.0, 0.0), VertexID{}),
+          gf_(0.0, 0.0, 0.0, 0.0)
     {}
     SingleConicalDomain(
             const EventKind kind, const Real dt, const Real begin,
             const ShellID&  shid, const ConicalShell& sh,
             const ParticleID& pid, const Real D, const Real effective_radius,
-            greens_functions::GreensFunction2DAbsSym gf)
+            greens_functions::GreensFunction2DRefWedgeAbs gf)
         : kind_(kind), dt_(dt), begin_time_(begin), effective_radius_(effective_radius),
           shell_id_(shid), shell_(sh), particle_id_(pid), gf_(std::move(gf))
     {}
