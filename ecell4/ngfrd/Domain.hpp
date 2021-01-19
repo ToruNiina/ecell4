@@ -2,6 +2,7 @@
 #define ECELL4_NGFRD_DOMAIN_HPP
 #include <ecell4/ngfrd/SingleSphericalDomain.hpp>
 #include <ecell4/ngfrd/SingleCircularDomain.hpp>
+#include <ecell4/ngfrd/SingleConicalDomain.hpp>
 #include <ecell4/ngfrd/MultiDomain.hpp>
 
 namespace ecell4
@@ -17,13 +18,15 @@ public:
         Uninitialized   = 0,
         SingleSpherical = 1,
         SingleCircular  = 2,
-        Multi           = 3,
+        SingleConical   = 3,
+        Multi           = 4,
     };
 
     using storage_type = boost::variant<
             boost::blank,
             SingleSphericalDomain,
             SingleCircularDomain,
+            SingleConicalDomain,
             MultiDomain
         >;
 
@@ -40,6 +43,10 @@ private:
             return dom.multiplicity();
         }
         std::size_t operator()(const SingleCircularDomain& dom) const noexcept
+        {
+            return dom.multiplicity();
+        }
+        std::size_t operator()(const SingleConicalDomain& dom) const noexcept
         {
             return dom.multiplicity();
         }
@@ -66,12 +73,16 @@ public:
     {
         return this->kind() == DomainKind::SingleCircular;
     }
+    bool is_single_conical() const noexcept
+    {
+        return this->kind() == DomainKind::SingleConical;
+    }
     bool is_multi() const noexcept
     {
         return this->kind() == DomainKind::Multi;
     }
 
-    bool is_2D() const noexcept {return is_single_circular();}
+    bool is_2D() const noexcept {return is_single_circular() || is_single_conical();}
     bool is_3D() const noexcept {return is_single_spherical();}
 
     SingleSphericalDomain const& as_single_spherical() const
@@ -90,6 +101,15 @@ public:
     SingleCircularDomain&       as_single_circular()
     {
         return boost::get<SingleCircularDomain>(storage_);
+    }
+
+    SingleConicalDomain const& as_single_conical() const
+    {
+        return boost::get<SingleConicalDomain>(storage_);
+    }
+    SingleConicalDomain&       as_single_conical()
+    {
+        return boost::get<SingleConicalDomain>(storage_);
     }
 
     MultiDomain const& as_multi() const
