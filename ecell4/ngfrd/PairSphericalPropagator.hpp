@@ -59,7 +59,9 @@ class PairSphericalPropagator
         }
     }
 
-    ParticleID burst(const PairSphericalDomain& dom, const Real time_now)
+    // bursting occurs before any event happens. So here we know that the resulting
+    // particles IDs are the same as the pair included in this domain.
+    std::array<ParticleID, 2> burst(const PairSphericalDomain& dom, const Real time_now)
     {
         return this->propagate(dom, time_now - dom.begin_time());
     }
@@ -97,7 +99,7 @@ class PairSphericalPropagator
     attempt_1to2_reaction(const PairSphericalDomain& dom,
             const ParticleID&, const Particle&, const ReactionRule& rule);
 
-    ParticleID propagate(const PairSphericalDomain& dom, const Real dt);
+    std::array<ParticleID, 2> propagate(const PairSphericalDomain& dom, const Real dt);
 
     ReactionRule const& determine_single_reaction_rule(const Species&, const Real rnd);
     ReactionRule const& determine_pair_reaction_rule(const Species&, const Species&, const Real rnd);
