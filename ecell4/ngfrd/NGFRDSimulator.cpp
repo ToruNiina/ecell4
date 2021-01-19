@@ -47,7 +47,7 @@ NGFRDSimulator::form_single_domain_2D(
     // burst min shell intruders (if they are non-multi domains)
 
     Real max_distance = max_circular_shell_size_at(p.position(), fid);
-    boost::container::small_vector<DomainID, 4> intruders;
+    boost::container::small_vector<DomainID, 4> min_shell_intruders;
     for(const auto& did : min_shell_intruders)
     {
         for(const auto& result : burst_domain(did))
@@ -66,15 +66,15 @@ NGFRDSimulator::form_single_domain_2D(
 
             if(dist < p.radius() * SINGLE_SHELL_FACTOR)
             {
-                unique_push_back(intruders, did2);
+                unique_push_back(min_shell_intruders, did2);
             }
         }
     }
 
-    if( ! intruders.empty())
+    if( ! min_shell_intruders.empty())
     {
         // form pair or multi
-        return intruders;
+        return min_shell_intruders;
     }
 
     if(max_distance < min_shell_radius)
@@ -111,8 +111,11 @@ NGFRDSimulator::form_single_domain_2D(
         Real max_shell_size = std::numeric_limits<Real>::infinity();
         for(const auto& eid : poly.outgoing_edges(vtxid))
         {
-            max_shell_size = std::min(max_shell_size, poly.length_of(eid));
+            // To avoid conical-conical collision, make max_shell_size smaller
+            // than the half length of edges.
+            max_shell_size = std::min(max_shell_size, poly.length_of(eid) * 0.5);
 
+            // check shells on faces which connect to the vertex
             const auto& neighbor_fid = this->face_of(eid);
             if(const auto possible_intruders : world_->particles_on(neighbor_fid))
             {
@@ -130,10 +133,12 @@ NGFRDSimulator::form_single_domain_2D(
         }
         if(max_shell_size < min_conical_shell_size)
         {
-            return intruders;
+            // maximum possible shell size is smaller than the minimum conical.
+            // Conical shell cannot be formed.
+            return min_shell_intruders;
         }
 
-        // 3. form shell if possible.
+        // 3. form conical shell.
 
         // TODO
         return intruders;
