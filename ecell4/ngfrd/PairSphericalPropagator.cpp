@@ -42,8 +42,8 @@ PairSphericalPropagator::com_escape(const PairSphericalDomain& dom)
     const Real3 com = dom.shell().shape().center() + rng_.direction3d(R_com);
 
     const auto& gf_ipv   = dom.gf_ipv();
-    const Real R_ipv     = gf.drawR(rng_.uniform(0.0, 1.0), dom.dt());
-    const Real theta_ipv = gf.drawTheta(rng_.uniform(0.0, 1.0), R_ipv, dom.dt());
+    const Real R_ipv     = gf_ipv.drawR(rng_.uniform(0.0, 1.0), dom.dt());
+    const Real theta_ipv = gf_ipv.drawTheta(rng_.uniform(0.0, 1.0), R_ipv, dom.dt());
     const Real phi_ipv   = rng_.uniform(0.0, 2 * pi);
 
     assert(p1.radius() + p2.radius() <= R_ipv);
@@ -79,7 +79,7 @@ PairSphericalPropagator::ipv_escape(const PairSphericalDomain& dom)
     const Real D12 = D1 + D2;
 
     const auto& gf_com = dom.gf_com();
-    const Real R_com   = gf.drawR(rng_.uniform(0.0, 1.0), dom.dt());
+    const Real R_com   = gf_com.drawR(rng_.uniform(0.0, 1.0), dom.dt());
 
     // later we will do apply_boundary. (this optimization is correct as long as
     // the domain is smaller than the whole world, and this assumption is always
@@ -88,7 +88,7 @@ PairSphericalPropagator::ipv_escape(const PairSphericalDomain& dom)
 
     const auto& gf_ipv   = dom.gf_ipv();
     const Real R_ipv     = dom.ipv_radius();
-    const Real theta_ipv = gf.drawTheta(rng_.uniform(0.0, 1.0), R_ipv, dom.dt());
+    const Real theta_ipv = gf_ipv.drawTheta(rng_.uniform(0.0, 1.0), R_ipv, dom.dt());
     const Real phi_ipv   = rng_.uniform(0.0, 2 * pi);
 
     assert(p1.radius() + p2.radius() <= R_ipv);
@@ -189,10 +189,9 @@ PairSphericalPropagator::attempt_1to1_reaction(const PairSphericalDomain& dom,
         }
     }
 
-    // it passes all the checks. update the particle position.
-
-    world_.update_particle_3D(pid1, newp);
-    world_.update_particle_3D(pid2, newp);
+    // it passes all the checks. update the particle species.
+    // (the `other` particle is already updated via `propagate` function.)
+    world_.update_particle_3D(pid, newp);
 
     last_reactions_.emplace_back(rule, make_unimolecular_reaction_info(
                 world_.t(), pid, p, pid, newp));
@@ -316,6 +315,8 @@ boost::container::static_vector<ParticleID, 3>
 PairSphericalPropagator::pair_reaction(const PairSphericalDomain& dom)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
+    constexpr Real pi = boost::math::constants::pi<Real>();
+
     const auto pid1 = dom.particle1_id();
     const auto pid2 = dom.particle2_id();
     assert( ! world_.on_which_face(pid1));
@@ -324,14 +325,18 @@ PairSphericalPropagator::pair_reaction(const PairSphericalDomain& dom)
     auto p1 = world_.get_particle(pid1).second;
     auto p2 = world_.get_particle(pid2).second;
 
+    const auto D1  = p1.D();
+    const auto D2  = p2.D();
+    const auto D12 = D1 + D2;
+
     // determine com and ipv
     const auto& gf_com = dom.gf_com();
-    const Real  R_com  = gf.drawR(rng_.uniform(0.0, 1.0), dom.dt());
+    const Real  R_com  = gf_com.drawR(rng_.uniform(0.0, 1.0), dom.dt());
     const Real3 com    = dom.shell().shape().center() + rng_.direction3d(R_com);
 
     const auto& gf_ipv    = dom.gf_ipv();
-    const Real  R_ipv     = (p1.radius() + p2.radius()) * SAFETY_EXPAND;
-    const Real  theta_ipv = gf.drawTheta(rng_.uniform(0.0, 1.0), R_ipv, dom.dt());
+    const Real  R_ipv     = (p1.radius() + p2.radius()) * NGFRDSimulator::SAFETY_EXPAND;
+    const Real  theta_ipv = gf_ipv.drawTheta(rng_.uniform(0.0, 1.0), R_ipv, dom.dt());
     const Real  phi_ipv   = rng_.uniform(0.0, 2 * pi);
     const Real3 ipv       = this->generate_ipv(dom.ipv(), R_ipv, theta_ipv, phi_ipv);
 
@@ -346,7 +351,7 @@ PairSphericalPropagator::pair_reaction(const PairSphericalDomain& dom)
 
     // determine reaction
     const auto& rule = this->determine_pair_reaction_rule(
-            p.species(), rng_.uniform(0.0, 1.0));
+            p1.species(), p2.species(), rng_.uniform(0.0, 1.0));
 
     switch(rule.products().size())
     {
@@ -360,7 +365,7 @@ PairSphericalPropagator::pair_reaction(const PairSphericalDomain& dom)
         }
         case 1:
         {
-            return attempt_2to1_reaction(dom, pid1, p1, pid2, p2, rule);
+            return attempt_2to1_reaction(dom, pid1, p1, pid2, p2, rule, com);
         }
         default:
         {
@@ -373,7 +378,8 @@ PairSphericalPropagator::pair_reaction(const PairSphericalDomain& dom)
 boost::container::static_vector<ParticleID, 3>
 PairSphericalPropagator::attempt_2to1_reaction(const PairSphericalDomain& dom,
         const ParticleID& pid1, const Particle& p1,
-        const ParticleID& pid2, const Particle& p2, const ReactionRule& rule)
+        const ParticleID& pid2, const Particle& p2,
+        const ReactionRule& rule, const Real3& com)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
 
@@ -384,7 +390,7 @@ PairSphericalPropagator::attempt_2to1_reaction(const PairSphericalDomain& dom,
     const Real radius_new  = molinfo.radius;
     const Real D_new       = molinfo.D;
 
-    Particle newp(species_new, p.position(), radius_new, D_new);
+    Particle newp(species_new, com, radius_new, D_new);
 
     // Although it's very unlikely, since a product can be larger than the reactant,
     // there is a small possibility that the product sticks out of the shell
@@ -394,8 +400,8 @@ PairSphericalPropagator::attempt_2to1_reaction(const PairSphericalDomain& dom,
         {
             // since it does not update the positions of particles, we need to
             // move particles to the state immediately before reaction.
-            world_.update_particle(pid1, p1);
-            world_.update_particle(pid2, p2);
+            world_.update_particle_3D(pid1, p1);
+            world_.update_particle_3D(pid2, p2);
 
             this->rejected_move_count_ += 1;
             return boost::container::static_vector<ParticleID, 3>{pid1, pid2};
@@ -410,8 +416,8 @@ PairSphericalPropagator::attempt_2to1_reaction(const PairSphericalDomain& dom,
         {
             // since it does not update the positions of particles, we need to
             // move particles to the state immediately before reaction.
-            world_.update_particle(pid1, p1);
-            world_.update_particle(pid2, p2);
+            world_.update_particle_3D(pid1, p1);
+            world_.update_particle_3D(pid2, p2);
 
             this->rejected_move_count_ += 1;
             return boost::container::static_vector<ParticleID, 3>{pid1, pid2};
@@ -445,14 +451,14 @@ PairSphericalPropagator::propagate(const PairSphericalDomain& dom, const Real dt
     const Real D12 = D1 + D2;
 
     const auto& gf_com = dom.gf_com();
-    const Real R_com   = gf.drawR(rng_.uniform(0.0, 1.0), dt);
+    const Real R_com   = gf_com.drawR(rng_.uniform(0.0, 1.0), dt);
 
     const Real3 com = world_.boundary().apply_boundary(
         dom.shell().shape().center() + rng_.direction3d(R_com));
 
     const auto& gf_ipv   = dom.gf_ipv();
-    const Real R_ipv     = gf.drawR(rng_.uniform(0.0, 1.0), dt);
-    const Real theta_ipv = gf.drawTheta(rng_.uniform(0.0, 1.0), R_ipv, dt);
+    const Real R_ipv     = gf_ipv.drawR(rng_.uniform(0.0, 1.0), dt);
+    const Real theta_ipv = gf_ipv.drawTheta(rng_.uniform(0.0, 1.0), R_ipv, dt);
     const Real phi_ipv   = rng_.uniform(0.0, 2 * pi);
 
     assert(p1.radius() + p2.radius() <= R_ipv);
@@ -538,7 +544,7 @@ bool PairSphericalPropagator::is_inside_of_shell(
     return length_sq(dr) < (threshold * threshold);
 }
 
-Real3 PairSphericalDomain::generate_ipv(
+Real3 PairSphericalPropagator::generate_ipv(
         const Real3& ipv, const Real r, const Real theta, const Real phi)
 {
     constexpr Real pi = boost::math::constants::pi<Real>();

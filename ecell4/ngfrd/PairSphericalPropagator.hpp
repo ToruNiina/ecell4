@@ -103,7 +103,8 @@ class PairSphericalPropagator
     boost::container::static_vector<ParticleID, 3>
     attempt_2to1_reaction(const PairSphericalDomain& dom,
             const ParticleID&, const Particle&,
-            const ParticleID&, const Particle&, const ReactionRule& rule);
+            const ParticleID&, const Particle&,
+            const ReactionRule& rule, const Real3& com);
 
     std::array<ParticleID, 2> propagate(const PairSphericalDomain& dom, const Real dt);
 
