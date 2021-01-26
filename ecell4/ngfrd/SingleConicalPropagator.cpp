@@ -28,7 +28,7 @@ SingleConicalPropagator::escape(const SingleConicalDomain& dom)
 
     // [-pi, pi)
     const auto& gf = dom.gf();
-    const Real theta = gf.drawTheta(rng_.uniform(0.0, 1.0), dom.effective_radius());
+    const Real theta = gf.drawTheta(rng_.uniform(0.0, 1.0), dom.effective_radius(), dom.dt());
 
     const auto new_pos = ecell4::polygon::roll(world_.polygon(),
             std::make_pair(p.position(), fid),
@@ -261,7 +261,7 @@ ParticleID SingleConicalPropagator::propagate(
     const Real theta = gf.drawTheta(rng_.uniform(0.0, 1.0), R, dt);
 
     const auto old_pos = std::make_pair(p.position(), fid);
-    const auto new_pos = ecell4::polygon::roll(world_.polygon(), vid, old_pos, R, theta);
+    const auto new_pos = ecell4::polygon::roll(world_.polygon(), old_pos, vid, R, theta);
 
     assert(this->is_inside_of_shell(dom, new_pos, p.radius()));
 
