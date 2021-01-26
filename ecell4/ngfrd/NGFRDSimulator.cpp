@@ -1012,7 +1012,7 @@ NGFRDSimulator::burst_single_circular(const DomainID& did, SingleCircularDomain 
 }
 
 boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
-NGFRDSimulator::burst_single_conical(const DomainID& did, SingleCircularDomain dom)
+NGFRDSimulator::burst_single_conical(const DomainID& did, SingleConicalDomain dom)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
     ECELL4_NGFRD_LOG("bursting single conical: ", did);
