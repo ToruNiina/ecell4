@@ -47,6 +47,7 @@ public:
     static constexpr std::size_t SINGLE_SPHERICAL_MAX_RETRY = 4;
     static constexpr std::size_t SINGLE_CIRCULAR_MAX_RETRY  = 4;
     static constexpr std::size_t SINGLE_CONICAL_MAX_RETRY   = 4;
+    static constexpr std::size_t PAIR_CONICAL_MAX_RETRY     = 4;
 
 public:
 

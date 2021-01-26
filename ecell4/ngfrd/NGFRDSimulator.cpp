@@ -17,6 +17,7 @@ constexpr Real NGFRDSimulator::CUTOFF_FACTOR;
 constexpr std::size_t NGFRDSimulator::SINGLE_SPHERICAL_MAX_RETRY;
 constexpr std::size_t NGFRDSimulator::SINGLE_CONICAL_MAX_RETRY;
 constexpr std::size_t NGFRDSimulator::SINGLE_CIRCULAR_MAX_RETRY;
+constexpr std::size_t NGFRDSimulator::PAIR_SPHERICAL_MAX_RETRY;
 
 boost::optional<boost::container::small_vector<DomainID, 4>>
 NGFRDSimulator::form_single_domain_2D(
@@ -937,7 +938,7 @@ NGFRDSimulator::fire_pair_spherical(const DomainID& did, PairSphericalDomain dom
     std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
     PairSphericalPropagator prop(
             did, *(this->model_), *(this->world_), *this,
-            *(this->world_->rng()), SINGLE_SPHERICAL_MAX_RETRY, last_reactions);
+            *(this->world_->rng()), PAIR_SPHERICAL_MAX_RETRY, last_reactions);
 
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4> results;
     for(const auto& pid : prop(dom))
@@ -1109,7 +1110,7 @@ NGFRDSimulator::burst_pair_spherical(const DomainID& did, PairSphericalDomain do
     std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
     PairSphericalPropagator prop(
             did, *(this->model_), *(this->world_), *this,
-            *(this->world_->rng()), SINGLE_SPHERICAL_MAX_RETRY, last_reactions);
+            *(this->world_->rng()), PAIR_SPHERICAL_MAX_RETRY, last_reactions);
 
     const std::array<ParticleID, 2> resulting_particles = prop.burst(dom, this->t());
 
