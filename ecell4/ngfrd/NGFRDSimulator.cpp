@@ -488,12 +488,207 @@ NGFRDSimulator::form_single_domain_3D(const ParticleID& pid, const Particle& p)
 
     return boost::none;
 }
+
 bool NGFRDSimulator::form_pair_domain_3D(
-        const ParticleID&, const Particle&, const DomainID&)
+        const ParticleID& pid1, const Particle& p1, const DomainID& intruder_id)
 {
-    // TODO
-    return false;
+    ECELL4_NGFRD_LOG_FUNCTION();
+    ECELL4_NGFRD_LOG("form_pair_domain_3D: forming domain for particle ", pid1);
+
+    // intruder is a single spherical domain
+    if( ! domains_.at(intruder_id).second.is_single_spherical())
+    {
+        return false;
+    }
+    const auto& partner = domains_.at(intruder_id).second.as_single_spherical();
+
+    // intruders should be a tight domain that is bursted while forming single,
+    // to form a pair domain.
+    if(partner.dt() != 0.0)
+    {
+        return false;
+    }
+
+    const auto& pid2 = partner.particle_id();
+    const auto& p2   = world_.get_particle(pid2).second;
+
+    const Real D1  = p1.D();
+    const Real D2  = p2.D();
+    const Real D12 = D1 + D2;
+
+    const Real r1  = p1.radius();
+    const Real r2  = p2.radius();
+    const Real r12 = r1 + r2;
+
+    const Real3 com = world_.apply_boundary(p1.position() * (D2 / D12) +
+         world_.periodic_transpose(p2.position(), p1.position()) * (D1 / D12));
+
+    const Real3    ipv = p1.position() - world_.periodic_transpose(p2.position(), p1.position());
+    const Real ipv_len = length(ipv);
+
+    const Real min_shell_size = std::max(ipv_len * D1 / D12 + r1 * 3,
+                                         ipv_len * D2 / D12 + r2 * 3);
+
+    // we first check if there is any particles around the pair because
+    // there can be particles that is bursted while trying to form a single
+    // with high probability.
+    const auto nearest_particle = world_->nearest_particle_3D(com, pid1, pid2);
+    const auto dnearest = length(world_.periodic_transpose(nearest_particle.position(), com) - com) -
+            nearest_particle.radius() * SINGLE_SHELL_FACTOR * SAFETY_EXPAND;
+    if(dnearest < min_shell_size)
+    {
+        // there is a particle locating too close to the center of the pair.
+        return false;
+    }
+    Real largest_possible_shell_size = dnearest;
+
+    // then check if there is a intrusive domain or a polygon face.
+
+    for(const auto& item : this->world_->list_faces_within_radius(
+                com, largest_possible_shell_size + largest_2D_particle))
+    {
+        const auto dist = item.second;
+        if(dist < min_shell_radius)
+        {
+            // it is impossible to form a domain.
+            return false;
+        }
+        else
+        {
+            largest_possible_shell_size = dist;
+        }
+    }
+
+    for(const auto& item : shells_.list_shells_within_radius_3D(
+                com, largest_possible_shell_size, partner.shell_id()))
+    {
+        const auto dist = item.second;
+        if(dist < min_shell_radius)
+        {
+            // it is impossible to form a domain.
+            return false;
+        }
+        else
+        {
+            largest_possible_shell_size = dist;
+        }
+    }
+
+    const Real shell_size = largest_possible_shell_size * SAFETY_SHRINK;
+
+    // we have already tried to form a single, so we are sure that pair is worth
+    // forming compared to two singles. And we assume that pair is always faster
+    // than a multi.
+
+    // -----------------------------------------------------------------------
+    // construct a pair domain.
+
+    // remove partner domain because it is no longer needed after forming pair.
+    {
+        // remove shell
+        this->shells_.remove_shell(partner.shell_id());
+
+        // remove domain and event from container
+
+        using std::swap; // zero clear the element in the map to avoid bugs
+        std::pair<event_id_type, Domain> evid_dom;
+        swap(evid_dom, domains_.at(intruder_id));
+
+        this->domains_.erase(intruder_id);
+        this->scheduler_.remove(evid_dom.first);
+    }
+
+    //              com,  ipv
+    const std::pair<Real, Real> boundaries =
+        [](Real r1, Real r2, Real D1, Real D2, Real ipv_len, Real shell_size)
+        {
+            const auto D_geom = std::sqrt(D1 * D2);
+            if((D_geom - D1) * ipv_len / D12 + shell_size + std::sqrt(D1 / D2) * (r2 - shell_size) - r1 < 0)
+            {
+                std::swap(r1, r2);
+                std::swap(D1, D2);
+            }
+
+            const Real a_com =
+                D_geom * (D1 * shell_size - r2) + D2 * (shell_size - ipv_len - r1) /
+                (D2 * D2 + D1 * D2 + D_geom * D12);
+            const Real a_ipv =
+                (D_geom * ipv_len + D12 * (shell_size - r2)) / (D2 + D_geom);
+
+            return std::make_pair(a_com, a_ipv);
+
+        }(r1, r2, D1, D2, ipv_len, shell_size);
+
+    assert(boundaries.first + boundaries.second * D1 / D12 + r1 < shell_size);
+    assert(boundaries.first + boundaries.second * D2 / D12 + r2 < shell_size);
+
+    const auto dt_reaction1 = draw_single_reaction_time(p1.species());
+    const auto dt_reaction2 = draw_single_reaction_time(p2.species());
+
+    const auto rules = this->model_.query_reaction_rules(p1.species(), p2.species());
+    const auto k_tot = std::accumulate(rules.begin(), rules.end(), Real(0),
+            [](const Real k, const ReactionRule& rule) -> Real {
+                return k + rule.k();
+            });
+
+    greens_functions::GreensFunction3DAbsSym gf_com(D1 * D2 / D12, boundaries.first);
+    greens_functions::GreensFunction3DRadAbs gf_ipv(D12, k_tot, ipv_len, r12, boundaries.second);
+
+    const auto dt_escape_com = gf_com.drawTime(this->world_->rng()->uniform(0.0, 1.0));
+    const auto dt_event_ipv  = gf_ipv.drawTime(this->world_->rng()->uniform(0.0, 1.0));
+
+    Real dt;
+    PairSphericalDomain::EventKind event_kind;
+
+    if(std::min(dt_reaction1, dt_reaction2) < std::min(dt_escape_com, dt_event_ipv))
+    {
+        if(dt_reaction1 < dt_reaction2)
+        {
+            dt = dt_reaction1;
+            event_kind = PairSphericalDomain::EventKind::SingleReaction1;
+        }
+        else
+        {
+            dt = dt_reaction2;
+            event_kind = PairSphericalDomain::EventKind::SingleReaction2;
+        }
+    }
+    else
+    {
+        if(dt_escape_com < dt_event_ipv)
+        {
+            dt = dt_escape_com;
+            event_kind = PairSphericalDomain::EventKind::ComEscape;
+        }
+        else
+        {
+            dt = dt_event_ipv;
+            event_kind = PairSphericalDomain::EventKind::PairEvent;
+        }
+    }
+
+    const auto did = didgen_();
+    const auto sid = sidgen_();
+
+    // construct shell and assign it to shell container
+    SphericalShell sh(Sphere(com, shell_size));
+    this->shells_.update_shell(sid, Shell(sh, did));
+
+    PairSphericalDomain dom(event_kind, dt, world_->t(), sid, sh,
+            boundaries.first, boundaries.second, pid1, pid2, ipv,
+            std::move(gf_com), std::move(gf_ipv));
+
+    // add event with the same domain ID
+    const auto evid = this->scheduler_.add(
+            std::make_shared<event_type>(this->t() + dom.dt(), did));
+
+    // update begin_time and re-insert domain into domains_ container
+    this->domains_[did] = std::make_pair(evid, Domain(std::move(dom)));
+
+    // pair is formed.
+    return true;
 }
+
 void NGFRDSimulator::form_domain_3D(const ParticleID& pid, const Particle& p)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
