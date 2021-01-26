@@ -928,6 +928,36 @@ NGFRDSimulator::fire_single_spherical(const DomainID& did, SingleSphericalDomain
 }
 
 boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
+NGFRDSimulator::fire_pair_spherical(const DomainID& did, PairSphericalDomain dom)
+{
+    ECELL4_NGFRD_LOG_FUNCTION();
+    ECELL4_NGFRD_LOG("firing pair spherical: ", did);
+    ECELL4_NGFRD_LOG("included shell: ", dom.shell_id());
+
+    std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
+    PairSphericalPropagator prop(
+            did, *(this->model_), *(this->world_), *this,
+            *(this->world_->rng()), SINGLE_SPHERICAL_MAX_RETRY, last_reactions);
+
+    boost::container::small_vector<std::pair<ParticleID, Particle>, 4> results;
+    for(const auto& pid : prop(dom))
+    {
+        results.push_back(world_->get_particle(pid));
+    }
+
+    // remove shell from shell container
+    this->shells_.remove_shell(dom.shell_id());
+
+    if( ! last_reactions.empty())
+    {
+        std::copy(last_reactions.begin(), last_reactions.end(),
+                  std::back_inserter(last_reactions_));
+    }
+
+    return results;
+}
+
+boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
 NGFRDSimulator::fire_multi(const DomainID& did, MultiDomain dom)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
@@ -1061,6 +1091,31 @@ NGFRDSimulator::burst_single_spherical(const DomainID& did, SingleSphericalDomai
 
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4> results;
     results.push_back(world_->get_particle(prop.burst(dom, this->t())));
+
+    // remove shell from shell container
+    this->shells_.remove_shell(dom.shell_id());
+
+    assert(last_reactions.empty());
+    return results;
+}
+
+boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
+NGFRDSimulator::burst_pair_spherical(const DomainID& did, PairSphericalDomain dom)
+{
+    ECELL4_NGFRD_LOG_FUNCTION();
+    ECELL4_NGFRD_LOG("bursting pair spherical: ", did);
+    ECELL4_NGFRD_LOG("included shell: ", dom.shell_id());
+
+    std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
+    PairSphericalPropagator prop(
+            did, *(this->model_), *(this->world_), *this,
+            *(this->world_->rng()), SINGLE_SPHERICAL_MAX_RETRY, last_reactions);
+
+    const std::array<ParticleID, 2> resulting_particles = prop.burst(dom, this->t());
+
+    boost::container::small_vector<std::pair<ParticleID, Particle>, 4> results;
+    results.push_back(world_->get_particle(resulting_particles[0]));
+    results.push_back(world_->get_particle(resulting_particles[1]));
 
     // remove shell from shell container
     this->shells_.remove_shell(dom.shell_id());
