@@ -2,6 +2,7 @@
 #include <ecell4/ngfrd/SingleSphericalPropagator.hpp>
 #include <ecell4/ngfrd/SingleCircularPropagator.hpp>
 #include <ecell4/ngfrd/SingleConicalPropagator.hpp>
+#include <ecell4/ngfrd/PairSphericalPropagator.hpp>
 
 namespace ecell4
 {
