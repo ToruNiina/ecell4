@@ -41,6 +41,7 @@ class PairSphericalPropagator
             }
             case PairSphericalDomain::EventKind::SingleReaction1:
             {
+                // it passes particle IDs to determine which particle reacts.
                 return this->single_reaction(dom, dom.particle1_id(), dom.particle2_id());
             }
             case PairSphericalDomain::EventKind::SingleReaction2:
@@ -93,9 +94,15 @@ class PairSphericalPropagator
 
     boost::container::static_vector<ParticleID, 3>
     attempt_1to1_reaction(const PairSphericalDomain& dom,
-            const ParticleID&, const Particle&, const ReactionRule& rule);
+            const ParticleID&, const Particle&, const ReactionRule& rule,
+            const ParticleID& other);
     boost::container::static_vector<ParticleID, 3>
     attempt_1to2_reaction(const PairSphericalDomain& dom,
+            const ParticleID&, const Particle&, const ReactionRule& rule,
+            const ParticleID& other);
+    boost::container::static_vector<ParticleID, 3>
+    attempt_2to1_reaction(const PairSphericalDomain& dom,
+            const ParticleID&, const Particle&,
             const ParticleID&, const Particle&, const ReactionRule& rule);
 
     std::array<ParticleID, 2> propagate(const PairSphericalDomain& dom, const Real dt);
@@ -106,7 +113,7 @@ class PairSphericalPropagator
     bool is_inside_of_shell(const PairSphericalDomain& dom,
                             const Real3& center, const Real radius);
 
-    Real3 generate_ipv(const Real r, const Real theta, const Real phi);
+    Real3 generate_ipv(const Real3& ipv, const Real r, const Real theta, const Real phi);
 
   private:
 
