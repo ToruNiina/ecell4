@@ -24,6 +24,7 @@ class PairSphericalDomain
         SingleReaction1,
         SingleReaction2,
         PairReaction,
+        PairEvent, // not yet determined
         Unknown,
     };
 
@@ -41,13 +42,13 @@ class PairSphericalDomain
             const ShellID&  shid, const SphericalShell& sh,
             const Real com_radius, const Real ipv_radius,
             const ParticleID& pid1, const ParticleID& pid2, const Real3& ipv,
-            greens_functions::GreensFunction3DRadAbs gf_ipv,
-            greens_functions::GreensFunction3DAbsSym gf_com)
+            greens_functions::GreensFunction3DAbsSym gf_com,
+            greens_functions::GreensFunction3DRadAbs gf_ipv)
         : kind_(kind), dt_(dt), begin_time_(begin),
           com_radius_(com_radius), ipv_radius_(ipv_radius),
           shell_id_(shid), shell_(sh),
           particle1_id_(pid1), particle2_id_(pid2), ipv_(ipv),
-          gf_ipv_(std::move(gf_ipv)), gf_com_(std::move(gf_com))
+          gf_com_(std::move(gf_com)), gf_ipv_(std::move(gf_ipv))
     {}
     ~PairSphericalDomain() = default;
 
@@ -96,9 +97,9 @@ class PairSphericalDomain
     SphericalShell shell_;
     ParticleID     particle1_id_;
     ParticleID     particle2_id_;
-    Real3          ipv_;        // initial ipv
-    greens_functions::GreensFunction3DRadAbs gf_ipv_;
+    Real3          ipv_;        // initial inter particle vector
     greens_functions::GreensFunction3DAbsSym gf_com_;
+    greens_functions::GreensFunction3DRadAbs gf_ipv_;
 };
 
 } // ngfrd

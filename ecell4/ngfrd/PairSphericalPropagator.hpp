@@ -52,6 +52,25 @@ class PairSphericalPropagator
             {
                 return this->pair_reaction(dom);
             }
+            case PairSphericalDomain::EventKind::PairEvent:
+            {
+                const auto& gf_ipv = dom.gf_ipv();
+                const auto event_kind = gf_ipv.drawEvent(rng_.uniform(0.0, 1.0), dom.dt());
+
+                if(event_kind == greens_functions::GreensFunction::IV_ESCAPE)
+                {
+                    return this->ipv_escape(dom);
+                }
+                else if(event_kind == greens_functions::GreensFunction::IV_REACTION)
+                {
+                    return this->pair_reaction(dom);
+                }
+                else
+                {
+                    throw_exception<IllegalState>("ecell4::ngfrd::PairSpherical"
+                        "Propagator: invalid greens_functions::EventKind");
+                }
+            }
             default:
             {
                 throw_exception<IllegalState>("ecell4::ngfrd::PairSpherical"
