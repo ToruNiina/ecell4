@@ -4,6 +4,7 @@
 #include <ecell4/ngfrd/SingleCircularDomain.hpp>
 #include <ecell4/ngfrd/SingleConicalDomain.hpp>
 #include <ecell4/ngfrd/PairSphericalDomain.hpp>
+#include <ecell4/ngfrd/PairCircularDomain.hpp>
 #include <ecell4/ngfrd/MultiDomain.hpp>
 
 namespace ecell4
@@ -21,7 +22,8 @@ public:
         SingleCircular  = 2,
         SingleConical   = 3,
         PairSpherical   = 4,
-        Multi           = 5,
+        PairCircular    = 5,
+        Multi           = 6,
     };
 
     using storage_type = boost::variant<
@@ -30,6 +32,7 @@ public:
             SingleCircularDomain,
             SingleConicalDomain,
             PairSphericalDomain,
+            PairCircularDomain,
             MultiDomain
         >;
 
@@ -54,6 +57,10 @@ private:
             return dom.multiplicity();
         }
         std::size_t operator()(const PairSphericalDomain& dom) const noexcept
+        {
+            return dom.multiplicity();
+        }
+        std::size_t operator()(const PairCircularDomain& dom) const noexcept
         {
             return dom.multiplicity();
         }
@@ -88,13 +95,23 @@ public:
     {
         return this->kind() == DomainKind::PairSpherical;
     }
+    bool is_pair_circular() const noexcept
+    {
+        return this->kind() == DomainKind::PairCircular;
+    }
     bool is_multi() const noexcept
     {
         return this->kind() == DomainKind::Multi;
     }
 
-    bool is_2D() const noexcept {return is_single_circular() || is_single_conical();}
-    bool is_3D() const noexcept {return is_single_spherical() || is_pair_spherical();}
+    bool is_2D() const noexcept
+    {
+        return is_single_circular() || is_single_conical() || is_pair_circular();
+    }
+    bool is_3D() const noexcept
+    {
+        return is_single_spherical() || is_pair_spherical();
+    }
 
     SingleSphericalDomain const& as_single_spherical() const
     {
@@ -130,6 +147,15 @@ public:
     PairSphericalDomain&       as_pair_spherical()
     {
         return boost::get<PairSphericalDomain>(storage_);
+    }
+
+    PairCircularDomain const& as_pair_circular() const
+    {
+        return boost::get<PairCircularDomain>(storage_);
+    }
+    PairCircularDomain&       as_pair_circular()
+    {
+        return boost::get<PairCircularDomain>(storage_);
     }
 
     MultiDomain const& as_multi() const
