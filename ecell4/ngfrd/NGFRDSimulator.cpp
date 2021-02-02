@@ -427,16 +427,24 @@ NGFRDSimulator::form_single_domain_3D(const ParticleID& pid, const Particle& p)
         const auto& dist     = nearest_particle.front().second;
         const auto& neighbor = nearest_particle.front().first.second;
 
+        ECELL4_NGFRD_LOG("nearest one is at ", dist, " distant.");
+
         const auto modest_radius = p.radius() + (dist - p.radius()) * p.D() /
                                    (p.D() + neighbor.D());
 
         max_radius = std::min(max_radius, modest_radius);
+
+        ECELL4_NGFRD_LOG("the radius is bound by a particle of which ID is ",
+                nearest_particle.front().first.first, ". The possible max radius is ", max_radius);
     }
     if( ! nearest_face.empty())
     {
         max_radius = std::min(nearest_face.front().second - largest_2D_particle,
                               max_radius);
+        ECELL4_NGFRD_LOG("the radius is bound by a face of which ID is ",
+                nearest_face.front().first.first, ". The possible max radius is ", max_radius);
     }
+    ECELL4_NGFRD_LOG("the candidate of shell radius is ", max_radius);
 
     // check other 3D shells within max_radius.
     // Note: Here, we already subtract largest_2D_particle that is effective
@@ -447,6 +455,7 @@ NGFRDSimulator::form_single_domain_3D(const ParticleID& pid, const Particle& p)
     {
         max_radius = std::min(max_radius, item.second);
     }
+    ECELL4_NGFRD_LOG("After checking intruders, the max possible radius = ", max_radius);
 
     // after SAFETY_SHRINK, the shell size could be (slightly) smaller than the
     // min_shell_radius, but I don't think it is a problem.
@@ -1229,6 +1238,7 @@ NGFRDSimulator::burst_single_circular(const DomainID& did, SingleCircularDomain 
 
     if(dom.dt() == 0.0) // means it is a tight domain. do nothing.
     {
+        ECELL4_NGFRD_LOG("It is a tight shell. removing without movement...");
         this->shells_.remove_shell(dom.shell_id());
         return boost::container::small_vector<std::pair<ParticleID, Particle>, 4>{
                 world_->get_particle(dom.particle_id())
@@ -1288,6 +1298,7 @@ NGFRDSimulator::burst_single_spherical(const DomainID& did, SingleSphericalDomai
 
     if(dom.dt() == 0.0) // it means this is a tight domain
     {
+        ECELL4_NGFRD_LOG("It is a tight shell. removing without movement...");
         this->shells_.remove_shell(dom.shell_id());
         return boost::container::small_vector<std::pair<ParticleID, Particle>, 4>{
                 world_->get_particle(dom.particle_id())
