@@ -336,7 +336,7 @@ PairSphericalPropagator::pair_reaction(const PairSphericalDomain& dom)
 
     const auto& gf_ipv    = dom.gf_ipv();
     const Real  R_ipv     = (p1.radius() + p2.radius()) * NGFRDSimulator::SAFETY_EXPAND;
-    const Real  theta_ipv = gf_ipv.drawTheta(rng_.uniform(0.0, 1.0), R_ipv, dom.dt());
+    const Real  theta_ipv = gf_ipv.drawTheta(rng_.uniform(0.0, 1.0), p1.radius() + p2.radius(), dom.dt());
     const Real  phi_ipv   = rng_.uniform(0.0, 2 * pi);
     const Real3 ipv       = this->generate_ipv(dom.ipv(), R_ipv, theta_ipv, phi_ipv);
 
@@ -345,6 +345,7 @@ PairSphericalPropagator::pair_reaction(const PairSphericalDomain& dom)
     const auto b = world_.boundary();
     p1.position() = b.apply_boundary(com - ipv * (D1 / D12));
     p2.position() = b.apply_boundary(com + ipv * (D2 / D12));
+
     // XXX since rejection of pair reaction is unlikely (the product particle
     // should be implausibly large, we here do not update the positions of those
     // particles in the `world_`. If rejection happens, then we need to update.
