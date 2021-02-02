@@ -84,7 +84,7 @@ class PairSphericalDomain
     greens_functions::GreensFunction3DAbsSym&       gf_com()       noexcept {return gf_com_;}
 
     constexpr std::size_t num_shells()   const noexcept {return 1;}
-    constexpr std::size_t multiplicity() const noexcept {return 1;}
+    constexpr std::size_t multiplicity() const noexcept {return 2;}
 
   private:
 
