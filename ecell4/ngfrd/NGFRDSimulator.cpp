@@ -1106,12 +1106,14 @@ NGFRDSimulator::fire_single_spherical(const DomainID& did, SingleSphericalDomain
 
     if(dom.dt() == 0.0) // means it is a tight domain
     {
+        ECELL4_NGFRD_LOG("This domain is a tight domain. Fire without move.");
         this->shells_.remove_shell(dom.shell_id());
         return boost::container::small_vector<std::pair<ParticleID, Particle>, 4>{
                 world_->get_particle(dom.particle_id())
             };
     }
 
+    ECELL4_NGFRD_LOG("Propagating for ", dom.dt());
     std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
     SingleSphericalPropagator prop(
             did, *(this->model_), *(this->world_), *this,
