@@ -60,7 +60,7 @@ int main()
     ecell4::ngfrd::NGFRDSimulator sim(world, model);
 
     const ecell4::Real dt(1.0);
-    for(std::size_t i=1; i<100; ++i)
+    for(std::size_t i=1; i<1000; ++i)
     {
         if(world->t() <= i * dt)
         {

@@ -621,7 +621,8 @@ bool NGFRDSimulator::form_pair_domain_3D(
 
     //              com,  ipv
     const std::pair<Real, Real> boundaries =
-        [](Real r1, Real r2, Real D1, Real D2, Real D12, Real ipv_len, Real shell_size)
+        [](Real r1, Real r2, Real D1, Real D2, const Real D12,
+           const Real ipv_len, const Real shell_size, const Real SAFETY_SHRINK)
         {
             const auto D_geom = std::sqrt(D1 * D2);
             if((D_geom - D1) * ipv_len / D12 + shell_size + std::sqrt(D1 / D2) * (r2 - shell_size) - r1 < 0)
