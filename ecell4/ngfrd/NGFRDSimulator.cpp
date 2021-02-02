@@ -631,17 +631,23 @@ bool NGFRDSimulator::form_pair_domain_3D(
             }
 
             const Real a_com =
-                D_geom * (D1 * shell_size - r2) + D2 * (shell_size - ipv_len - r1) /
+                D_geom * (D1 * (shell_size - r2) + D2 * (shell_size - ipv_len - r2)) /
                 (D2 * D2 + D1 * D2 + D_geom * D12);
             const Real a_ipv =
                 (D_geom * ipv_len + D12 * (shell_size - r2)) / (D2 + D_geom);
 
-            return std::make_pair(a_com, a_ipv);
+            return std::make_pair(a_com * SAFETY_SHRINK, a_ipv * SAFETY_SHRINK);
 
-        }(r1, r2, D1, D2, D12, ipv_len, shell_size);
+        }(r1, r2, D1, D2, D12, ipv_len, shell_size, SAFETY_SHRINK);
 
-    assert(boundaries.first + boundaries.second * D1 / D12 + r1 < shell_size);
-    assert(boundaries.first + boundaries.second * D2 / D12 + r2 < shell_size);
+    ECELL4_NGFRD_LOG("shell size   = ", shell_size);
+    ECELL4_NGFRD_LOG("CoM boundary = ", boundaries.first);
+    ECELL4_NGFRD_LOG("ipv boundary = ", boundaries.second);
+    ECELL4_NGFRD_LOG("ipv half + radius    = ", boundaries.second * D1 / D12 + r1);
+    ECELL4_NGFRD_LOG("ipv another + radius = ", boundaries.second * D2 / D12 + r2);
+
+    assert(boundaries.first + boundaries.second * D1 / D12 + r1 <= shell_size);
+    assert(boundaries.first + boundaries.second * D2 / D12 + r2 <= shell_size);
 
     const auto dt_reaction1 = draw_single_reaction_time(p1.species());
     const auto dt_reaction2 = draw_single_reaction_time(p2.species());
