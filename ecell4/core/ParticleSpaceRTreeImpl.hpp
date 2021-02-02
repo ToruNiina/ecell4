@@ -200,7 +200,7 @@ public:
                const PeriodicBoundary& pbc) -> boost::optional<Real>
             {
                 const auto image = pbc.periodic_transpose(pos, val.second.position());
-                return length(image - val.second.position());
+                return length(image - val.second.position()) - val.second.radius();
             });
     }
     template<std::size_t N = 1>
@@ -213,7 +213,7 @@ public:
             {
                 if(ignore == val.first) {return boost::none;}
                 const auto image = pbc.periodic_transpose(pos, val.second.position());
-                return length(image - val.second.position());
+                return length(image - val.second.position()) - val.second.radius();
             });
     }
     template<std::size_t N = 1>
@@ -231,7 +231,7 @@ public:
                     return boost::none;
                 }
                 const auto image = pbc.periodic_transpose(pos, val.second.position());
-                return length(image - val.second.position());
+                return length(image - val.second.position()) - val.second.radius();
             });
     }
 
@@ -253,7 +253,7 @@ public:
                     return boost::none;
                 }
                 const auto image = pbc.periodic_transpose(pos, val.second.position());
-                return length(image - val.second.position());
+                return length(image - val.second.position()) - val.second.radius();
             });
     }
 
