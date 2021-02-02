@@ -247,12 +247,18 @@ private:
 #  ifndef ECELL4_NGFRD_LOG
 #    define ECELL4_NGFRD_LOG(...) l_o_g_g_e_r_.log(__VA_ARGS__)
 #  endif
+#  ifndef ECELL4_NGFRD_LOG_DUMP
+#    define ECELL4_NGFRD_LOG_DUMP() l_o_g_g_e_r_.dump()
+#  endif
 #else // no LOG_DEBUG
 #  ifndef ECELL4_NGFRD_LOG_FUNCTION
 #    define ECELL4_NGFRD_LOG_FUNCTION() /**/
 #  endif
 #  ifndef ECELL4_NGFRD_LOG
 #    define ECELL4_NGFRD_LOG(...) /**/
+#  endif
+#  ifndef ECELL4_NGFRD_LOG_DUMP
+#    define ECELL4_NGFRD_LOG_DUMP()
 #  endif
 #endif
 
