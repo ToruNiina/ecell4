@@ -372,6 +372,8 @@ NGFRDSimulator::form_single_domain_3D(const ParticleID& pid, const Particle& p)
         }
     }
 
+    // If there are several domains within the min_shell_radius, burst them and
+    // list fatal intruders (particles within min_shell)
     if( ! intrusive_domains.empty())
     {
         boost::container::small_vector<DomainID, 4> fatal_intruders;
@@ -446,8 +448,10 @@ NGFRDSimulator::form_single_domain_3D(const ParticleID& pid, const Particle& p)
         max_radius = std::min(max_radius, item.second);
     }
 
+    // after SAFETY_SHRINK, the shell size could be (slightly) smaller than the
+    // min_shell_radius, but I don't think it is a problem.
+    assert(min_shell_radius < max_radius);
     const auto shell_size = max_radius * SAFETY_SHRINK;
-    assert(min_shell_radius <= shell_size);
 
     // paranoiac check
     assert(this->shells_.list_shells_within_radius_3D(p.position(), shell_size).empty());
