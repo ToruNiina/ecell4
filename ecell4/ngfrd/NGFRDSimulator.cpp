@@ -18,6 +18,7 @@ constexpr std::size_t NGFRDSimulator::SINGLE_SPHERICAL_MAX_RETRY;
 constexpr std::size_t NGFRDSimulator::SINGLE_CONICAL_MAX_RETRY;
 constexpr std::size_t NGFRDSimulator::SINGLE_CIRCULAR_MAX_RETRY;
 constexpr std::size_t NGFRDSimulator::PAIR_SPHERICAL_MAX_RETRY;
+constexpr std::size_t NGFRDSimulator::PAIR_CIRCULAR_MAX_RETRY;
 
 boost::optional<boost::container::small_vector<DomainID, 4>>
 NGFRDSimulator::form_single_domain_2D(
