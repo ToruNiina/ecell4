@@ -511,7 +511,7 @@ bool NGFRDSimulator::form_pair_domain_3D(
     }
 
     const auto& pid2 = partner.particle_id();
-    const auto& p2   = world_.get_particle(pid2).second;
+    const auto& p2   = world_->get_particle(pid2).second;
 
     const Real D1  = p1.D();
     const Real D2  = p2.D();
@@ -521,10 +521,12 @@ bool NGFRDSimulator::form_pair_domain_3D(
     const Real r2  = p2.radius();
     const Real r12 = r1 + r2;
 
-    const Real3 com = world_.apply_boundary(p1.position() * (D2 / D12) +
-         world_.periodic_transpose(p2.position(), p1.position()) * (D1 / D12));
+    const auto pbc = this->world_->boundary();
 
-    const Real3    ipv = p1.position() - world_.periodic_transpose(p2.position(), p1.position());
+    const Real3 com = pbc.apply_boundary(p1.position() * (D2 / D12) +
+         pbc.periodic_transpose(p2.position(), p1.position()) * (D1 / D12));
+
+    const Real3    ipv = p1.position() - pbc.periodic_transpose(p2.position(), p1.position());
     const Real ipv_len = length(ipv);
 
     const Real min_shell_size = std::max(ipv_len * D1 / D12 + r1 * 3,
@@ -533,8 +535,12 @@ bool NGFRDSimulator::form_pair_domain_3D(
     // we first check if there is any particles around the pair because
     // there can be particles that is bursted while trying to form a single
     // with high probability.
-    const auto nearest_particle = world_->nearest_particle_3D(com, pid1, pid2);
-    const auto dnearest = length(world_.periodic_transpose(nearest_particle.position(), com) - com) -
+    const boost::container::static_vector<std::pair<std::pair<ParticleID, Particle>, Real>, 1>
+         nearest_particles = world_->nearest_particle_3D(com, pid1, pid2);
+    const auto& nearest_particle = nearest_particles.at(0).first.second;
+
+    const auto dnearest = length(com -
+            pbc.periodic_transpose(nearest_particle.position(), com)) -
             nearest_particle.radius() * SINGLE_SHELL_FACTOR * SAFETY_EXPAND;
     if(dnearest < min_shell_size)
     {
@@ -545,11 +551,12 @@ bool NGFRDSimulator::form_pair_domain_3D(
 
     // then check if there is a intrusive domain or a polygon face.
 
+    const Real largest_2D_particle = world_->largest_particle_radius_2D();
     for(const auto& item : this->world_->list_faces_within_radius(
                 com, largest_possible_shell_size + largest_2D_particle))
     {
         const auto dist = item.second;
-        if(dist < min_shell_radius)
+        if(dist < min_shell_size)
         {
             // it is impossible to form a domain.
             return false;
@@ -564,7 +571,7 @@ bool NGFRDSimulator::form_pair_domain_3D(
                 com, largest_possible_shell_size, partner.shell_id()))
     {
         const auto dist = item.second;
-        if(dist < min_shell_radius)
+        if(dist < min_shell_size)
         {
             // it is impossible to form a domain.
             return false;
@@ -601,7 +608,7 @@ bool NGFRDSimulator::form_pair_domain_3D(
 
     //              com,  ipv
     const std::pair<Real, Real> boundaries =
-        [](Real r1, Real r2, Real D1, Real D2, Real ipv_len, Real shell_size)
+        [](Real r1, Real r2, Real D1, Real D2, Real D12, Real ipv_len, Real shell_size)
         {
             const auto D_geom = std::sqrt(D1 * D2);
             if((D_geom - D1) * ipv_len / D12 + shell_size + std::sqrt(D1 / D2) * (r2 - shell_size) - r1 < 0)
@@ -618,7 +625,7 @@ bool NGFRDSimulator::form_pair_domain_3D(
 
             return std::make_pair(a_com, a_ipv);
 
-        }(r1, r2, D1, D2, ipv_len, shell_size);
+        }(r1, r2, D1, D2, D12, ipv_len, shell_size);
 
     assert(boundaries.first + boundaries.second * D1 / D12 + r1 < shell_size);
     assert(boundaries.first + boundaries.second * D2 / D12 + r2 < shell_size);
@@ -626,7 +633,7 @@ bool NGFRDSimulator::form_pair_domain_3D(
     const auto dt_reaction1 = draw_single_reaction_time(p1.species());
     const auto dt_reaction2 = draw_single_reaction_time(p2.species());
 
-    const auto rules = this->model_.query_reaction_rules(p1.species(), p2.species());
+    const auto rules = this->model_->query_reaction_rules(p1.species(), p2.species());
     const auto k_tot = std::accumulate(rules.begin(), rules.end(), Real(0),
             [](const Real k, const ReactionRule& rule) -> Real {
                 return k + rule.k();
