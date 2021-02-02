@@ -55,7 +55,7 @@ class PairSphericalPropagator
             case PairSphericalDomain::EventKind::PairEvent:
             {
                 const auto& gf_ipv = dom.gf_ipv();
-                const auto event_kind = gf_ipv.drawEvent(rng_.uniform(0.0, 1.0), dom.dt());
+                const auto event_kind = gf_ipv.drawEventType(rng_.uniform(0.0, 1.0), dom.dt());
 
                 if(event_kind == greens_functions::GreensFunction::IV_ESCAPE)
                 {
