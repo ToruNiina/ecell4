@@ -32,8 +32,8 @@ class PairCircularDomain
 
     PairCircularDomain()
         : kind_(EventKind::Unknown), dt_(0.0), begin_time_(0.0),
-          com_radius_(0.0), ipv_radius_(0.0),
-          shell_id_(ShellID{}), shell_(Circule(0.0, Real3(0.0, 0.0, 0.0), Real3(0.0, 0.0, 0.0))),
+          com_radius_(0.0), ipv_radius_(0.0), shell_id_(ShellID{}),
+          shell_(0.0, Circle(0.0, Real3(0.0, 0.0, 0.0), Real3(0.0, 0.0, 0.0)), FaceID{}),
           particle1_id_(ParticleID{}), particle2_id_(ParticleID{}),
           gf_ipv_(0.0, 0.0, 0.0, 0.0, 0.0), gf_com_(0.0, 0.0)
     {}
