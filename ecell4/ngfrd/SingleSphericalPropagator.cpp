@@ -148,8 +148,11 @@ SingleSphericalPropagator::attempt_1to2_reaction(const SingleSphericalDomain& do
     {
         --separation_count;
 
-        const Real R = bd_math::drawR_gbd_3D(separation_length, dom.dt(), D12,
-                                             rng_.uniform(0.0, 1.0));
+        // Here, the time when the reaciton happens is precisely determined.
+        // So, unlike BD, we don't need to consider the inter-particle distance.
+        // We can place the two particles in contact with each other.
+
+        const Real  R   = separation_length;
         const Real3 ipv = rng_.direction3d(R);
 
         Real3 disp1 = ipv * (D1 / D12);
