@@ -252,7 +252,7 @@ bool NGFRDSimulator::form_pair_domain_2D(
 
     const auto& pid2 = partner.particle_id();
     const auto& p2   = world_->get_particle(pid2).second;
-    const auto& fid2 = world_->on_which_face().value();
+    const auto& fid2 = world_->on_which_face(pid2).value();
 
     const Real D1  = p1.D();
     const Real D2  = p2.D();
@@ -262,19 +262,20 @@ bool NGFRDSimulator::form_pair_domain_2D(
     const Real r2  = p2.radius();
     const Real r12 = r1 + r2;
 
-    const auto& poly = this->world_.polygon();
+    const auto& poly = this->polygon();
 
+    // from p1 t op2
     const Real3 ipv = ecell4::polygon::direction(poly,
             std::make_pair(p1.position(), fid1),
             std::make_pair(p2.position(), fid2));
     const auto  com = ecell4::polygon::travel(poly,
-            std::make_pair(p1.position(), fid1), p12 * (D1 / D12));
+            std::make_pair(p1.position(), fid1), ipv * (D1 / D12));
 
     const Real ipv_len = length(ipv);
     assert(r12 <= ipv_len);
 
     const Real min_shell_radius =
-        std::max(len_ipv * D1 / D12 + r1, len_ipv * D2 / D12 + r2) * 3;
+        std::max(ipv_len * D1 / D12 + r1, ipv_len * D2 / D12 + r2) * 3;
 
     Real largest_possible_shell_size = max_circular_shell_size_at(p1.position(), fid1);
     for(const auto& item : this->world_->list_particles_within_radius_2D(
@@ -334,8 +335,8 @@ bool NGFRDSimulator::form_pair_domain_2D(
                 return k + rule.k();
             });
 
-    greens_functions::GreensFunction2DAbsSym gf_com(Dcom, boundaries.first);
-    greens_functions::GreensFunction2DRadAbs gf_ipv(Dipv, k_tot, ipv_len, r12, boundaries.second);
+    greens_functions::GreensFunction2DAbsSym gf_com(Dcom, shell_radius_com);
+    greens_functions::GreensFunction2DRadAbs gf_ipv(Dipv, k_tot, ipv_len, r12, shell_radius_ipv);
 
     const auto dt_escape_com = gf_com.drawTime(this->world_->rng()->uniform(0.0, 1.0));
     const auto dt_event_ipv  = gf_ipv.drawTime(this->world_->rng()->uniform(0.0, 1.0));
@@ -379,7 +380,7 @@ bool NGFRDSimulator::form_pair_domain_2D(
     this->shells_.update_shell(sid, Shell(sh, did));
 
     PairCircularDomain dom(event_kind, dt, world_->t(), sid, sh,
-            , pid1, pid2, ipv,
+            shell_radius_com, shell_radius_ipv, pid1, pid2, ipv,
             std::move(gf_com), std::move(gf_ipv));
 
     // add event with the same domain ID
