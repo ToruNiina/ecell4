@@ -368,7 +368,7 @@ PairCircularPropagator::pair_reaction(const PairCircularDomain& dom)
     const auto& gf_ipv    = dom.gf_ipv();
     const Real  R_ipv     = (p1.radius() + p2.radius()) * NGFRDSimulator::SAFETY_EXPAND;
     const Real  theta_ipv = gf_ipv.drawTheta(rng_.uniform(0.0, 1.0), p1.radius() + p2.radius(), dom.dt());
-    const Real3 ipv       = this->generate_ipv(dom.ipv(), R_ipv, theta_ipv, phi_ipv);
+    const Real3 ipv       = this->generate_ipv(dom.shell().fid(), dom.ipv(), R_ipv, theta_ipv);
 
     // determine the positions of particles immediately before the reaction
 
@@ -428,18 +428,15 @@ PairCircularPropagator::attempt_2to1_reaction(const PairCircularDomain& dom,
 
     // Although it's very unlikely, since a product can be larger than the reactant,
     // there is a small possibility that the product sticks out of the shell.
-    if( ! this->is_inside_of_shell(dom, newp.position(), newp.radius()))
+    if( ! this->is_inside_of_shell(dom, com, newp.radius()))
     {
         // determine positions of particles in overlapping domains
         sim_.determine_positions_3D(newp.position(), radius_new, self_id_);
-        sim_.determine_positions_2D(std::make_pair(newp.position(), newfid),
-                                    radius_new, self_id_);
+        sim_.determine_positions_2D(com, radius_new, self_id_);
 
         // then check if there is any particle that overlaps
-        if(world_.has_overlapping_particles_3D(
-                newp.position(), radius_new, pid1, pid2) ||
-           world_.has_overlapping_particles_2D(
-                std::make_pair(newp.position(), newfid), radius_new, pid1, pid2))
+        if(world_.has_overlapping_particles_3D(newp.position(), radius_new, pid1, pid2) ||
+           world_.has_overlapping_particles_2D(com, radius_new, pid1, pid2))
         {
             // since it does not update the positions of particles, we need to
             // move particles to the state immediately before reaction.
