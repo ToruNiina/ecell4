@@ -448,6 +448,10 @@ private:
             {
                 return this->fire_pair_spherical(did, std::move(dom.as_pair_spherical()));
             }
+            case Domain::DomainKind::PairCircular:
+            {
+                return this->fire_pair_circular(did, std::move(dom.as_pair_circular()));
+            }
             case Domain::DomainKind::Multi:
             {
                 return this->fire_multi(did, std::move(dom.as_multi()));
@@ -471,6 +475,9 @@ private:
 
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
     fire_pair_spherical(const DomainID& did, PairSphericalDomain dom);
+
+    boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
+    fire_pair_circular(const DomainID& did, PairCircularDomain dom);
 
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
     fire_multi(const DomainID& did, MultiDomain dom);
@@ -525,6 +532,11 @@ private:
                 return this->burst_pair_spherical(did,
                         std::move(dom.as_pair_spherical()));
             }
+            case Domain::DomainKind::PairCircular:
+            {
+                return this->burst_pair_circular(did,
+                        std::move(dom.as_pair_circular()));
+            }
             case Domain::DomainKind::Multi:
             {
                 return this->burst_multi(did, std::move(dom.as_multi()));
@@ -548,6 +560,9 @@ private:
 
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
     burst_pair_spherical(const DomainID& did, PairSphericalDomain dom);
+
+    boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
+    burst_pair_circular(const DomainID& did, PairCircularDomain dom);
 
     boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
     burst_multi(const DomainID& did, MultiDomain dom);
