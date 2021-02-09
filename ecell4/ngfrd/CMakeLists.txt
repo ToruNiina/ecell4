@@ -8,6 +8,7 @@ set(CPP_FILES
     SingleCircularPropagator.cpp
     SingleConicalPropagator.cpp
     PairSphericalPropagator.cpp
+    PairCircularPropagator.cpp
 )
 
 add_definitions(-DECELL4_NGFRD_LOG_DEBUG)
