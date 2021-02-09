@@ -132,7 +132,7 @@ class PairCircularPropagator
     ReactionRule const& determine_pair_reaction_rule(const Species&, const Species&, const Real rnd);
 
     bool is_inside_of_shell(const PairCircularDomain& dom,
-            const std::pair<Real3, FaceID>& pos, const Real radius) const
+            const std::pair<Real3, FaceID>& pos, const Real radius) const;
 
     Real3 generate_ipv(const FaceID& fid, const Real3& ipv, const Real r, const Real theta) const;
     Real3 draw_2D_displacement(const FaceID& fid, const Real len);
