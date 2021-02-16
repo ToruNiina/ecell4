@@ -3,6 +3,7 @@
 
 #include <ecell4/core/SimulatorFactory.hpp>
 #include <ecell4/core/RandomNumberGenerator.hpp>
+#include <ecell4/core/STLFileIO.hpp>
 
 #include "NGFRDWorld.hpp"
 #include "NGFRDSimulator.hpp"
