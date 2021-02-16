@@ -2,6 +2,7 @@
 #define ECELL4_NGFRD_LOGGER_HPP
 
 #include <ecell4/core/type_name_of.hpp>
+#include <ecell4/core/exceptions.hpp>
 #include <boost/circular_buffer.hpp>
 
 // to output those
@@ -215,6 +216,19 @@ private:
     std::string name_, loc_;
     Logger& logger_;
 };
+
+
+template<class Exception = std::runtime_error, typename ... Ts>
+void ensure(const bool cond, const Ts& ... args)
+{
+    if( ! cond)
+    {
+        auto& logger = ::ecell4::ngfrd::LoggerManager<void>::get_logger();
+        logger.log(args...);
+        throw_exception<Exception>(args...);
+    }
+    return;
+}
 
 } // ngfrd
 } // ecell4
