@@ -692,6 +692,15 @@ class Polygon : public Shape
         return;
     }
 
+
+    std::size_t num_triangles() const noexcept
+    {
+        return this->faces_.size();
+    }
+    bool empty() const noexcept
+    {
+        return this->faces_.empty();
+    }
     std::vector<Triangle> triangles() const
     {
         std::vector<Triangle> retval;
