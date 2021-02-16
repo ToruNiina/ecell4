@@ -588,13 +588,27 @@ NGFRDSimulator::form_single_domain_3D(const ParticleID& pid, const Particle& p)
 
         ECELL4_NGFRD_LOG("nearest one is at ", dist, " distant.");
 
+        // To maximize the efficiency, it is better to consider the neighbor's
+        // diffusion coefficient because that makes the shell size best balance.
+        // But in some cases, the `modest_radius` becomes less than the
+        // min_shell_radius. This is unacceptable. So we need to check it and
+        // use min_shell_radius.
+        //     Of course, if two particles are closer than the sum of their
+        // min_shell_radius, then it is the time for Multi. But we already
+        // checked shells that are within the min shell radius.
         const auto modest_radius = p.radius() + (dist - p.radius()) * p.D() /
                                    (p.D() + neighbor.D());
-
-        max_radius = std::min(max_radius, modest_radius);
-
-        ECELL4_NGFRD_LOG("the radius is bound by a particle of which ID is ",
-                nearest_particle.front().first.first, ". The possible max radius is ", max_radius);
+        if(min_shell_radius < modest_radius)
+        {
+            max_radius = std::min(max_radius, modest_radius);
+            ECELL4_NGFRD_LOG("the radius is bound by a particle of which ID is ",
+                    nearest_particle.front().first.first,
+                    ". The possible max radius is ", max_radius);
+        }
+        else
+        {
+            max_radius = min_shell_radius;
+        }
     }
     if( ! nearest_face.empty())
     {
@@ -618,13 +632,14 @@ NGFRDSimulator::form_single_domain_3D(const ParticleID& pid, const Particle& p)
 
     // after SAFETY_SHRINK, the shell size could be (slightly) smaller than the
     // min_shell_radius, but I don't think it is a problem.
-    ensure(min_shell_radius < max_radius,
+    ensure(min_shell_radius <= max_radius,
            "min_shell_radius (", min_shell_radius, ") should be smaller than ",
            "the max radius (", max_radius, ").");
+
     const auto shell_size = max_radius * SAFETY_SHRINK;
 
-    // paranoiac check
-    assert(this->shells_.list_shells_within_radius_3D(p.position(), shell_size).empty());
+    // paranoiac check: no shells are within the current shell size.
+    ensure(this->shells_.list_shells_within_radius_3D(p.position(), shell_size).empty());
 
     // -----------------------------------------------------------------------
     // XXX constructing spherical shell
