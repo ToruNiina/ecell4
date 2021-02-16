@@ -19,7 +19,7 @@ void snapshot_output(std::ofstream& ofs,
     return;
 }
 
-int main()
+int main(int argc, char **argv) try
 {
     const ecell4::Real     L(10.0);
     const ecell4::Real3    edge_lengths(L, L, L);
@@ -78,4 +78,10 @@ int main()
     }
 
     return 0;
+}
+catch(std::exception& except)
+{
+    std::cerr << "what(): " << except.what() << std::endl;
+    auto& logger = ecell4::ngfrd::LoggerManager<void>::get_logger();
+    logger.dump();
 }
