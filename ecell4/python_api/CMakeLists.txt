@@ -5,6 +5,7 @@ pybind11_add_module(ecell4_base
     egfrd.cpp
     gillespie.cpp
     meso.cpp
+    ngfrd.cpp
     ode.cpp
     sgfrd.cpp
     spatiocyte.cpp)
@@ -14,6 +15,7 @@ target_link_libraries(ecell4_base PRIVATE
     ecell4-egfrd
     ecell4-gillespie
     ecell4-meso
+    ecell4-ngfrd
     ecell4-ode
     ecell4-sgfrd
     ecell4-spatiocyte)
