@@ -20,6 +20,7 @@
 #include <ecell4/ngfrd/ShellContainer.hpp>
 #include <ecell4/ngfrd/NGFRDEvent.hpp>
 #include <ecell4/ngfrd/NGFRDWorld.hpp>
+#include <ecell4/ngfrd/ReactionInfo.hpp>
 
 #include <ecell4/ngfrd/Logger.hpp>
 
