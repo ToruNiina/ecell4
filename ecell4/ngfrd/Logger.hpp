@@ -224,7 +224,7 @@ void ensure(const bool cond, const Ts& ... args)
     if( ! cond)
     {
         auto& logger = ::ecell4::ngfrd::LoggerManager<void>::get_logger();
-        logger.log(args...);
+        logger.log("ensure: ", args...);
         throw_exception<Exception>(args...);
     }
     return;
