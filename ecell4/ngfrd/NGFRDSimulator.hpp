@@ -36,7 +36,7 @@ namespace ecell4
 namespace ngfrd
 {
 
-class NGFRDSimulator final: public SimulatorBase<NGFRDWorld>
+class NGFRDSimulator: public SimulatorBase<NGFRDWorld>
 {
 public:
     static constexpr Real SAFETY_EXPAND       = 1.0 + 1e-5;
