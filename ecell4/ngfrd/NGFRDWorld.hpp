@@ -163,7 +163,46 @@ public:
         return this->new_particle_2D(p, fid);
     }
 
+    void remove_molecules(const Species& sp, const Integer& num)
+    {
+        if (num < 0)
+        {
+            throw std::invalid_argument("NGFRDWorld::remove_molecules: "
+                "The number of removing molecules must be positive.");
+        }
+
+        auto particles = list_particles(sp);
+        if (particles.size() < num)
+        {
+            throw std::invalid_argument("NGFRDWorld::remove_molecules: "
+                "The number of molecules cannot be negative.");
+        }
+
+        shuffle((*rng_), particles);
+        for (std::size_t i=0, e=num; i<e; ++i)
+        {
+            remove_particle(particles[i].first);
+        }
+    }
+
     // ------------------------------------------------------------------------
+
+    std::pair<std::pair<ParticleID, Particle>, bool>
+    new_particle(const Particle& p)
+    {
+        const auto& sp = p.species();
+
+        if(sp.has_attribute("location") &&
+           sp.get_attribute_as<std::string>("location") != "")
+        {
+            return new_particle_3D(p);
+        }
+        else
+        {
+            return new_particle_2D(p,
+                this->template nearest_face<1>(p.position()).at(0).first.first);
+        }
+    }
 
     std::pair<std::pair<ParticleID, Particle>, bool>
     new_particle_3D(const Particle& p)
@@ -212,6 +251,24 @@ public:
             return std::make_pair(std::make_pair(pid, p), false);
         }
     }
+
+
+    bool update_particle(const ParticleID& pid, const Particle& p)
+    {
+        const auto& sp = p.species();
+
+        if(sp.has_attribute("location") &&
+           sp.get_attribute_as<std::string>("location") != "")
+        {
+            return update_particle_3D(pid, p);
+        }
+        else
+        {
+            return update_particle_2D(pid, p,
+                this->template nearest_face<1>(p.position()).at(0).first.first);
+        }
+    }
+
 
     bool update_particle_3D(const ParticleID& pid, const Particle& p)
     {
@@ -734,6 +791,27 @@ public:
     {
         return rng_;
     }
+
+    inline Real3 periodic_transpose(const Real3& pos1, const Real3& pos2) const
+    {
+        return (*ps_).periodic_transpose(pos1, pos2);
+    }
+
+    inline Real3 apply_boundary(const Real3& pos) const
+    {
+        return (*ps_).apply_boundary(pos);
+    }
+
+    inline Real distance_sq(const Real3& pos1, const Real3& pos2) const
+    {
+        return (*ps_).distance_sq(pos1, pos2);
+    }
+
+    inline Real distance(const Real3& pos1, const Real3& pos2) const
+    {
+        return (*ps_).distance(pos1, pos2);
+    }
+
 
     // geometric constraint on circular shells
     std::array<ecell4::Segment, 6> const& get_barrier_around(const FaceID& fid) const

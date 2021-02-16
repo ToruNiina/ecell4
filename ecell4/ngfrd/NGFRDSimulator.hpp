@@ -250,6 +250,9 @@ public:
         return shells_.diagnosis();
     }
 
+    std::vector<std::pair<ReactionRule, ReactionInfo>> const&
+    last_reactions() const {return last_reactions_;}
+
 private:
 
     void step_unchecked()
