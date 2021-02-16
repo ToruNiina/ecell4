@@ -48,7 +48,7 @@ public:
                const Integer3& matrix_sizes = Integer3(3, 3, 3),
                const Real      margin       = 0.1)
         : ps_(new particle_space_type(edge_lengths, margin)),
-          polygon_(std::make_shared<Polygon>(edge_lengths, matrix_sizes)),
+          polygon_(std::make_shared<Polygon>(edge_lengths, std::vector<Triangle>{})),
           largest_particle_radius_2D_(0.0)
     {
         rng_ = std::shared_ptr<RandomNumberGenerator>(
@@ -63,8 +63,8 @@ public:
                const Real      margin,
                std::shared_ptr<RandomNumberGenerator> rng)
         : ps_(new particle_space_type(edge_lengths, margin)),
-            rng_(std::move(rng)),
-          polygon_(std::make_shared<Polygon>(edge_lengths, matrix_sizes)),
+          rng_(std::move(rng)),
+          polygon_(std::make_shared<Polygon>(edge_lengths, std::vector<Triangle>{})),
           largest_particle_radius_2D_(0.0)
     {
         this->prepare_restrictions();
@@ -150,6 +150,11 @@ public:
     std::pair<std::pair<ParticleID, Particle>, bool>
     throw_in_particle_2D(const Species& sp)
     {
+        if( ! this->polygon_ || this->polygon_->empty())
+        {
+            throw std::runtime_error("NGFRDWorld::throw_in_particle_2D: no polygon is set");
+        }
+
         const auto info = this->get_molecule_info(sp);
 
         Real3 pos; FaceID fid;
@@ -183,6 +188,11 @@ public:
     std::pair<std::pair<ParticleID, Particle>, bool>
     new_particle_2D(const Particle& p, const FaceID& fid)
     {
+        if( ! this->polygon_ || this->polygon_->empty())
+        {
+            throw std::runtime_error("NGFRDWorld::throw_in_particle_2D: no polygon is set");
+        }
+
         ParticleID pid(this->pidgen_());
 
         // use _3D for 2D-3D overlap and _2D for 2D-2D overlap.
@@ -225,6 +235,11 @@ public:
     bool update_particle_2D(const ParticleID& pid, const Particle& p,
                             const FaceID& fid)
     {
+        if( ! this->polygon_ || this->polygon_->empty())
+        {
+            throw std::runtime_error("NGFRDWorld::throw_in_particle_2D: no polygon is set");
+        }
+
         if(this->list_particles_within_radius_3D(p.position(), p.radius(), pid).empty() &&
            this->list_particles_within_radius_2D(std::make_pair(p.position(), fid), p.radius(), pid).empty())
         {
@@ -808,6 +823,8 @@ private:
 
     void prepare_restrictions()
     {
+        ECELL4_NGFRD_LOG_FUNCTION();
+
         // To avoid edge cases, it calculates the maximum size of particle.
         // Also, to avoid overlap between shells, it calculates a bisector of
         // each angle in triangle.
