@@ -20,6 +20,16 @@ bool unique_push_back(Container& cont, Value v)
     return false;
 }
 
+template<class Exception = std::runtime_error, typename ... Ts>
+void ensure(const bool cond, Ts&& ... args)
+{
+    if( ! cond)
+    {
+        throw_exception<Exception>(std::forward<Ts>(args)...);
+    }
+    return;
+}
+
 } // ngfrd
 } // ecell4
 #endif// ECELL4_NGFRD_UTILITY_HPP
