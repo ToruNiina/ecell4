@@ -93,11 +93,24 @@ public:
 
     // ------------------------------------------------------------------------
 
+    void add_molecules(const Species& sp, const Integer& num)
+    {
+        if(sp.has_attribute("location") &&
+           sp.get_attribute_as<std::string>("location") != "")
+        {
+            add_molecules_3D(sp, num);
+        }
+        else
+        {
+            add_molecules_2D(sp, num);
+        }
+    }
+
     void add_molecules_3D(const Species& sp, const Integer& num)
     {
         if (num < 0)
         {
-            throw std::invalid_argument("The number of molecules must be positive.");
+            throw std::invalid_argument("NGFRDWorld: The number of molecules must be positive.");
         }
         for(Integer i=0; i<num; ++i)
         {
@@ -112,7 +125,7 @@ public:
     {
         if (num < 0)
         {
-            throw std::invalid_argument("The number of molecules must be positive.");
+            throw std::invalid_argument("NGFRDWorld: The number of molecules must be positive.");
         }
         for(Integer i=0; i<num; ++i)
         {
