@@ -33,7 +33,7 @@ struct MoleculeInfo
 // if the particle is on a face and the target collides with the face before
 // concluding particles collide with each other.
 //
-class NGFRDWorld final
+class NGFRDWorld
     : public WorldInterface
 {
 public:
