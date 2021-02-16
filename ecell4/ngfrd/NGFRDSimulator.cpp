@@ -618,7 +618,9 @@ NGFRDSimulator::form_single_domain_3D(const ParticleID& pid, const Particle& p)
 
     // after SAFETY_SHRINK, the shell size could be (slightly) smaller than the
     // min_shell_radius, but I don't think it is a problem.
-    assert(min_shell_radius < max_radius);
+    ensure(min_shell_radius < max_radius,
+           "min_shell_radius (", min_shell_radius, ") should be smaller than ",
+           "the max radius (", max_radius, ").");
     const auto shell_size = max_radius * SAFETY_SHRINK;
 
     // paranoiac check
