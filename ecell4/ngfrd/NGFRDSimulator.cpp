@@ -1226,7 +1226,7 @@ boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
 NGFRDSimulator::fire_single_circular(const DomainID& did, SingleCircularDomain dom)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
-    ECELL4_NGFRD_LOG("firing single circular: ", did);
+    ECELL4_NGFRD_LOG("firing single circular: ", did, " at t = ", this->t());
     ECELL4_NGFRD_LOG("included shell: ", dom.shell_id());
 
     if(dom.dt() == 0.0) // means it is a tight domain. do nothing.
@@ -1263,7 +1263,7 @@ boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
 NGFRDSimulator::fire_single_conical(const DomainID& did, SingleConicalDomain dom)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
-    ECELL4_NGFRD_LOG("firing single conical: ", did);
+    ECELL4_NGFRD_LOG("firing single conical: ", did, " at t = ", this->t());
     ECELL4_NGFRD_LOG("included shell: ", dom.shell_id());
 
     // conical never be a tight domain.
@@ -1294,7 +1294,7 @@ boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
 NGFRDSimulator::fire_single_spherical(const DomainID& did, SingleSphericalDomain dom)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
-    ECELL4_NGFRD_LOG("firing single spherical: ", did);
+    ECELL4_NGFRD_LOG("firing single spherical: ", did, " at t = ", this->t());
     ECELL4_NGFRD_LOG("included shell: ", dom.shell_id());
 
     if(dom.dt() == 0.0) // means it is a tight domain
@@ -1334,7 +1334,7 @@ boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
 NGFRDSimulator::fire_pair_spherical(const DomainID& did, PairSphericalDomain dom)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
-    ECELL4_NGFRD_LOG("firing pair spherical: ", did);
+    ECELL4_NGFRD_LOG("firing pair spherical: ", did, " at t = ", this->t());
     ECELL4_NGFRD_LOG("included shell: ", dom.shell_id());
 
     std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
@@ -1364,7 +1364,7 @@ boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
 NGFRDSimulator::fire_pair_circular(const DomainID& did, PairCircularDomain dom)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
-    ECELL4_NGFRD_LOG("firing pair circular: ", did);
+    ECELL4_NGFRD_LOG("firing pair circular: ", did, " at t = ", this->t());
     ECELL4_NGFRD_LOG("included shell: ", dom.shell_id());
 
     std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
@@ -1394,7 +1394,7 @@ boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
 NGFRDSimulator::fire_multi(const DomainID& did, MultiDomain dom)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
-    ECELL4_NGFRD_LOG("firing multi: ", did);
+    ECELL4_NGFRD_LOG("firing multi: ", did, " at t = ", this->t());
     ECELL4_NGFRD_LOG("included shells: ", dom.shells());
 
     dom.step(did, *(this->model_), *this, *(this->world_));
