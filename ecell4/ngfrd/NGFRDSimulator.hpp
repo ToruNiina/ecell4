@@ -92,7 +92,7 @@ public:
         for(const auto& pp : world_->particles())
         {
             ECELL4_NGFRD_LOG("initializing domain for ", pp.first);
-            form_domain(pp.first, pp.second);
+            form_tight_domain(pp.first, pp.second);
         }
 
         // --------------------------------------------------------------------
@@ -277,7 +277,7 @@ private:
         for(const auto& pidp : fired)
         {
             ECELL4_NGFRD_LOG("forming domain for resulting particle ", pidp.first);
-            this->form_domain(pidp.first, pidp.second);
+            this->form_tight_domain(pidp.first, pidp.second);
         }
 
         const auto next_time = scheduler_.top().second->time();
@@ -291,18 +291,19 @@ private:
     }
 
     // -----------------------------------------------------------------------
-    // form_domain
+    // form_tight_domain
 
-    void form_domain(const ParticleID& pid, const Particle& p)
+    void form_tight_domain(const ParticleID& pid, const Particle& p)
     {
         if(const auto fid = this->world_->on_which_face(pid))
         {
-            this->form_domain_2D(pid, p, *fid);
+            this->form_tight_domain_2D(pid, p, *fid);
         }
         else
         {
-            this->form_domain_3D(pid, p);
+            this->form_tight_domain_3D(pid, p);
         }
+        return ;
     }
 
     boost::optional<std::pair<boost::container::small_vector<DomainID, 4>,
