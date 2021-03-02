@@ -277,7 +277,7 @@ private:
         for(const auto& pidp : fired)
         {
             ECELL4_NGFRD_LOG("forming domain for resulting particle ", pidp.first);
-            this->form_tight_domain(pidp.first, pidp.second);
+            this->form_domain(pidp.first, pidp.second);
         }
 
         const auto next_time = scheduler_.top().second->time();
@@ -291,17 +291,17 @@ private:
     }
 
     // -----------------------------------------------------------------------
-    // form_tight_domain
+    // form_domain
 
-    void form_tight_domain(const ParticleID& pid, const Particle& p)
+    void form_domain(const ParticleID& pid, const Particle& p)
     {
         if(const auto fid = this->world_->on_which_face(pid))
         {
-            this->form_tight_domain_2D(pid, p, *fid);
+            this->form_domain_2D(pid, p, *fid);
         }
         else
         {
-            this->form_tight_domain_3D(pid, p);
+            this->form_domain_3D(pid, p);
         }
         return ;
     }
@@ -319,6 +319,22 @@ private:
 
     void form_domain_2D(const ParticleID& pid, const Particle& p, const FaceID& fid);
     void form_domain_3D(const ParticleID& pid, const Particle& p);
+
+    // -----------------------------------------------------------------------
+    // form_tight_domain
+
+    void form_tight_domain(const ParticleID& pid, const Particle& p)
+    {
+        if(const auto fid = this->world_->on_which_face(pid))
+        {
+            this->form_tight_domain_2D(pid, p, *fid);
+        }
+        else
+        {
+            this->form_tight_domain_3D(pid, p);
+        }
+        return ;
+    }
 
     DomainID form_tight_domain_2D(const ParticleID& pid, const Particle& p, const FaceID& fid);
     DomainID form_tight_domain_3D(const ParticleID& pid, const Particle& p);
