@@ -1227,10 +1227,11 @@ NGFRDSimulator::fire_single_circular(const DomainID& did, SingleCircularDomain d
 {
     ECELL4_NGFRD_LOG_FUNCTION();
     ECELL4_NGFRD_LOG("firing single circular: ", did, " at t = ", this->t());
-    ECELL4_NGFRD_LOG("included shell: ", dom.shell_id());
+    ECELL4_NGFRD_LOG("included shell: ", dom.shell_id(), ", particle: ", dom.particle_id());
 
-    if(dom.dt() == 0.0) // means it is a tight domain. do nothing.
+    if(dom.dt() == 0.0)
     {
+        ECELL4_NGFRD_LOG("This domain is a tight domain. Fire without move.");
         this->shells_.remove_shell(dom.shell_id());
         return boost::container::small_vector<std::pair<ParticleID, Particle>, 4>{
                 world_->get_particle(dom.particle_id())
@@ -1264,7 +1265,7 @@ NGFRDSimulator::fire_single_conical(const DomainID& did, SingleConicalDomain dom
 {
     ECELL4_NGFRD_LOG_FUNCTION();
     ECELL4_NGFRD_LOG("firing single conical: ", did, " at t = ", this->t());
-    ECELL4_NGFRD_LOG("included shell: ", dom.shell_id());
+    ECELL4_NGFRD_LOG("included shell: ", dom.shell_id(), ", particle: ", dom.particle_id());
 
     // conical never be a tight domain.
 
@@ -1295,7 +1296,7 @@ NGFRDSimulator::fire_single_spherical(const DomainID& did, SingleSphericalDomain
 {
     ECELL4_NGFRD_LOG_FUNCTION();
     ECELL4_NGFRD_LOG("firing single spherical: ", did, " at t = ", this->t());
-    ECELL4_NGFRD_LOG("included shell: ", dom.shell_id());
+    ECELL4_NGFRD_LOG("included shell: ", dom.shell_id(), ", particle: ", dom.particle_id());
 
     if(dom.dt() == 0.0) // means it is a tight domain
     {
@@ -1335,7 +1336,9 @@ NGFRDSimulator::fire_pair_spherical(const DomainID& did, PairSphericalDomain dom
 {
     ECELL4_NGFRD_LOG_FUNCTION();
     ECELL4_NGFRD_LOG("firing pair spherical: ", did, " at t = ", this->t());
-    ECELL4_NGFRD_LOG("included shell: ", dom.shell_id());
+    ECELL4_NGFRD_LOG("included shell: ", dom.shell_id(),
+                     ", particle1: ", dom.particle1_id(),
+                     ", particle2: ", dom.particle2_id());
 
     std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
     PairSphericalPropagator prop(
@@ -1365,7 +1368,9 @@ NGFRDSimulator::fire_pair_circular(const DomainID& did, PairCircularDomain dom)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
     ECELL4_NGFRD_LOG("firing pair circular: ", did, " at t = ", this->t());
-    ECELL4_NGFRD_LOG("included shell: ", dom.shell_id());
+    ECELL4_NGFRD_LOG("included shell: ", dom.shell_id(),
+                     ", particle1: ", dom.particle1_id(),
+                     ", particle2: ", dom.particle2_id());
 
     std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
     PairCircularPropagator prop(
