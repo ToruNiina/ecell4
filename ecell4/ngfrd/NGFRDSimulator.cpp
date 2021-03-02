@@ -60,7 +60,9 @@ NGFRDSimulator::form_single_domain_2D(
         {
             const auto& pid2 = result.first;
             const auto& p2   = result.second;
-            const auto& fid2 = *(this->world_->on_which_face(pid2));
+            const auto& fid2 = this->world_->on_which_face(pid2).value();
+
+            ECELL4_NGFRD_LOG("resulting particle = ", pid2, " at ", p2.position(), " on ", fid2);
 
             const auto dist = ecell4::polygon::distance(this->world_->polygon(),
                 std::make_pair(p.position(),  fid),
