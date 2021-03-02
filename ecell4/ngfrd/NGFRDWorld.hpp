@@ -95,14 +95,16 @@ public:
 
     void add_molecules(const Species& sp, const Integer& num)
     {
-        if(sp.has_attribute("location") &&
-           sp.get_attribute_as<std::string>("location") != "")
+        const auto location = this->get_location_info(sp);
+        if(location != "")
         {
-            add_molecules_3D(sp, num);
+            std::cout << "species " << sp.serial() << " has location" << std::endl;
+            add_molecules_2D(sp, num);
         }
         else
         {
-            add_molecules_2D(sp, num);
+            std::cout << "species " << sp.serial() << " has no location" << std::endl;
+            add_molecules_3D(sp, num);
         }
     }
 
@@ -192,8 +194,8 @@ public:
     {
         const auto& sp = p.species();
 
-        if(sp.has_attribute("location") &&
-           sp.get_attribute_as<std::string>("location") != "")
+        const auto location = this->get_location_info(sp);
+        if(location != "")
         {
             return new_particle_3D(p);
         }
@@ -256,9 +258,9 @@ public:
     bool update_particle(const ParticleID& pid, const Particle& p)
     {
         const auto& sp = p.species();
+        const auto location = this->get_location_info(sp);
 
-        if(sp.has_attribute("location") &&
-           sp.get_attribute_as<std::string>("location") != "")
+        if(location != "")
         {
             return update_particle_3D(pid, p);
         }
@@ -582,6 +584,28 @@ public:
     }
 
     Real largest_particle_radius_2D() const noexcept {return largest_particle_radius_2D_;}
+
+    std::string get_location_info(const Species& sp) const
+    {
+        ECELL4_NGFRD_LOG_FUNCTION();
+        std::string location;
+        if (sp.has_attribute("location"))
+        {
+            ECELL4_NGFRD_LOG("sp ", sp, " has location attribute.");
+            location = sp.get_attribute_as<std::string>("location");
+        }
+        else if (std::shared_ptr<Model> bound_model = lock_model())
+        {
+            ECELL4_NGFRD_LOG("model bound");
+            Species newsp(bound_model->apply_species_attributes(sp));
+            if (newsp.has_attribute("location"))
+            {
+                ECELL4_NGFRD_LOG("species ", newsp.serial(), " has location in model.");
+                location = newsp.get_attribute_as<std::string>("location");
+            }
+        }
+        return location;
+    }
 
     molecule_info_type get_molecule_info(const Species& sp) const
     {
