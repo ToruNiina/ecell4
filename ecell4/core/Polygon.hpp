@@ -859,6 +859,10 @@ class Polygon : public Shape
     }
     face_data const& face_at(const FaceID& fid) const
     {
+        if( ! this->faces_.has(fid))
+        {
+            throw_exception<std::out_of_range>("Polygon::face_at: unknown FaceID: ", fid);
+        }
         return this->faces_.at(fid).second;
     }
     edge_data const& edge_at(const EdgeID& eid) const
@@ -872,6 +876,10 @@ class Polygon : public Shape
     }
     face_data& face_at(const FaceID& fid)
     {
+        if( ! this->faces_.has(fid))
+        {
+            throw_exception<std::out_of_range>("Polygon::face_at: unknown FaceID: ", fid);
+        }
         return this->faces_.at(fid).second;
     }
     edge_data& edge_at(const EdgeID& eid)
