@@ -134,17 +134,17 @@ protected:
         if(this->polygon_)
         {
             return new world_type(edge_lengths, matrix_sizes_, tree_margin_,
-                                  rng_, this->polygon_);
+                                  std::move(rng), this->polygon_);
         }
         else if(!this->polygon_file_.first.empty())
         {
             return new world_type(edge_lengths, matrix_sizes_, tree_margin_,
-                    rng_, std::make_shared<Polygon>(read_polygon(
+                    std::move(rng), std::make_shared<Polygon>(read_polygon(
                         polygon_file_.first, polygon_file_.second, edge_lengths)));
         }
         else
         {
-            return new world_type(edge_lengths, matrix_sizes_, tree_margin_, rng_);
+            return new world_type(edge_lengths, matrix_sizes_, tree_margin_, std::move(rng));
         }
     }
 
