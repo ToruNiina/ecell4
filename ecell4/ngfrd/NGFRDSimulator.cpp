@@ -1532,6 +1532,16 @@ NGFRDSimulator::burst_single_circular(const DomainID& did, SingleCircularDomain 
                 world_->get_particle(dom.particle_id())
             };
     }
+    if(this->t() == dom.begin_time())
+    {
+        ECELL4_NGFRD_LOG("Now is the time when this domain is formed. "
+                         "removing without movement...");
+        this->shells_.remove_shell(dom.shell_id());
+        return boost::container::small_vector<std::pair<ParticleID, Particle>, 4>{
+                world_->get_particle(dom.particle_id())
+            };
+    }
+    ECELL4_NGFRD_LOG("Propagating...");
 
     std::vector<std::pair<ReactionRule, ReactionInfo>> last_reactions;
     SingleCircularPropagator prop(did,
