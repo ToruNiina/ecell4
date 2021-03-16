@@ -22,14 +22,135 @@ constexpr std::size_t NGFRDSimulator::PAIR_SPHERICAL_MAX_RETRY;
 constexpr std::size_t NGFRDSimulator::PAIR_CIRCULAR_MAX_RETRY;
 
 boost::optional<boost::container::small_vector<DomainID, 4>>
+NGFRDSimulator::form_single_conical_domain_2D(
+        const ParticleID& pid, const Particle& p, const FaceID& fid)
+{
+    ECELL4_NGFRD_LOG_FUNCTION();
+    ECELL4_NGFRD_LOG("pid = ", pid, ", p = ", p, ", fid = ", fid);
+
+    ECELL4_NGFRD_LOG("there are no intrusive domains, but an intrusive vertex exists. "
+                     "trying conical shell and then try pair or multi.");
+
+    // there are no intruders, but max_distance (came from the geometric
+    // constraint) is too small. It means that there is a vertex too close
+    // to the particle. Try forming a conical shell.
+
+    const auto& poly = world_->polygon();
+
+    // 1. detect the nearest vertex.
+    Real dist_to_vtx = std::numeric_limits<Real>::infinity();
+    VertexID vtxid;
+    for(const auto& vid : poly.vertices_of(fid))
+    {
+        const auto dist2 = ecell4::polygon::distance_sq(poly,
+                std::make_pair(p.position(), fid),
+                std::make_pair(poly.position_at(vid), vid));
+        if(dist2 < dist_to_vtx)
+        {
+            dist_to_vtx = dist2;
+            vtxid = vid;
+        }
+    }
+    dist_to_vtx = std::sqrt(dist_to_vtx);
+
+    // TODO: consider changing this factor by the shell kind
+    const Real min_conical_shell_size = dist_to_vtx * SINGLE_SHELL_FACTOR + p.radius();
+
+    // 2. determine the shell size
+    //   - find the shortest edge extending from the vertex.
+    //   - check the intruders
+
+    Real max_shell_size = std::numeric_limits<Real>::infinity();
+    for(const auto& eid : poly.outgoing_edges(vtxid))
+    {
+        // To avoid conical-conical collision, make max_shell_size smaller
+        // than the half length of edges.
+        max_shell_size = std::min(max_shell_size, poly.length_of(eid) * 0.5);
+
+        // check shells on faces which connect to the vertex
+        const auto neighbor_fid = poly.face_of(eid);
+        if(const auto possible_intruders = world_->particles_on(neighbor_fid))
+        {
+            for(const auto& possible_intruder_id : *possible_intruders)
+            {
+                const auto possible_intruder =
+                    world_->get_particle(possible_intruder_id).second;
+
+                max_shell_size = std::min(max_shell_size,
+                    ecell4::polygon::distance_sq(poly,
+                        std::make_pair(possible_intruder.position(), neighbor_fid),
+                        std::make_pair(poly.position_at(vtxid), vtxid)));
+            }
+        }
+    }
+    if(max_shell_size < min_conical_shell_size ||
+       max_shell_size <= dist_to_vtx + p.radius())
+    {
+        // maximum possible shell size is smaller than the minimum conical.
+        // Conical shell cannot be formed.
+        return {/*empty*/};
+    }
+
+    // 3. form conical shell.
+    const auto shell_size       = max_shell_size * SAFETY_SHRINK;
+    const auto effective_radius = shell_size - p.radius();
+    const auto initial_position = dist_to_vtx;
+    const auto phi              = poly.apex_angle_at(vtxid);
+    assert(0.0 < effective_radius);
+
+    greens_functions::GreensFunction2DRefWedgeAbs
+        gf(p.D(), initial_position, effective_radius, phi);
+
+    const auto dt_escape   = gf.drawTime(this->world_->rng()->uniform(0.0, 1.0));
+    const auto dt_reaction = this->draw_single_reaction_time(p.species());
+
+    const auto dt = std::min(dt_escape,  dt_reaction);
+    const auto event_kind = (dt_escape < dt_reaction) ?
+            SingleConicalDomain::EventKind::Escape   :
+            SingleConicalDomain::EventKind::Reaction ;
+
+    const auto did = didgen_();
+    const auto sid = sidgen_();
+
+    ECELL4_NGFRD_LOG("2D Conical domain: did = ", did,
+            ", dt_escape = ", dt_escape, ", dt_reaction = ", dt_reaction,
+            ", dt = ",  dt);
+
+    ConicalShell sh(p.radius(), ConicalSurface(p.position(), phi, shell_size), vtxid);
+    this->shells_.update_shell(sid, Shell(sh, did));
+
+    SingleConicalDomain dom(event_kind, dt, world_->t(), sid, sh,
+            pid, p.D(), effective_radius, std::move(gf));
+
+    // add event with the same domain ID
+    const auto evid = this->scheduler_.add(
+            std::make_shared<event_type>(this->t() + dt, did));
+
+    // update begin_time and re-insert domain into domains_ container
+    this->domains_[did] = std::make_pair(evid, Domain(std::move(dom)));
+
+    ECELL4_NGFRD_LOG("2D single circular domain formed!");
+
+    return boost::none;
+}
+
+
+boost::optional<boost::container::small_vector<DomainID, 4>>
 NGFRDSimulator::form_single_domain_2D(
         const ParticleID& pid, const Particle& p, const FaceID& fid)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
+    ECELL4_NGFRD_LOG("pid = ", pid, ", p = ", p, ", fid = ", fid);
+
+    assert(world_->on_which_face(pid).value() == fid);
+
     // It considers the largest radius of 2D particles when drawing 3D shell,
     // so we don't need to consider the 2D-3D shell overlap here.
 
     const auto min_shell_radius = p.radius() * SINGLE_SHELL_FACTOR;
+    ECELL4_NGFRD_LOG("min_shell_radius = ", min_shell_radius);
+
+    // first, list all the min-shell intruders.
 
     bool min_shell_intruders_contains_multi = false;
     boost::container::small_vector<DomainID, 4> min_shell_intruders;
@@ -38,6 +159,9 @@ NGFRDSimulator::form_single_domain_2D(
             std::make_pair(p.position(), fid), min_shell_radius))
     {
         const auto did = *sidp.first.second.domain_id();
+
+        ECELL4_NGFRD_LOG("domain ", did, " is at the ", sidp.second, " distant");
+
         unique_push_back(min_shell_intruders, did);
         if(domains_.at(did).second.is_multi())
         {
@@ -49,153 +173,96 @@ NGFRDSimulator::form_single_domain_2D(
         return min_shell_intruders;
     }
 
-    // burst min shell intruders (if they are non-multi domains).
+    // Then, burst min shell intruders (if they are non-multi domains).
     // The bursted particles will have a tight (zero-radius) domain.
 
-    Real max_distance = max_circular_shell_size_at(p.position(), fid);
+    this->world_->poly_con_.diagnosis();
+
     boost::container::small_vector<DomainID, 4> intruders;
     for(const auto& did : min_shell_intruders)
     {
+        ECELL4_NGFRD_LOG("bursting min shell intruder ", did);
+
         for(const auto& result : burst_domain(did))
         {
             const auto& pid2 = result.first;
             const auto& p2   = result.second;
-            const auto& fid2 = this->world_->on_which_face(pid2).value();
+            const auto  fid2 = this->world_->on_which_face(pid2).value();
+            const auto  did2 = form_tight_domain_2D(pid2, p2, fid2);
 
-            ECELL4_NGFRD_LOG("resulting particle = ", pid2, " at ", p2.position(), " on ", fid2);
+            ECELL4_NGFRD_LOG("bursted particle = ", pid2, " at ", p2.position(),
+                             " on ", fid2, " in ", did2);
 
             const auto dist = ecell4::polygon::distance(this->world_->polygon(),
                 std::make_pair(p.position(),  fid),
-                std::make_pair(p2.position(), fid2)) - p2.radius();
+                std::make_pair(p2.position(), fid2));
 
-            max_distance = std::min(max_distance, dist);
-
-            const auto did2 = form_tight_domain_2D(pid2, p2, fid2);
-
-            if(dist < p.radius() * SINGLE_SHELL_FACTOR)
+            if(dist < (p.radius() + p2.radius()) * SINGLE_SHELL_FACTOR)
             {
                 unique_push_back(intruders, did2);
             }
+            ECELL4_NGFRD_LOG("resulting particle is at ", dist, " distant");
         }
     }
+    ECELL4_NGFRD_LOG("all the min-shell-intruders are bursted.");
 
     if( ! intruders.empty())
     {
-        // form pair or multi
+        ECELL4_NGFRD_LOG("there is an intruder: ", intruders,
+                         ". trying to form pair or multi.");
         return intruders;
     }
 
-    if(max_distance < min_shell_radius)
+    ECELL4_NGFRD_LOG("No intruders here. draw single shell");
+
+    // dispatch shell shape
+
+    const Real max_circle_size = max_circular_shell_size_at(p.position(), fid);
+    if(max_circle_size < min_shell_radius)
     {
-        // there are no intruders, but max_distance (came from the geometric
-        // constraint) is too small. It means that there is a vertex too close
-        // to the particle. Try forming a conical shell.
-
-        const auto& poly = world_->polygon();
-
-        // 1. detect the nearest vertex.
-        Real dist_to_vtx = std::numeric_limits<Real>::infinity();
-        VertexID vtxid;
-        for(const auto& vid : poly.vertices_of(fid))
-        {
-            const auto dist2 = ecell4::polygon::distance_sq(poly,
-                    std::make_pair(p.position(), fid),
-                    std::make_pair(poly.position_at(vid), vid));
-            if(dist2 < dist_to_vtx)
-            {
-                dist_to_vtx = dist2;
-                vtxid = vid;
-            }
-        }
-        dist_to_vtx = std::sqrt(dist_to_vtx);
-
-        // TODO: consider changing this factor by the shell kind
-        const Real min_conical_shell_size = dist_to_vtx * SINGLE_SHELL_FACTOR + p.radius();
-
-        // 2. determine the shell size
-        //   - find the shortest edge extending from the vertex.
-        //   - check the intruders
-
-        Real max_shell_size = std::numeric_limits<Real>::infinity();
-        for(const auto& eid : poly.outgoing_edges(vtxid))
-        {
-            // To avoid conical-conical collision, make max_shell_size smaller
-            // than the half length of edges.
-            max_shell_size = std::min(max_shell_size, poly.length_of(eid) * 0.5);
-
-            // check shells on faces which connect to the vertex
-            const auto neighbor_fid = poly.face_of(eid);
-            if(const auto possible_intruders = world_->particles_on(neighbor_fid))
-            {
-                for(const auto& possible_intruder_id : *possible_intruders)
-                {
-                    const auto possible_intruder =
-                        world_->get_particle(possible_intruder_id).second;
-
-                    max_shell_size = std::min(max_shell_size,
-                        ecell4::polygon::distance_sq(poly,
-                            std::make_pair(possible_intruder.position(), neighbor_fid),
-                            std::make_pair(poly.position_at(vtxid), vtxid)));
-                }
-            }
-        }
-        if(max_shell_size < min_conical_shell_size ||
-           max_shell_size <= dist_to_vtx + p.radius())
-        {
-            // maximum possible shell size is smaller than the minimum conical.
-            // Conical shell cannot be formed.
-            return intruders;
-        }
-
-        // 3. form conical shell.
-        const auto shell_size       = max_shell_size * SAFETY_SHRINK;
-        const auto effective_radius = shell_size - p.radius();
-        const auto initial_position = dist_to_vtx;
-        const auto phi              = poly.apex_angle_at(vtxid);
-        assert(0.0 < effective_radius);
-
-        greens_functions::GreensFunction2DRefWedgeAbs
-            gf(p.D(), initial_position, effective_radius, phi);
-
-        const auto dt_escape   = gf.drawTime(this->world_->rng()->uniform(0.0, 1.0));
-        const auto dt_reaction = this->draw_single_reaction_time(p.species());
-
-        const auto dt = std::min(dt_escape,  dt_reaction);
-        const auto event_kind = (dt_escape < dt_reaction) ?
-                SingleConicalDomain::EventKind::Escape   :
-                SingleConicalDomain::EventKind::Reaction ;
-
-        const auto did = didgen_();
-        const auto sid = sidgen_();
-
-        ECELL4_NGFRD_LOG("2D Conical domain: did = ", did,
-                ", dt_escape = ", dt_escape, ", dt_reaction = ", dt_reaction,
-                ", dt = ",  dt);
-
-        ConicalShell sh(p.radius(), ConicalSurface(p.position(), phi, shell_size), vtxid);
-        this->shells_.update_shell(sid, Shell(sh, did));
-
-        SingleConicalDomain dom(event_kind, dt, world_->t(), sid, sh,
-                pid, p.D(), effective_radius, std::move(gf));
-
-        // add event with the same domain ID
-        const auto evid = this->scheduler_.add(
-                std::make_shared<event_type>(this->t() + dt, did));
-
-        // update begin_time and re-insert domain into domains_ container
-        this->domains_[did] = std::make_pair(evid, Domain(std::move(dom)));
-
-        ECELL4_NGFRD_LOG("2D single circular domain formed!");
-
-        return boost::none;
+        // no intruders, but there is an intrusive vertex. try to form conical one.
+        return form_single_conical_domain_2D(pid, p, fid);
     }
 
+    // find maximum possible shell size.
 
-    // No intruders here. draw single shell.
+    Real max_shell_size = max_circle_size;
+    for(const auto& sidp : shells_.list_shells_within_radius_2D(
+            std::make_pair(p.position(), fid), max_circle_size))
+    {
+        const auto did  = sidp.first.second.domain_id().value();
+        const auto& dom = domains_.at(did).second;
 
-    const auto shell_size       = max_distance * SAFETY_SHRINK;
+        Real dist = sidp.second;
+        if(dom.is_single_circular())
+        {
+            const auto& sh   = dom.as_single_circular().shell();
+            const auto& pid2 = dom.as_single_circular().particle_id();
+            const auto  p2   = world_->get_particle(pid2).second;
+
+            const Real modest_dist = p.radius() +
+                (dist + sh.shape().radius() - p.radius() - p2.radius()) *
+                p.D() / (p.D() + p2.D());
+
+            if(min_shell_radius < modest_dist)
+            {
+                dist = modest_dist;
+            }
+            else if(dom.as_single_circular().dt() == 0)
+            {
+                // take care about tight domains to avoid infinite loop...
+                dist = dist + sh.shape().radius() - p2.radius() * SINGLE_SHELL_FACTOR;
+            }
+        }
+        max_shell_size = std::min(max_shell_size, dist);
+    }
+    assert(min_shell_radius <= max_shell_size);
+
+    const auto shell_size       = max_shell_size * SAFETY_SHRINK;
     const auto effective_radius = shell_size - p.radius();
     assert(0.0 < effective_radius);
+
+    ECELL4_NGFRD_LOG("shell size = ", shell_size, ", effective_radius = ", effective_radius);
 
     greens_functions::GreensFunction2DAbsSym gf(p.D(), effective_radius);
 
