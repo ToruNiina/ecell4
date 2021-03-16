@@ -229,6 +229,9 @@ public:
     std::pair<std::pair<ParticleID, Particle>, bool>
     new_particle_2D(const Particle& p, const FaceID& fid)
     {
+        ECELL4_NGFRD_LOG_FUNCTION();
+        ECELL4_NGFRD_LOG("particle: ", p, ", on face: ", fid);
+
         if( ! this->polygon_ || this->polygon_->empty())
         {
             throw std::runtime_error("NGFRDWorld::throw_in_particle_2D: no polygon is set");
@@ -245,6 +248,8 @@ public:
 
             this->largest_particle_radius_2D_ = std::max(p.radius(),
                     this->largest_particle_radius_2D_);
+
+            assert(poly_con_.on_which_face(pid).value() == fid);
 
             return std::make_pair(std::make_pair(pid, p), true);
         }

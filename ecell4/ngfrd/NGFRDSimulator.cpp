@@ -583,8 +583,8 @@ NGFRDSimulator::form_single_domain_3D(const ParticleID& pid, const Particle& p)
         if(std::find(intrusive_domains.begin(), intrusive_domains.end(), did) ==
                      intrusive_domains.end())
         {
-            ECELL4_NGFRD_LOG("min shell intruder found: Shell ",
-                             item.first.first, " in ", did);
+            ECELL4_NGFRD_LOG("min shell intruder found: Shell ", item.first.first,
+                             " in ", did, " is at ", item.second, " distant.");
             intrusive_domains.push_back(did);
         }
     }
@@ -1247,24 +1247,38 @@ void NGFRDSimulator::merge_into_multi_or_form_tight_domain_2D(
 DomainID NGFRDSimulator::form_tight_domain_2D(
         const ParticleID& pid, const Particle& p, const FaceID& fid)
 {
+    ECELL4_NGFRD_LOG_FUNCTION();
     const auto did = didgen_();
     const auto sid = sidgen_();
+
+    ECELL4_NGFRD_LOG("newly generated ids = ", did, ", ", sid);
 
     CircularShell sh(p.radius(), Circle(p.radius(), p.position(),
                     this->polygon().triangle_at(fid).normal()), fid);
 
+    ECELL4_NGFRD_LOG("new shell constructed");
+
     this->shells_.update_shell(sid, Shell(sh, did));
+
+    ECELL4_NGFRD_LOG("the new shell is registered");
 
     SingleCircularDomain dom(SingleCircularDomain::EventKind::Escape,
         /*dt = */ 0.0, world_->t(), sid, sh, pid, p.D(), /*radius = */ 0.0,
         greens_functions::GreensFunction2DAbsSym(p.D(), 0.0));
 
+    ECELL4_NGFRD_LOG("new domain is constructed");
+
     // add event with the same domain ID
     const auto evid = this->scheduler_.add(
             std::make_shared<event_type>(this->t(), did));
 
+    ECELL4_NGFRD_LOG("new domain/event is registered in the scheduler");
+
     // update begin_time and re-insert domain into domains_ container
     this->domains_[did] = std::make_pair(evid, Domain(std::move(dom)));
+
+    ECELL4_NGFRD_LOG("new domain/event_id is registered in the domain container");
+
     return did;
 }
 
@@ -1521,8 +1535,12 @@ boost::container::small_vector<std::pair<ParticleID, Particle>, 4>
 NGFRDSimulator::burst_single_circular(const DomainID& did, SingleCircularDomain dom)
 {
     ECELL4_NGFRD_LOG_FUNCTION();
-    ECELL4_NGFRD_LOG("bursting single circular: ", did);
-    ECELL4_NGFRD_LOG("included shell: ", dom.shell_id());
+    ECELL4_NGFRD_LOG("bursting single circular: ", did,
+                     ", on face: ", dom.face_id(),
+                     ", included shell: ", dom.shell_id(),
+                     ", included particle: ", dom.particle_id());
+
+    assert(world_->on_which_face(dom.particle_id()).value() == dom.face_id());
 
     if(dom.dt() == 0.0) // means it is a tight domain. do nothing.
     {
