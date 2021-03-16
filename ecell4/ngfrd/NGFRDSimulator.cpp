@@ -176,7 +176,7 @@ NGFRDSimulator::form_single_domain_2D(
     // Then, burst min shell intruders (if they are non-multi domains).
     // The bursted particles will have a tight (zero-radius) domain.
 
-    this->world_->poly_con_.diagnosis();
+//     this->world_->poly_con_.diagnosis();
 
     boost::container::small_vector<DomainID, 4> intruders;
     for(const auto& did : min_shell_intruders)
