@@ -319,9 +319,9 @@ bool NGFRDSimulator::form_pair_domain_2D(
         return false;
     }
 
-    const auto& pid2 = partner.particle_id();
-    const auto& p2   = world_->get_particle(pid2).second;
-    const auto& fid2 = world_->on_which_face(pid2).value();
+    const auto pid2 = partner.particle_id();
+    const auto p2   = world_->get_particle(pid2).second;
+    const auto fid2 = world_->on_which_face(pid2).value();
 
     const Real D1  = p1.D();
     const Real D2  = p2.D();
